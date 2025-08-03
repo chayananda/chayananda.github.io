@@ -1,15 +1,35 @@
 <!DOCTYPE html>
-    <head>
-        <title>Chayananda</title>
-    </head>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Nav Bar</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
 <body>
-    <!-- START BODY -->
-    <h1>Welcome to Chayananda's Page</h1> 
-    <h2>About Me</h2>
-    <p>Hello! My name is Chayananda.</p>
- 
+  <nav class="navbar">
+    <div class="logo">MyLogo</div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Work</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
 
-  
-    </body>
-    <!-- END BODY -->
+  <script>
+    // Toggle menu for mobile
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      hamburger.classList.toggle('toggle');
+    });
+  </script>
+</body>
 </html>
