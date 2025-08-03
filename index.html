@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
     <head>
         <title>Chayananda</title>
         <link rel="stylesheet" href="css/style.css">
@@ -14,8 +15,39 @@
     <h2>About Me</h2>
     <p>Hello! My name is Chayananda.</p>
  
+=======
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Responsive Nav Bar</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">MyLogo</div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Work</a></li>
+      <li><a href="#">About</a></li>
+    </ul>
+    <div class="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+>>>>>>> 95c1c42574a964518f6fdad7a921745a96d1e668
 
-  
-    </body>
-    <!-- END BODY -->
+  <script>
+    // Toggle menu for mobile
+    const hamburger = document.querySelector('.hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      hamburger.classList.toggle('toggle');
+    });
+  </script>
+</body>
 </html>
