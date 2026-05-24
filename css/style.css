@@ -1,98 +1,365 @@
-/* Basic Reset */
+/*
+  Portfolio styles — one file for the whole site.
+  Sections match the comments below (top to bottom).
+*/
+
+/* --- 1. Base (reset + page defaults) --- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: Arial, sans-serif;
+:root {
+  --color-text: #121212;
+  --color-muted: #787878;
+  --color-bg: #ffffff;
+  --color-bg-soft: #f2f2f2;
+  --color-accent: #0099ff;
+  --font: "Noto Sans", system-ui, sans-serif;
+  --max-width: 1100px;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+body {
+  font-family: var(--font);
+  color: var(--color-text);
+  background: var(--color-bg);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+/* --- 2. Layout helpers --- */
+.container {
+  width: min(100% - 2rem, var(--max-width));
+  margin: 0 auto;
+}
+
+.section {
+  padding: 4rem 0;
+}
+
+.section-title {
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  margin-bottom: 0.5rem;
+}
+
+.section-heading {
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+/* --- 3. Header / navigation --- */
+.site-header {
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 100;
+  background: var(--color-bg);
+  border-bottom: 1px solid #e3e3e3;
+}
+
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 0;
 }
 
 .logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  text-decoration: none;
 }
 
 .nav-links {
   display: flex;
+  gap: 2rem;
   list-style: none;
+}
+
+.nav-links a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-links a:hover,
+.nav-links a.is-active {
+  color: var(--color-accent);
+}
+
+/* Mobile menu button (hidden on desktop) */
+.menu-button {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.menu-button span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--color-text);
+  transition: transform 0.2s, opacity 0.2s;
+}
+
+.menu-button.is-open span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-button.is-open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-button.is-open span:nth-child(3) {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* --- 4. Hero (top of homepage) --- */
+.hero {
+  padding: 5rem 0 3rem;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 6vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+
+.hero .role {
+  font-size: 1.25rem;
+  color: var(--color-muted);
+  margin-bottom: 2rem;
+}
+
+.hero .intro {
+  font-size: 1.05rem;
+  max-width: 42rem;
+  color: #333;
+}
+
+/* --- 5. Project cards --- */
+.project-grid {
+  display: grid;
   gap: 2rem;
 }
 
-.nav-links li a {
+@media (min-width: 700px) {
+  .project-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.project-card {
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  overflow: hidden;
   text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  transition: color 0.3s ease;
+  color: inherit;
+  transition: box-shadow 0.2s;
 }
 
-.nav-links li a:hover {
-  color: #007bff;
+.project-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* Hamburger Menu */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  gap: 5px;
+.project-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  background: var(--color-bg-soft);
 }
 
-.hamburger span {
-  width: 25px;
-  height: 3px;
-  background: #333;
-  border-radius: 5px;
-  transition: 0.3s;
+.project-card .card-body {
+  padding: 1.25rem;
 }
 
-/* Responsive Styles */
+.project-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.project-card dl {
+  font-size: 0.85rem;
+}
+
+.project-card dt {
+  color: var(--color-muted);
+  display: inline;
+}
+
+.project-card dt::after {
+  content: ": ";
+}
+
+.project-card dd {
+  display: inline;
+  margin-right: 0.75rem;
+}
+
+.project-card .read-more {
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* --- 6. Quote + principles --- */
+.quote {
+  background: var(--color-bg-soft);
+  padding: 3rem;
+  border-radius: 8px;
+  font-size: 1.25rem;
+  font-style: italic;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.principle-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 700px) {
+  .principle-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.principle-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.principle-card p {
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* --- 7. Case study page --- */
+.case-study-header {
+  padding: 3rem 0 2rem;
+}
+
+.case-study-header h1 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
+}
+
+.meta-list {
+  list-style: none;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+}
+
+.meta-list li + li {
+  margin-top: 0.25rem;
+}
+
+.case-study-body {
+  max-width: 40rem;
+  font-size: 1.05rem;
+}
+
+.case-study-body p + p {
+  margin-top: 1rem;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 2rem;
+  font-weight: 600;
+}
+
+/* --- 8. Footer --- */
+.site-footer {
+  background: var(--color-text);
+  color: #fff;
+  padding: 3rem 0;
+  margin-top: 4rem;
+}
+
+.site-footer a {
+  color: #fff;
+}
+
+.footer-grid {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (min-width: 600px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.footer-grid h4 {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #aaa;
+  margin-bottom: 1rem;
+}
+
+.footer-grid ul {
+  list-style: none;
+}
+
+.footer-grid li + li {
+  margin-top: 0.5rem;
+}
+
+.footer-bottom {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #333;
+  font-size: 0.85rem;
+  color: #aaa;
+}
+
+/* --- 9. Mobile (screens narrower than 768px) --- */
 @media (max-width: 768px) {
+  .menu-button {
+    display: flex;
+  }
+
   .nav-links {
-    position: absolute;
-    right: 0;
-    top: 70px;
-    background: #fff;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.5rem;
-    padding: 1rem 0;
     display: none;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--color-bg);
+    border-bottom: 1px solid #e3e3e3;
   }
 
-  .nav-links.active {
+  .nav-links.is-open {
     display: flex;
   }
 
-  .hamburger {
-    display: flex;
+  .site-header .container {
+    position: relative;
   }
 }
-
-/* Hamburger Animation */
-.hamburger.toggle span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
-.hamburger.toggle span:nth-child(2) {
-  opacity: 0;
-}
-.hamburger.toggle span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
-}
->>>>>>> 95c1c42574a964518f6fdad7a921745a96d1e668
