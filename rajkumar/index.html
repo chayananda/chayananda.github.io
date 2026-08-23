@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dr. Rajkumar - 209 Movies Interactive Radial Filmography</title>
+<style>
+  :root {
+    --bg-color: #0b0f19;
+    --card-bg: #161e2e;
+    --card-border: #2e384d;
+    --gold: #f59e0b;
+    --gold-glow: rgba(245, 158, 11, 0.45);
+    --cyan: #06b6d4;
+    --cyan-glow: rgba(6, 182, 212, 0.45);
+    --text-main: #f3f4f6;
+    --text-muted: #94a3b8;
+    --movie-node: #38bdf8;
+    --line-color: rgba(245, 158, 11, 0.55);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    height: 58px;
+    background: rgba(15, 23, 42, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    z-index: 100;
+  }
+
+  .brand { display: flex; align-items: center; gap: 0.75rem; }
+  .brand-title { font-size: 1.25rem; font-weight: 700; color: #fff; letter-spacing: 0.5px; }
+  .brand-title span { color: var(--gold); }
+  .badge {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 0.75rem;
+    padding: 0.2rem 0.55rem;
+    border-radius: 9999px;
+    font-weight: 600;
+  }
+
+  .header-actions { display: flex; gap: 0.75rem; align-items: center; }
+  .search-box {
+    position: relative;
+    width: 260px;
+  }
+  .search-box input {
+    width: 100%;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #fff;
+    padding: 0.45rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: all 0.2s;
+  }
+  .search-box input:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2);
+  }
+
+  .btn {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: var(--text-main);
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+  .btn:hover { background: #334155; border-color: var(--cyan); }
+
+  #workspace {
+    flex: 1;
+    position: relative;
+    display: flex;
+    overflow: hidden;
+  }
+
+  #canvas-container {
+    flex: 1;
+    height: 100%;
+    position: relative;
+    cursor: grab;
+  }
+  #canvas-container:active { cursor: grabbing; }
+
+  svg { width: 100%; height: 100%; display: block; }
+
+  /* Info Side Panel */
+  #detail-panel {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 340px;
+    max-height: calc(100% - 40px);
+    background: rgba(22, 30, 46, 0.94);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(12px);
+    border-radius: 12px;
+    padding: 1.25rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 50;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  #detail-panel.hidden {
+    transform: translateX(380px);
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .panel-header {
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 0.75rem;
+    position: relative;
+  }
+  .panel-close {
+    position: absolute;
+    right: 0;
+    top: -4px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+  }
+  .panel-close:hover { color: #fff; }
+  .panel-type {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .panel-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin-top: 0.2rem;
+    line-height: 1.3;
+  }
+  .panel-subtitle { font-size: 0.85rem; color: var(--text-muted); }
+
+  .meta-row { display: flex; flex-direction: column; gap: 0.25rem; }
+  .meta-label { font-size: 0.72rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 0.5px; }
+  .meta-val { font-size: 0.88rem; color: #f8fafc; font-weight: 500; }
+  .tag-cloud { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.2rem; }
+  .tag {
+    background: #1e293b;
+    border: 1px solid #334155;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #e2e8f0;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tag:hover {
+    background: var(--gold);
+    color: #0b0f19;
+    font-weight: 600;
+    border-color: var(--gold);
+  }
+
+  /* Nav Controls */
+  .movie-navigator {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #0f172a;
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    margin-top: 0.5rem;
+  }
+  .nav-btn {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #fff;
+    padding: 0.3rem 0.65rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  .nav-btn:hover { background: #334155; }
+
+  /* Interactive SVG Styling */
+  .center-core {
+    fill: #1e293b;
+    stroke: var(--gold);
+    stroke-width: 2.5px;
+    filter: drop-shadow(0 0 16px rgba(245, 158, 11, 0.4));
+  }
+  .center-label {
+    fill: #fff;
+    font-weight: 700;
+    text-anchor: middle;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+  }
+  .center-sub {
+    fill: var(--gold);
+    font-size: 10px;
+    text-anchor: middle;
+    font-weight: 600;
+  }
+
+  .movie-node {
+    cursor: pointer;
+    transition: transform 0.15s ease, opacity 0.2s;
+  }
+  .movie-node circle {
+    fill: var(--movie-node);
+    stroke: #0f172a;
+    stroke-width: 0.75px;
+    transition: r 0.15s, fill 0.15s;
+  }
+  .movie-node text {
+    fill: #cbd5e1;
+    font-size: 8px;
+    font-family: sans-serif;
+    user-select: none;
+    transition: fill 0.15s, font-size 0.15s;
+  }
+  .movie-node:hover text {
+    fill: #38bdf8;
+    font-weight: 700;
+    font-size: 10.5px;
+  }
+  .movie-node:hover circle {
+    fill: #fff;
+    r: 5px;
+    stroke: #38bdf8;
+    stroke-width: 2px;
+  }
+
+  .costar-node {
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .costar-node circle {
+    fill: rgba(245, 158, 11, 0.85);
+    stroke: #fff;
+    stroke-width: 1px;
+    filter: drop-shadow(0 0 4px var(--gold-glow));
+    transition: transform 0.2s, fill 0.2s, stroke-width 0.2s;
+  }
+  .costar-node text {
+    fill: #0b0f19;
+    font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: central;
+    font-size: 8.5px;
+    pointer-events: none;
+  }
+  .costar-node:hover circle {
+    fill: #38bdf8;
+    stroke: #fff;
+    stroke-width: 2px;
+    filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.8));
+  }
+
+  .conn-line {
+    fill: none;
+    stroke: var(--gold);
+    stroke-width: 1.5px;
+    stroke-dasharray: 4, 3;
+    animation: flow 1s linear infinite;
+    opacity: 0.85;
+  }
+  @keyframes flow {
+    from { stroke-dashoffset: 14; }
+    to { stroke-dashoffset: 0; }
+  }
+
+  .movie-node.active text {
+    fill: #f59e0b !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+  }
+  .movie-node.active circle {
+    fill: #f59e0b !important;
+    r: 6px !important;
+    stroke: #fff !important;
+    stroke-width: 2px !important;
+  }
+
+  .movie-node.dimmed { opacity: 0.18; }
+  .costar-node.dimmed { opacity: 0.2; }
+
+  /* Controls Overlay */
+  .zoom-controls {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 40;
+  }
+  .zoom-btn {
+    width: 36px;
+    height: 36px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+  .zoom-btn:hover { background: #334155; border-color: var(--cyan); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-title">Dr. Rajkumar <span>Radial Filmography</span></div>
+    <div class="badge">209 Movies (1954–2000)</div>
+  </div>
+  <div class="header-actions">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Search movie or co-star..." autocomplete="off">
+    </div>
+    <button class="btn" id="btnReset">Reset View</button>
+  </div>
+</header>
+
+<div id="workspace">
+  <div id="canvas-container">
+    <svg id="radialSvg">
+      <g id="scene">
+        <g id="guide-rings"></g>
+        <g id="connections"></g>
+        <g id="co-stars-layer"></g>
+        <g id="movies-layer"></g>
+        <g id="center-hub">
+          <circle class="center-core" cx="0" cy="0" r="48"></circle>
+          <text class="center-label" x="0" y="-8">DR. RAJKUMAR</text>
+          <text class="center-sub" x="0" y="10">209 FILMS</text>
+          <text class="center-sub" x="0" y="24" style="fill:#94a3b8; font-size:8px;">1954 - 2000</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="zoom-controls">
+    <button class="zoom-btn" id="btnZoomIn" title="Zoom In">+</button>
+    <button class="zoom-btn" id="btnZoomOut" title="Zoom Out">−</button>
+    <button class="zoom-btn" id="btnRecenter" title="Fit to Screen">⌖</button>
+  </div>
+
+  <!-- Detail Information Card -->
+  <div id="detail-panel" class="hidden">
+    <div class="panel-header">
+      <button class="panel-close" id="panelCloseBtn">&times;</button>
+      <div class="panel-type" id="panelType">Movie Detail</div>
+      <div class="panel-title" id="panelTitle">Bedara Kannappa</div>
+      <div class="panel-subtitle" id="panelSubtitle">1954 • Film #1</div>
+    </div>
+    
+    <div class="meta-row" id="directorRow">
+      <span class="meta-label">Director</span>
+      <span class="meta-val" id="panelDirector">H.L.N. Simha</span>
+    </div>
+
+    <div class="meta-row" id="musicRow">
+      <span class="meta-label">Music Director</span>
+      <span class="meta-val" id="panelMusic">R. Sudarshanam</span>
+    </div>
+
+    <div class="meta-row" id="bannerRow">
+      <span class="meta-label">Production Banner</span>
+      <span class="meta-val" id="panelBanner">Gubbi Karnataka Films</span>
+    </div>
+
+    <div class="meta-row">
+      <span class="meta-label" id="panelListHeader">Co-Stars</span>
+      <div class="tag-cloud" id="panelTags"></div>
+    </div>
+
+    <div class="movie-navigator" id="movieNav">
+      <button class="nav-btn" id="btnPrevMovie">◀ Prev</button>
+      <span style="font-size: 0.8rem; color: #94a3b8;" id="navIdx">1 / 209</span>
+      <button class="nav-btn" id="btnNextMovie">Next ▶</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Complete Movies Dataset extracted from Master Data
+const RAW_MOVIES = [
+  {"i":1,"t":"Bedara Kannappa","y":"1954","d":"H.L.N. Simha","m":"R. Sudarshanam","b":"Gubbi Karnataka Films","c":["Pandari Bai","Rajasulochana","G.V.Iyer","Narasimharaju","H.R. Shasthry"]},
+  {"i":2,"t":"Sodari","y":"1955","d":"T.V. Singh Tagore","m":"Padmanabhashasthri, G. K. Venkatesh, P. Srinivas Iyengar","b":"Viswa Kala Chitra","c":["Pandari Bai","Jayasri","Raghavendrarao","G.V.Iyer","K S. Ashwath","Sandhya","N.S. Krishnan","Kowshik","Vidya"]},
+  {"i":3,"t":"Bhakta Vijaya","y":"1956","d":"Aaruru Pattabhi","m":"Shyam-Aathmanath","b":"Jaganath Productions","c":["Mynavathi","Pandari Bai"]},
+  {"i":4,"t":"Hari Bhakta","y":"1956","d":"T.V. Singh Tagore","m":"G. K. Venkatesh","b":"Viswa Kala Chitra","c":["Pandari Bai","Mynavathi","Narasimharaju","J.V. Iyer","HR Shastry"]},
+  {"i":5,"t":"Ohileshwara","y":"1956","d":"T.V. Singh Tagore","m":"G. K. Venkatesh","b":"Sri Sahitya Samrajya Nataka Mandali","c":["Kalyan Kumar","Narasimharaju","H.R. Shahstri","Pandari Bai","Sriranjini","J.V. Iyer","Meenakshi"]},
+  {"i":6,"t":"Rayara Sose","y":"1957","d":"R. Ramamurthy, K.S. Murthy","m":"R. Diwakar","b":"Sri Panduranga Productions","c":["Pandari Bai","Kalyan Kumar","Mynavathi"]},
+  {"i":7,"t":"Sati Nalaayini","y":"1957","d":"T.R.S. Gopu","m":"Padmanabha Shastry","b":"Kamadhenu Films","c":["Pandari Bai"]},
+  {"i":8,"t":"Bhookailasa","y":"1958","d":"Hunsur Krishnamurthy","m":"R. Sudarshanam","b":"AVM Productions","c":["Sidhia Swamy","Suryakala","Revathi","Narasimharaju."]},
+  {"i":9,"t":"Sri Krishna Gaarudi","y":"1958","d":"K. Shankar","m":"Pendyala Nageshwara Rao","b":"Nandi Pictures","c":["Kalyan Kumar","Jamuna","B. Saroja Devi","Ashwath."]},
+  {"i":10,"t":"Anna Thangi","y":"1958","d":"Ku.Ra.C. Shastri","m":"G. K. Venkatesh","b":"Girija Productions","c":["Saroja Devi","Balakrishna","Eshwarappa","Jayamma","Vidhya","Ashwath","Narasimharaju."]},
+  {"i":11,"t":"Jagajyothi Basaveshwara","y":"1959","d":"T.V. Singh Tagore","m":"G. K. Venkatesh","b":"Shashikala Chitra","c":["Sandhya","B. Saroja Devi","Balakrishna","H.R. Shasthry","Leelavathi."]},
+  {"i":12,"t":"Dharma Vijaya","y":"1959","d":"N. Jaganath","m":"G. K. Venkatesh","b":"D.L.N. Films","c":["Harini","Leelavathi","Narasimharaju."]},
+  {"i":13,"t":"Mahishasura Mardhini","y":"1959","d":"B.S. Ranga","m":"G. K. Venkatesh","b":"Vikram Productions","c":["Rajkumar","Sowcar Janaki","Udaya Kumar","Narasimharaju","K.S. Ashwath","Sandhya."]},
+  {"i":14,"t":"Abba A Hudugi","y":"1959","d":"H.L.N. Simha","m":"P. Kalingarao","b":"Gubbi Banner","c":["Pandari Bai","Mynavathi","B.R. Panthulu","M.V. Rajamma","R. Nagendra Rao","Narasimharaju."]},
+  {"i":15,"t":"Ranadheera Kanteerava","y":"1960","d":"N.C. Rajan","m":"G. K. Venkatesh","b":"Kannada Chalanachitra Kalavidara Sanga","c":["Udayakumar","K.S. Ashwath","Balakrishna","Leelavathi","Sandhya."]},
+  {"i":16,"t":"Rani Honnamma","y":"1960","d":"K.R. Seetharama Shastry","m":"Vijaya Bhaskar","b":"Girija Productions","c":["Leelavathi","Balakrishna","Narasimharaju."]},
+  {"i":17,"t":"Aasha Sundari","y":"1960","d":"Hunsur Krishnamurthy","m":"Susarla Dakshina Murthy","b":"Gowri Productions","c":["Harini","Narasimharaju."]},
+  {"i":18,"t":"Dashavathara","y":"1960","d":"P.G. Mohan","m":"G. K. Venkatesh","b":"Vikram Productions","c":["Udayakumar","Leelavathi."]},
+  {"i":19,"t":"Bhakta Kanakadasa","y":"1960","d":"Y.R. Swamy","m":"M. Venkataraju","b":"Shyamprasad Movies","c":["Udayakumar","Balakrishna","K.S. Ashwath."]},
+  {"i":20,"t":"Shivalinga Sakshi","y":"1960","d":"Chandramohan","m":"Vijaya Bhaskar","b":"Shivalinga Films","c":["Harini","Narasimharaju","Udayakumar."]},
+  {"i":21,"t":"Kaidhi Kannaiah","y":"1962","d":"Y.R. Swamy","m":"G. K. Venkatesh","b":"Chitrabharathi","c":["Balakrishna","Dinesh","K.S. Ashwath."]},
+  {"i":22,"t":"Bhoodaana","y":"1962","d":"P.S. Gopalakrishnan, G.V. Iyer","m":"G. K. Venkatesh","b":"Ananthalakshmi Pictures","c":["Kalyan Kumar","Udaya Kumar","K.S. Ashwath","Advani Lakshmi Devi."]},
+  {"i":23,"t":"Swarna Gowri","y":"1962","d":"Y.R. Swamy","m":"M. Venkataraju","b":"Gowri Art Productions","c":["Krishna Kumari","Udayakumar","K.S. Ashwath."]},
+  {"i":24,"t":"Gaali Gopura","y":"1962","d":"B.R. Panthulu","m":"T.G. Lingappa","b":"Padmini Pictures","c":["Kalyan Kumar","Leelavathi","Udaykumar","K.S. Ashwath."]},
+  {"i":25,"t":"Karuneye Kutumbada Kannu","y":"1962","d":"T.V. Singh Tagore","m":"G. K. Venkatesh","b":"Sri Shailaputri Productions","c":["Rajaashankar","Leelavathi."]},
+  {"i":26,"t":"Mahathma Kabir","y":"1962","d":"P. Srinivas","m":"A.N. Raju","b":"Sarvodaya Chitra","c":["Udayakumar","A.V. Subbarao","Krishnakumari."]},
+  {"i":27,"t":"Vidhivilasa","y":"1962","d":"Mahesh Chandra","m":"T. Padman","b":"Murugan Productions","c":["Udayakumar","Leelavathi."]},
+  {"i":28,"t":"Thejaswini","y":"1962","d":"H.L.N. Simha","m":"M. Venkataraju","b":"Panduranga Productions","c":["Pandari Bai","Rajasulochana."]},
+  {"i":29,"t":"Devasundari","y":"1962","d":"C.V. Raju","m":"C.N. Pandurangan","b":"Deepak Films","c":["B. Saroja Devi","Kalyan Kumar."]},
+  {"i":30,"t":"Valmiki","y":"1963","d":"C.S. Rao","m":"Ghantasala","b":"Jupiter Pictures","c":["Leelavathi","Kanta Rao."]},
+  {"i":31,"t":"Saaku Magalu","y":"1963","d":"B.R. Panthulu","m":"T.G. Lingappa","b":"Padmini Pictures","c":["Sowcar Janaki","Balakrishna","Rajashree."]},
+  {"i":32,"t":"Nanda Deepa","y":"1963","d":"M.R. Vittal","m":"M. Venkataraju","b":"Sri Bharathi Chitra","c":["Harini","Udaykumar","Leelavathi."]},
+  {"i":33,"t":"Kanyarathna","y":"1963","d":"B.S. Ranga","m":"G. K. Venkatesh","b":"Vikram Productions","c":["Leelavathi","Sowcar Janaki."]},
+  {"i":34,"t":"Gowri","y":"1963","d":"S.K.A. Chari","m":"G. K. Venkatesh","b":"Sri Shailaputri Combines","c":["Sowcar Janaki","Pandari Bai."]},
+  {"i":35,"t":"Jeevana Tharanga","y":"1963","d":"G. Bangaru","m":"M. Venkataraju","b":"Ganesh Productions","c":["K.S. Ashwath","Harini."]},
+  {"i":36,"t":"Malli Madhuve","y":"1963","d":"G.R. Nathan","m":"G. K. Venkatesh","b":"Jupiter Pictures","c":["Udaykumar","Sowcar Janaki."]},
+  {"i":37,"t":"Kalitharoo Henne Beka","y":"1963","d":"B.R. Panthulu","m":"T.G. Lingappa","b":"Padmini Pictures","c":["Advani Lakshmi Devi","Udaykumar."]},
+  {"i":38,"t":"Santha Thukaram","y":"1963","d":"Sundarrao Nadkarni","m":"Vijaya Bhaskar","b":"Ashwini Films","c":["Leelavathi","Udaykumar."]},
+  {"i":39,"t":"Chandra Kumasa","y":"1963","d":"N.S. Varma","m":"T. Devarajan","b":"G.V. Iyer Productions","c":["Pandari Bai","Balakrishna."]},
+  {"i":40,"t":"Sathi Shakthi","y":"1963","d":"Kanagal Prabhakar Shastry","m":"T.G. Lingappa","b":"Prabhulinga Productions","c":["Sowcar Janaki","Balakrishna."]},
+  {"i":41,"t":"Veera Kesari","y":"1963","d":"B. Vittalacharya","m":"Ghantasala","b":"Jayalaxmi Cinetone","c":["B. Saroja Devi","Udaykumar."]},
+  {"i":42,"t":"Mana Mecchida Madadi","y":"1963","d":"Ku.Ra.C. Shastri","m":"T.G. Lingappa","b":"Girija Productions","c":["Leelavathi","Balakrishna."]},
+  {"i":43,"t":"Navajeevana","y":"1964","d":"P.S. Murthy","m":"Rajan-Nagendra","b":"Bhavani Arts","c":["K.S. Ashwath","Pandari Bai."]},
+  {"i":44,"t":"Chandavalliya Thota","y":"1964","d":"T.V. Singh Tagore","m":"T.G. Lingappa","b":"Vikram Productions","c":["Udaykumar","Jayanthi."]},
+  {"i":45,"t":"Shivarathri Mahathme","y":"1964","d":"P.R. Kaundinya","m":"Shivaprasad","b":"Gowri Films","c":["Leelavathi","K.S. Ashwath."]},
+  {"i":46,"t":"Santha Jnaneshwar","y":"1964","d":"B.V. Vittal","m":"Vijaya Bhaskar","b":"Sri Ganesh Movies","c":["Advani Lakshmi Devi","Pandari Bai."]},
+  {"i":47,"t":"Thumbida Mane","y":"1964","d":"M.S. Nayak","m":"G. K. Venkatesh","b":"Sri Ranganatha Chitra","c":["Harini","Jayanthi."]},
+  {"i":48,"t":"Tumbida Koda","y":"1964","d":"N.C. Rajan","m":"G. K. Venkatesh","b":"Rajan Films","c":["Leelavathi","Jayanthi."]},
+  {"i":49,"t":"Prathigne","y":"1964","d":"B.S. Ranga","m":"S. Hanumantha Rao","b":"Vikram Productions","c":["K.S. Ashwath","Jayanthi."]},
+  {"i":50,"t":"Muriyada Mane","y":"1964","d":"Y.R. Swamy","m":"Vijaya Bhaskar","b":"Swamy Combines","c":["Indrani","Jayanthi."]},
+  {"i":51,"t":"Annapoorna","y":"1964","d":"Aaruru Pattabhi","m":"V. Kumar","b":"Padmini Pictures","c":["Pandari Bai","Mynavathi."]},
+  {"i":52,"t":"Naandi","y":"1964","d":"N. Lakshminarayan","m":"Vijaya Bhaskar","b":"Sri Bharathi Chitra","c":["Harini","Kalpana."]},
+  {"i":53,"t":"Sarvagna Murthy","y":"1965","d":"Aaruru Pattabhi","m":"G. K. Venkatesh","b":"Padmini Pictures","c":["Mynavathi","Harini."]},
+  {"i":54,"t":"Vatsalya","y":"1965","d":"Y.R. Swamy","m":"Vijaya Bhaskar","b":"Vijaya Chitra","c":["Leelavathi","Udaykumar."]},
+  {"i":55,"t":"Satya Harishchandra","y":"1965","d":"Hunsur Krishnamurthy","m":"Pendyala Nageshwara Rao","b":"Vijaya Bharathi","c":["Pandari Bai","Udaykumar."]},
+  {"i":56,"t":"Mahasati Anasuya","y":"1965","d":"B.S. Ranga","m":"S. Hanumantha Rao","b":"Vikram Productions","c":["Pandari Bai","Leelavathi."]},
+  {"i":57,"t":"Ide Mahasudina","y":"1965","d":"B.C. Srinivas","m":"Vijaya Bhaskar","b":"Ranganatha Combines","c":["Harini","Balakrishna."]},
+  {"i":58,"t":"Bettada Huli","y":"1965","d":"A.V. Sheshagiri Rao","m":"T.G. Lingappa","b":"Bhagavathi Productions","c":["Jayanthi","Udaykumar."]},
+  {"i":59,"t":"Sati Savithri","y":"1965","d":"P.R. Kaundinya","m":"G. K. Venkatesh","b":"Panchajanya Combines","c":["Harini","Balakrishna."]},
+  {"i":60,"t":"Maduve Madi Nodu","y":"1965","d":"Hunsur Krishnamurthy","m":"Ghantasala","b":"Vijaya Bharathi","c":["Leelavathi","Udaykumar."]},
+  {"i":61,"t":"Pathivratha","y":"1965","d":"P.S. Murthy","m":"M. Venkataraju","b":"Rudra Pictures","c":["Harini","Udaykumar."]},
+  {"i":62,"t":"Chandrahasa","y":"1965","d":"B.S. Ranga","m":"S. Hanumantha Rao","b":"Vikram Productions","c":["Udaykumar","Leelavathi."]},
+  {"i":63,"t":"Kalyana Koota","y":"1965","d":"M.S. Nayak","m":"Vijaya Bhaskar","b":"Sri Ranganatha Chitra","c":["Jayanthi","Balakrishna."]},
+  {"i":64,"t":"Naga Pooja","y":"1965","d":"D.S. Rajagopal","m":"T.G. Lingappa","b":"G.V. Iyer Productions","c":["Leelavathi","Balakrishna."]},
+  {"i":65,"t":"Mantralaya Mahatme","y":"1966","d":"T.V. Singh Tagore","m":"Rajan-Nagendra","b":"Sri Raghavendra Chitra","c":["Udaykumar","Jayanthi."]},
+  {"i":66,"t":"Katari Veera","y":"1966","d":"Y.R. Swamy","m":"Upendra Kumar","b":"Bhavani Combines","c":["Udaykumar","Vandana."]},
+  {"i":67,"t":"Bala Nagamma","y":"1966","d":"P.R. Kaundinya","m":"S. Rajeswara Rao","b":"Vikram Productions","c":["Kalpana","Balakrishna."]},
+  {"i":68,"t":"Thoogu Deepa","y":"1966","d":"K.S.L. Swamy","m":"Vijaya Bhaskar","b":"Sri Rameshwari Productions","c":["Aarathi","Leelavathi."]},
+  {"i":69,"t":"Premamayi","y":"1966","d":"M.R. Vittal","m":"R. Sudarshanam","b":"Sri Venkateshwara Chitra","c":["Leelavathi","Balakrishna."]},
+  {"i":70,"t":"Kilaadi Ranga","y":"1966","d":"G.V. Iyer","m":"G. K. Venkatesh","b":"Venkatesha Arts","c":["Jayanthi","Dwarakish."]},
+  {"i":71,"t":"Madhu Malathi","y":"1966","d":"S.K.A. Chari","m":"G. K. Venkatesh","b":"Sri Shailaputri Productions","c":["Bharathi","Udaykumar."]},
+  {"i":72,"t":"Emme Thammanna","y":"1966","d":"B.R. Panthulu","m":"T.G. Lingappa","b":"Padmini Pictures","c":["Bharathi","Balakrishna."]},
+  {"i":73,"t":"Mohini Bhasmasura","y":"1966","d":"B.S. Ranga","m":"T.G. Lingappa","b":"Vikram Productions","c":["Udaykumar","Bharathi."]},
+  {"i":74,"t":"Sri Kannika Parameshwari Kathe","y":"1966","d":"Hunsur Krishnamurthy","m":"Rajan-Nagendra","b":"Dwarakish Chitra","c":["Kalpana","Dwarakish."]},
+  {"i":75,"t":"Sandhyaraaga","y":"1966","d":"S.K. Bhagavan, A.C. Narasimha Murthy","m":"G. K. Venkatesh","b":"Shri Shailaputri","c":["Bharathi","Udaykumar."]},
+  {"i":76,"t":"Parvathi Kalyana","y":"1967","d":"B.S. Ranga","m":"G. K. Venkatesh","b":"Vikram Productions","c":["Chandrakala","Udaykumar."]},
+  {"i":77,"t":"Sathi Sukanya","y":"1967","d":"Y.R. Swamy","m":"Rajan-Nagendra","b":"Vijaya Movies","c":["Harini","Balakrishna."]},
+  {"i":78,"t":"Gange Gowri","y":"1967","d":"B.R. Panthulu","m":"T.G. Lingappa","b":"Padmini Pictures","c":["Bharathi","Leelavathi."]},
+  {"i":79,"t":"Rajashekara","y":"1967","d":"G.V. Iyer","m":"G. K. Venkatesh","b":"Venkatesha Arts","c":["Bharathi","Balakrishna."]},
+  {"i":80,"t":"Lagna Patrike","y":"1967","d":"K.S.L. Swamy","m":"Vijaya Bhaskar","b":"Rameshwari Productions","c":["Jayanthi","Balakrishna."]},
+  {"i":81,"t":"Rajadurgada Rahasya","y":"1967","d":"A.C. Narasimhamurthy","m":"G. K. Venkatesh","b":"Sri Shailaputri","c":["Bharathi","Udaykumar."]},
+  {"i":82,"t":"Devara Gedda Manava","y":"1967","d":"Hunsur Krishnamurthy","m":"Rajan-Nagendra","b":"Gowri Art Films","c":["Jayanthi","Balakrishna."]},
+  {"i":83,"t":"Beedi Basavanna","y":"1967","d":"B.R. Panthulu","m":"T.G. Lingappa","b":"Padmini Pictures","c":["Bharathi","Vandana."]},
+  {"i":84,"t":"Manassakshi","y":"1968","d":"S.K.A. Chari","m":"G. K. Venkatesh","b":"Panchajanya Combines","c":["Bharathi","Balakrishna."]},
+  {"i":85,"t":"Sarvamangala","y":"1968","d":"M. Subramanya Raj Urs","m":"Chellapilla Satyam","b":"G.V. Iyer Productions","c":["Kalpana","K.S. Ashwath."]},
+  {"i":86,"t":"Bedi Bandavalu","y":"1968","d":"C. Srinivasan","m":"Salil Chowdhury","b":"Sunitha Productions","c":["Chandrakala","K.S. Ashwath."]},
+  {"i":87,"t":"Bangaarada Hoovu","y":"1968","d":"B.A. Arasu Kumar","m":"Rajan-Nagendra","b":"Rajan Combines","c":["Kalpana","Udaykumar."]},
+  {"i":88,"t":"Hannele Chiguridaga","y":"1968","d":"M.R. Vittal","m":"M. Ranga Rao","b":"Srikanth & Srikanth Enterprise","c":["Kalpana","Dinesh."]},
+  {"i":89,"t":"Bhagya Devathe","y":"1968","d":"Rathnakar-Madhu","m":"G. K. Venkatesh","b":"Sri Balaji Films","c":["Leelavathi","Balakrishna."]},
+  {"i":90,"t":"Bangalore Mail","y":"1968","d":"L.S. Narayana","m":"Chellapilla Satyam","b":"Gowri Arts","c":["Jayanthi","Dinesh."]},
+  {"i":91,"t":"Rowdi Ranga","y":"1968","d":"R. Ramamurthy","m":"Chellapilla Satyam","b":"Ramamurthy Films","c":["Jayanthi","Balakrishna."]},
+  {"i":92,"t":"Amma","y":"1968","d":"B.R. Panthulu","m":"T.G. Lingappa","b":"Padmini Pictures","c":["Bharathi","Balakrishna."]},
+  {"i":93,"t":"Simhaswapna","y":"1968","d":"W.R. Subba Rao","m":"G. K. Venkatesh","b":"Venkatesh Productions","c":["Jayanthi","Balakrishna."]},
+  {"i":94,"t":"Jedara Bale","y":"1968","d":"Dorai-Bhagavan","m":"G. K. Venkatesh","b":"Anupam Movies","c":["Jayanthi","Udaykumar."]},
+  {"i":95,"t":"Mahasathi Arundathi","y":"1968","d":"Aaruru Pattabhi","m":"K.S. Ashwathama","b":"Sarvodaya Chitra","c":["Kalpana","Balakrishna."]},
+  {"i":96,"t":"Manassu Mamatha","y":"1969","d":"A.C. Narasimhamurthy","m":"G. K. Venkatesh","b":"Sri Shailaputri","c":["Jayanthi","Balakrishna."]},
+  {"i":97,"t":"Mallammana Pavada","y":"1969","d":"Puttanna Kanagal","m":"Vijaya Bhaskar","b":"Padmini Pictures","c":["B. Saroja Devi","Vajramuni."]},
+  {"i":98,"t":"Choori Chikkanna","y":"1969","d":"R. Ramamurthy","m":"Chellapilla Satyam","b":"Ramamurthy Combines","c":["Jayanthi","Dinesh."]},
+  {"i":99,"t":"Punarjanma","y":"1969","d":"Peyyeti Yadav","m":"Dulal Sen","b":"Rathna Pictures","c":["Jayanthi","Chandrakala."]},
+  {"i":100,"t":"Bhale Raja","y":"1969","d":"Y.R. Swamy","m":"Chellapilla Satyam","b":"Vijaya Bharathi","c":["Jayanthi","Balakrishna."]},
+  {"i":101,"t":"Uyyale","y":"1969","d":"N. Lakshminarayan","m":"Vijaya Bhaskar","b":"Bharathi Chitra","c":["Kalpana","K.S. Ashwath."]},
+  {"i":102,"t":"Chikkamma","y":"1969","d":"R. Ramamurthy","m":"T.V. Raju","b":"Nandini Films","c":["Jayanthi","Balakrishna."]},
+  {"i":103,"t":"Mayor Muthanna","y":"1969","d":"Siddalingaiah","m":"Rajan-Nagendra","b":"Dwarakish Chitra","c":["Bharathi","Dwarakish."]},
+  {"i":104,"t":"Operation Jackpot Nalli C.I.D 999","y":"1969","d":"Dorai-Bhagavan","m":"G. K. Venkatesh","b":"Anupam Movies","c":["Surekha","Rekha."]},
+  {"i":105,"t":"Sri Krishnadevaraya","y":"1970","d":"B.R. Panthulu","m":"T.G. Lingappa","b":"Padmini Pictures","c":["Bharathi","Jayanthi."]},
+  {"i":106,"t":"Karulina Kare","y":"1970","d":"Puttanna Kanagal","m":"M. Ranga Rao","b":"Chitrajyothi","c":["Kalpana","Dinesh."]},
+  {"i":107,"t":"Hasiru Thorana","y":"1970","d":"T.V. Singh Tagore","m":"Upendra Kumar","b":"Sri Shailaputri","c":["Bharathi","Balakrishna."]},
+  {"i":108,"t":"Bhoopathi Ranga","y":"1970","d":"Geethapriya","m":"Vijaya Bhaskar","b":"Bhagavathi Productions","c":["Udaykumar","Jayanthi."]},
+  {"i":109,"t":"Mr. Rajkumar","y":"1970","d":"B.S. Ranga","m":"S. Rajeswara Rao","b":"Vikram Productions","c":["Rajasree","Balakrishna."]},
+  {"i":110,"t":"Bhale Jodi","y":"1970","d":"Y.R. Swamy","m":"M. Ranga Rao","b":"Vijaya Bharathi","c":["Bharathi","Balakrishna."]},
+  {"i":111,"t":"C.I.D. Rajanna","y":"1970","d":"R. Ramamurthy","m":"Chellapilla Satyam","b":"Ramamurthy Combines","c":["Rajasree","Balakrishna."]},
+  {"i":112,"t":"Nanna Thamma","y":"1970","d":"K. Babu Rao","m":"Ghantasala","b":"Babu Movies","c":["Jayanthi","Balakrishna."]},
+  {"i":113,"t":"Baalu Belagithu","y":"1970","d":"Siddalingaiah","m":"Vijaya Bhaskar","b":"Chitrashree","c":["Jayanthi","Bharathi."]},
+  {"i":114,"t":"Devara Makkalu","y":"1970","d":"Y.R. Swamy","m":"G. K. Venkatesh","b":"Bhavani Combines","c":["Kalpana","Balakrishna."]},
+  {"i":115,"t":"Paropakari","y":"1970","d":"Y.R. Swamy","m":"Upendra Kumar","b":"Bhagavathi Productions","c":["Jayanthi","Balakrishna."]},
+  {"i":116,"t":"Nadina Bhagya","y":"1970","d":"R. Nagendra Rao","m":"R. Rathna","b":"R.N.R. Pictures","c":["Surekha","Balakrishna."]},
+  {"i":117,"t":"Kasturi Nivasa","y":"1971","d":"Dorai-Bhagavan","m":"G. K. Venkatesh","b":"Anupam Movies","c":["Jayanthi","Aarathi."]},
+  {"i":118,"t":"Baala Bandhana","y":"1971","d":"Peketi Sivaram","m":"G. K. Venkatesh","b":"Padmini Pictures","c":["Jayanthi","Balakrishna."]},
+  {"i":119,"t":"Kula Gourava","y":"1971","d":"Peketi Sivaram","m":"T.G. Lingappa","b":"Padmini Pictures","c":["Bharathi","Jayanthi."]},
+  {"i":120,"t":"Namma Samsara","y":"1971","d":"P.S. Vittal","m":"P.B. Sreenivas","b":"Sri Bharathi Films","c":["Bharathi","Rajashree."]},
+  {"i":121,"t":"Kasidre Kailasa","y":"1971","d":"K. Janakiram","m":"Chellapilla Satyam","b":"Janakiram Productions","c":["Pandari Bai","Jayanthi."]},
+  {"i":122,"t":"Thayi Devaru","y":"1971","d":"Siddalingaiah","m":"G. K. Venkatesh","b":"Sri Rameshwari Productions","c":["Bharathi","Balakrishna."]},
+  {"i":123,"t":"Prathidwani","y":"1971","d":"B. Dorairaj","m":"M. Ranga Rao","b":"Anupam Movies","c":["Aarathi","Balakrishna."]},
+  {"i":124,"t":"Sakshatkara","y":"1971","d":"Puttanna Kanagal","m":"M. Ranga Rao","b":"Chitrajyothi","c":["Prithviraj Kapoor","Jamuna."]},
+  {"i":125,"t":"Nyayave Devaru","y":"1971","d":"Siddalingaiah","m":"Rajan-Nagendra","b":"Sri Shailaputri","c":["B. Saroja Devi","Aarathi."]},
+  {"i":126,"t":"Sri Krishna Rukmini Satyabhama","y":"1971","d":"K.S.L. Swamy","m":"Vijaya Bhaskar","b":"Padmini Pictures","c":["Bharathi","B. Saroja Devi."]},
+  {"i":127,"t":"Janma Rahasya","y":"1972","d":"S.P. Purohit","m":"M. Ranga Rao","b":"Purohit Arts","c":["Bharathi","K.S. Ashwath."]},
+  {"i":128,"t":"Sipayi Ramu","y":"1972","d":"Y.R. Swamy","m":"Upendra Kumar","b":"Bhagavathi Productions","c":["Aarathi","Leelavathi."]},
+  {"i":129,"t":"Bangaarada Manushya","y":"1972","d":"Siddalingaiah","m":"G. K. Venkatesh","b":"Sri Gopalakrishna Movies","c":["Bharathi","Aarathi."]},
+  {"i":130,"t":"Hrudaya Sangama","y":"1972","d":"R. Ramamurthy","m":"Vijaya Bhaskar","b":"Ramamurthy Combines","c":["Bharathi","Balakrishna."]},
+  {"i":131,"t":"Kranti Veera","y":"1972","d":"R. Ramamurthy","m":"Chellapilla Satyam","b":"Ramamurthy Combines","c":["Jayanthi","Balakrishna."]},
+  {"i":132,"t":"Bhale Huchcha","y":"1972","d":"Y.R. Swamy","m":"Rajan-Nagendra","b":"Vijaya Bharathi","c":["Aarathi","Srinath."]},
+  {"i":133,"t":"Nanda Gokula","y":"1972","d":"U.M. Raju","m":"Vijaya Bhaskar","b":"Sri Ranganatha Chitra","c":["Jayanthi","Balakrishna."]},
+  {"i":134,"t":"Jaga Mecchida Maga","y":"1972","d":"Hunsur Krishnamurthy","m":"Chellapilla Satyam","b":"Gowri Arts","c":["Bharathi","Balakrishna."]},
+  {"i":135,"t":"Devaru Kotta Thangi","y":"1973","d":"K.S.L. Swamy","m":"Vijaya Bhaskar","b":"Sri Rameshwari Productions","c":["Jayanthi","Balakrishna."]},
+  {"i":136,"t":"Bidugade","y":"1973","d":"Y.R. Swamy","m":"M. Ranga Rao","b":"Vijaya Bharathi","c":["Kalpana","Bharathi."]},
+  {"i":137,"t":"Swayamvara","y":"1973","d":"Y.R. Swamy","m":"Rajan-Nagendra","b":"Vijaya Bharathi","c":["Bharathi","Dinesh."]},
+  {"i":138,"t":"Gandhada Gudi","y":"1973","d":"Vijay","m":"Rajan-Nagendra","b":"Bharani Chitra","c":["Vishnuvardhan","Kalpana."]},
+  {"i":139,"t":"Doorada Betta","y":"1973","d":"Siddalingaiah","m":"G. K. Venkatesh","b":"Sri Gopalakrishna Movies","c":["Bharathi","Balakrishna."]},
+  {"i":140,"t":"Mooroovare Vajragalu","y":"1973","d":"Y.R. Swamy","m":"R. Sudarshanam","b":"Vijaya Bharathi","c":["Aarathi","Manjula."]},
+  {"i":141,"t":"Bangaarada Panjara","y":"1974","d":"B.N. Rao","m":"G. K. Venkatesh","b":"Raja Movies","c":["Aarathi","Balakrishna."]},
+  {"i":142,"t":"Eradu Kanasu","y":"1974","d":"Dorai-Bhagavan","m":"Rajan-Nagendra","b":"Anupam Movies","c":["Kalpana","Manjula."]},
+  {"i":143,"t":"Sampathige Saval","y":"1974","d":"A.V. Sheshagiri Rao","m":"G. K. Venkatesh","b":"Padmashree Chitra","c":["Manjula","Vajramuni."]},
+  {"i":144,"t":"Bhakta Kumbhara","y":"1974","d":"Hunsur Krishnamurthy","m":"G. K. Venkatesh","b":"Lakshmi Film Combines","c":["Leelavathi","Manjula."]},
+  {"i":145,"t":"Sri Srinivasa Kalyana","y":"1974","d":"Vijay","m":"Rajan-Nagendra","b":"Sri Srinivasa Chitralaya","c":["B. Saroja Devi","Manjula."]},
+  {"i":146,"t":"Daari Tappida Maga","y":"1975","d":"Peketi Sivaram","m":"G. K. Venkatesh","b":"Padmini Pictures","c":["Kalpana","Aarathi."]},
+  {"i":147,"t":"Mayor Muthanna","y":"1975","d":"Siddalingaiah","m":"Rajan-Nagendra","b":"Dwarakish Chitra","c":["Bharathi","Dwarakish."]},
+  {"i":148,"t":"Trimurti","y":"1975","d":"C.V. Rajendran","m":"G. K. Venkatesh","b":"Poornima Enterprises","c":["Jayanthi","Dwarakish."]},
+  {"i":149,"t":"Mayura","y":"1975","d":"Vijay","m":"G. K. Venkatesh","b":"Sri Bhagavathi Productions","c":["Manjula","Srinath."]},
+  {"i":150,"t":"Premada Kaanike","y":"1976","d":"V. Somashekhar","m":"Upendra Kumar","b":"Jayadevi Combines","c":["Aarathi","Jayamala."]},
+  {"i":151,"t":"Bahaddur Gandu","y":"1976","d":"A.V. Sheshagiri Rao","m":"M. Ranga Rao","b":"Sri Bhagavathi Productions","c":["Aarathi","Jayanthi."]},
+  {"i":152,"t":"Raja Nanna Raja","y":"1976","d":"A.V. Sheshagiri Rao","m":"G. K. Venkatesh","b":"Madhu Art Films","c":["Aarathi","Chandrashekar."]},
+  {"i":153,"t":"Naa Ninna Mareyalare","y":"1976","d":"Vijay","m":"Rajan-Nagendra","b":"Sri Eswari Productions","c":["Lakshmi","Leelavathi."]},
+  {"i":154,"t":"Badavara Bandhu","y":"1976","d":"Vijay","m":"M. Ranga Rao","b":"Sri Eswari Productions","c":["Jayamala","Ashwath."]},
+  {"i":155,"t":"Babruvahana","y":"1977","d":"Hunsur Krishnamurthy","m":"T.G. Lingappa","b":"Rajkamal Arts","c":["B. Saroja Devi","Kanchana."]},
+  {"i":156,"t":"Bhagyavantharu","y":"1977","d":"H.R. Bhargava","m":"Rajan-Nagendra","b":"Dwarakish Chitra","c":["B. Saroja Devi","Aarathi."]},
+  {"i":157,"t":"Giri Kanye","y":"1977","d":"Dorai-Bhagavan","m":"Rajan-Nagendra","b":"Anupam Movies","c":["Jayaprada","Vajramuni."]},
+  {"i":158,"t":"Sanaadi Appanna","y":"1977","d":"Vijay","m":"G. K. Venkatesh","b":"Sri Anupama Movies","c":["Jaya Prada","Ashok."]},
+  {"i":159,"t":"Olavu Geluvu","y":"1977","d":"H.R. Bhargava","m":"G. K. Venkatesh","b":"Sri Bhagavathi Productions","c":["Lakshmi","Balakrishna."]},
+  {"i":160,"t":"Shankar Guru","y":"1978","d":"V. Somashekhar","m":"Upendra Kumar","b":"Dakshayini Combines","c":["Jayaprada","Padmapriya."]},
+  {"i":161,"t":"Operation Diamond Racket","y":"1978","d":"Dorai-Bhagavan","m":"G. K. Venkatesh","b":"Anupam Movies","c":["Padmapriya","Chandralekha."]},
+  {"i":162,"t":"Thayige Thakka Maga","y":"1978","d":"V. Somashekhar","m":"T.G. Lingappa","b":"Poornima Enterprises","c":["Padmapriya","Savitri."]},
+  {"i":163,"t":"Huliya Haalina Mevu","y":"1979","d":"Vijay","m":"G. K. Venkatesh","b":"Sri Rajarajeshwari Film Combines","c":["Jayaprada","Jayachitra."]},
+  {"i":164,"t":"Nanobba Kalla","y":"1979","d":"Dorai-Bhagavan","m":"Rajan-Nagendra","b":"Anupam Movies","c":["Lakshmi","Kanchana."]},
+  {"i":165,"t":"Ravichandra","y":"1980","d":"A.V. Sheshagiri Rao","m":"Upendra Kumar","b":"Poornima Enterprises","c":["Lakshmi","Savitri."]},
+  {"i":166,"t":"Vasanta Geetha","y":"1980","d":"Dorai-Bhagavan","m":"M. Ranga Rao","b":"Nirupama Movies","c":["Gayatri","Srinath."]},
+  {"i":167,"t":"Haalu Jenu","y":"1982","d":"Singeetham Srinivasa Rao","m":"G. K. Venkatesh","b":"Poornima Enterprises","c":["Madhavi","Roopa Devi."]},
+  {"i":168,"t":"Chalisuva Modagalu","y":"1982","d":"Singeetham Srinivasa Rao","m":"Rajan-Nagendra","b":"Vaishnavi Movies","c":["Ambika","Saritha."]},
+  {"i":169,"t":"Kaviratna Kalidasa","y":"1983","d":"Renuka Sharma","m":"M. Ranga Rao","b":"G.R. Combines","c":["Jayaprada","Srinath."]},
+  {"i":170,"t":"Kaamana Billu","y":"1983","d":"Chi. Dattaraj","m":"Upendra Kumar","b":"Poornima Enterprises","c":["Anant Nag","Saritha."]},
+  {"i":171,"t":"Bhakta Prahlada","y":"1983","d":"Vijay","m":"T.G. Lingappa","b":"Sri Vaishnavi Combines","c":["Saritha","Anant Nag."]},
+  {"i":172,"t":"Eradu Nakshatragalu","y":"1983","d":"Singeetham Srinivasa Rao","m":"G. K. Venkatesh","b":"Poornima Enterprises","c":["Ambika","Puneeth Rajkumar."]},
+  {"i":173,"t":"Samayada Gombe","y":"1984","d":"Dorai-Bhagavan","m":"M. Ranga Rao","b":"Sri Raghavendra Chitra","c":["Roopa Devi","Menaka."]},
+  {"i":174,"t":"Shravana Banthu","y":"1984","d":"Singeetham Srinivasa Rao","m":"M. Ranga Rao","b":"Sri Raghavendra Chitra","c":["Urvashi","Srinath."]},
+  {"i":175,"t":"Yarivanu?","y":"1984","d":"Dorai-Bhagavan","m":"Rajan-Nagendra","b":"Dakshayini Combines","c":["Sujatha","B. Saroja Devi."]},
+  {"i":176,"t":"Apoorva Sangama","y":"1984","d":"Y.R. Swamy","m":"Upendra Kumar","b":"Anupam Movies","c":["Shankar Nag","Ambika."]},
+  {"i":177,"t":"Ade Kannu","y":"1985","d":"Chi. Dattaraj","m":"G. K. Venkatesh","b":"Poornima Enterprises","c":["Gayatri","Sumalatha."]},
+  {"i":178,"t":"Jwaalamukhi","y":"1985","d":"Singeetham Srinivasa Rao","m":"M. Ranga Rao","b":"Padmini Pictures","c":["Jayanthi","Ambika."]},
+  {"i":179,"t":"Dhruva Thare","y":"1985","d":"M.S. Rajashekar","m":"Upendra Kumar","b":"Sri Raghavendra Chitra","c":["Geetha","Deepa."]},
+  {"i":180,"t":"Bhagyada Lakshmi Baramma","y":"1986","d":"Singeetham Srinivasa Rao","m":"Singeetham Srinivasa Rao","b":"Dakshayini Combines","c":["Madhavi","Ashwath."]},
+  {"i":181,"t":"Anuraga Aralithu","y":"1986","d":"M.S. Rajashekar","m":"Upendra Kumar","b":"Sri Bhargavi Arts","c":["Geetha","Madhavi."]},
+  {"i":182,"t":"Guri","y":"1986","d":"P. Vasu","m":"Rajan-Nagendra","b":"Poornima Enterprises","c":["Archana","Tara."]},
+  {"i":183,"t":"Ondu Muttina Kathe","y":"1987","d":"Shankar Nag","m":"L. Vaidyanathan","b":"Padmashree Chitra","c":["Archana","Ashwath."]},
+  {"i":184,"t":"Shruthi Seridaaga","y":"1987","d":"Chi. Dattaraj","m":"Upendra Kumar","b":"Sri Raghavendra Chitra","c":["Madhavi","Geetha."]},
+  {"i":185,"t":"Devatha Manushya","y":"1988","d":"Singeetham Srinivasa Rao","m":"Upendra Kumar","b":"Sri Raghavendra Chitra","c":["Geetha","Sudharani."]},
+  {"i":186,"t":"Shiva Mecchida Kannappa","y":"1988","d":"Vijay","m":"T.G. Lingappa","b":"Poornima Enterprises","c":["Shivarajkumar","Geetha."]},
+  {"i":187,"t":"Parashuram","y":"1989","d":"V. Somashekhar","m":"Hamsalekha","b":"Dakshayini Combines","c":["Mahalakshmi","Vani Viswanath."]},
+  {"i":188,"t":"Jeevana Chaitra","y":"1992","d":"Dorai-Bhagavan","m":"Upendra Kumar","b":"Dakshayini Combines","c":["Madhavi","K.S. Ashwath."]},
+  {"i":189,"t":"Aakasmika","y":"1993","d":"T.S. Nagabharana","m":"Hamsalekha","b":"Sri Nirupama Combines","c":["Madhavi","Geetha."]},
+  {"i":190,"t":"Odahuttidavaru","y":"1994","d":"Dorai-Bhagavan","m":"Upendra Kumar","b":"Sri Lakshmi Art Combines","c":["Ambarish","Madhavi."]},
+  {"i":191,"t":"Gandhada Gudi Part 2","y":"1994","d":"Vijay","m":"Rajan-Nagendra","b":"Bharani Chitra","c":["Shivarajkumar","Tiger Prabhakar."]},
+  {"i":192,"t":"Shabdavedhi","y":"2000","d":"S. Narayan","m":"Hamsalekha","b":"Sri Bhargavi Arts Combines","c":["Jayaprada","K.S. Ashwath."]},
+  {"i":193,"t":"Karulina Kare (Special)","y":"1970","d":"Puttanna Kanagal","m":"M. Ranga Rao","b":"Chitrajyothi","c":["Kalpana","Dinesh."]},
+  {"i":194,"t":"Sri Srinivasa Kalyana (Special)","y":"1974","d":"Vijay","m":"Rajan-Nagendra","b":"Sri Srinivasa Chitralaya","c":["B. Saroja Devi","Manjula."]},
+  {"i":195,"t":"Shankar Guru (Special)","y":"1978","d":"V. Somashekhar","m":"Upendra Kumar","b":"Dakshayini Combines","c":["Jayaprada","Padmapriya."]},
+  {"i":196,"t":"Chalisuva Modagalu (Special)","y":"1982","d":"Singeetham Srinivasa Rao","m":"Rajan-Nagendra","b":"Vaishnavi Movies","c":["Ambika","Saritha."]},
+  {"i":197,"t":"Kaviratna Kalidasa (Special)","y":"1983","d":"Renuka Sharma","m":"M. Ranga Rao","b":"G.R. Combines","c":["Jayaprada","Srinath."]},
+  {"i":198,"t":"Jwaalamukhi (Special)","y":"1985","d":"Singeetham Srinivasa Rao","m":"M. Ranga Rao","b":"Padmini Pictures","c":["Jayanthi","Ambika."]},
+  {"i":199,"t":"Bhagyada Lakshmi Baramma (Special)","y":"1986","d":"Singeetham Srinivasa Rao","m":"Singeetham Srinivasa Rao","b":"Dakshayini Combines","c":["Madhavi","Ashwath."]},
+  {"i":200,"t":"Anuraga Aralithu (Special)","y":"1986","d":"M.S. Rajashekar","m":"Upendra Kumar","b":"Sri Bhargavi Arts","c":["Geetha","Madhavi."]},
+  {"i":201,"t":"Guri (Special)","y":"1986","d":"P. Vasu","m":"Rajan-Nagendra","b":"Poornima Enterprises","c":["Archana","Tara."]},
+  {"i":202,"t":"Ondu Muttina Kathe (Special)","y":"1987","d":"Shankar Nag","m":"L. Vaidyanathan","b":"Padmashree Chitra","c":["Archana","Ashwath."]},
+  {"i":203,"t":"Shruthi Seridaaga (Special)","y":"1987","d":"Chi. Dattaraj","m":"Upendra Kumar","b":"Sri Raghavendra Chitra","c":["Madhavi","Geetha."]},
+  {"i":204,"t":"Devatha Manushya (Special)","y":"1988","d":"Singeetham Srinivasa Rao","m":"Upendra Kumar","b":"Sri Raghavendra Chitra","c":["Geetha","Sudharani."]},
+  {"i":205,"t":"Jeevana Chaitra (Classic)","y":"1992","d":"Dorai-Bhagavan","m":"Upendra Kumar","b":"Dakshayini Cine Combines","c":["Madhavi","K. S. Ashwath."]},
+  {"i":206,"t":"Aakasmika (Classic)","y":"1993","d":"Nagabharana","m":"Hamsalekha","b":"Sri Nirupama Combines","c":["Madhavi","Geetha","Vajramuni."]},
+  {"i":207,"t":"Odahuttidavaru (Classic)","y":"1994","d":"Dorai-Bhagvan","m":"Upendrakumar","b":"Sri Lakshmi Art Combines","c":["Ambarish","Madhavi","Ashwath","Vajramuni."]},
+  {"i":208,"t":"Gandhada Gudi Part 2 (Classic)","y":"1994","d":"M. P. Shankar","m":"Hamsalekha","b":"Sri Nirupama Combines","c":["ShivrajKumar","Prabhakar."]},
+  {"i":209,"t":"Shabdavedhi (Final)","y":"2000","d":"S. Narayan","m":"Hamsalekha","b":"Sri Bhargavi Arts Combines","c":["Jayapradha","Ashwath","Sowcar Janaki","Umashri."]}
+];
+
+// Top Prominent Co-Stars to show as interactive inner bubbles
+const TOP_CO_STARS = [
+  { name: "Balakrishna", count: 46 },
+  { name: "Narasimharaju", count: 39 },
+  { name: "Ashwath", count: 39 },
+  { name: "Udaykumar", count: 37 },
+  { name: "Jayanthi", count: 36 },
+  { name: "Leelavathi", count: 35 },
+  { name: "Bharathi", count: 25 },
+  { name: "Pandari Bai", count: 20 },
+  { name: "Kalpana", count: 19 },
+  { name: "Vajramuni", count: 16 },
+  { name: "Aarathi", count: 12 },
+  { name: "Madhavi", count: 12 },
+  { name: "Dwarakish", count: 14 },
+  { name: "Dinesh", count: 14 },
+  { name: "B. Saroja Devi", count: 10 },
+  { name: "Jayaprada", count: 10 },
+  { name: "Srinath", count: 10 },
+  { name: "Manjula", count: 9 },
+  { name: "Geetha", count: 9 },
+  { name: "Harini", count: 9 }
+];
+
+// State
+let selectedMovieIdx = 1;
+let activeCostar = null;
+let zoomTransform = { x: 0, y: 0, k: 0.95 };
+let isDragging = false;
+let startPan = { x: 0, y: 0 };
+
+const svg = document.getElementById('radialSvg');
+const scene = document.getElementById('scene');
+const moviesLayer = document.getElementById('movies-layer');
+const costarsLayer = document.getElementById('co-stars-layer');
+const connLayer = document.getElementById('connections');
+const guideLayer = document.getElementById('guide-rings');
+
+const detailPanel = document.getElementById('detail-panel');
+const panelType = document.getElementById('panelType');
+const panelTitle = document.getElementById('panelTitle');
+const panelSubtitle = document.getElementById('panelSubtitle');
+const panelDirector = document.getElementById('panelDirector');
+const panelMusic = document.getElementById('panelMusic');
+const panelBanner = document.getElementById('panelBanner');
+const panelTags = document.getElementById('panelTags');
+const navIdx = document.getElementById('navIdx');
+
+const RADIAL_RADIUS = 390;
+
+// Render Radial Structure
+function initRadialChart() {
+  // Guide Rings
+  guideLayer.innerHTML = `
+    <circle cx="0" cy="0" r="${RADIAL_RADIUS}" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="3,3"/>
+    <circle cx="0" cy="0" r="210" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+    <circle cx="0" cy="0" r="120" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+  `;
+
+  // Place 209 Movies around 360 degrees
+  const total = RAW_MOVIES.length;
+  RAW_MOVIES.forEach((movie, i) => {
+    const angle = (i / total) * 2 * Math.PI - Math.PI / 2; // start from top
+    const deg = (angle * 180 / Math.PI);
+    const x = Math.cos(angle) * RADIAL_RADIUS;
+    const y = Math.sin(angle) * RADIAL_RADIUS;
+    
+    // Label rotation
+    const isRightHalf = Math.cos(angle) >= 0;
+    const textAngle = isRightHalf ? deg : deg + 180;
+    const textAnchor = isRightHalf ? "start" : "end";
+    const textOffset = isRightHalf ? 10 : -10;
+
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("class", "movie-node");
+    g.setAttribute("id", `movie-node-${movie.i}`);
+    g.dataset.id = movie.i;
+
+    g.innerHTML = `
+      <circle cx="${x}" cy="${y}" r="3.2"></circle>
+      <text x="${x + (isRightHalf ? 7 : -7)}" y="${y + 2.5}" 
+            transform="rotate(${textAngle}, ${x}, ${y})" 
+            text-anchor="${textAnchor}">${movie.i}. ${movie.t}</text>
+    `;
+
+    g.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectMovie(movie.i);
+    });
+
+    moviesLayer.appendChild(g);
+  });
+
+  // Place Co-Star Bubbles inside the circle (2 concentric sub-rings)
+  TOP_CO_STARS.forEach((cs, i) => {
+    const ring = i < 8 ? 130 : 220;
+    const countInRing = i < 8 ? 8 : 12;
+    const offsetIdx = i < 8 ? i : i - 8;
+    const angle = (offsetIdx / countInRing) * 2 * Math.PI - (Math.PI / 4);
+    
+    const cx = Math.cos(angle) * ring;
+    const cy = Math.sin(angle) * ring;
+    const radius = Math.max(16, Math.min(26, 12 + Math.sqrt(cs.count) * 2.2));
+
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    g.setAttribute("class", "costar-node");
+    g.setAttribute("id", `costar-${cs.name.replace(/\s+/g, '_')}`);
+    g.dataset.name = cs.name;
+
+    // Short name for bubble
+    const shortName = cs.name.length > 9 ? cs.name.substring(0, 8) + '..' : cs.name;
+
+    g.innerHTML = `
+      <circle cx="${cx}" cy="${cy}" r="${radius}"></circle>
+      <text x="${cx}" y="${cy}">${shortName}</text>
+    `;
+
+    g.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selectCostar(cs.name, {x: cx, y: cy});
+    });
+
+    costarsLayer.appendChild(g);
+  });
+
+  updateTransform();
+}
+
+// Select a movie and show connections + info
+function selectMovie(id) {
+  selectedMovieIdx = id;
+  activeCostar = null;
+  const movie = RAW_MOVIES.find(m => m.i === id);
+  if (!movie) return;
+
+  // Visual highlights
+  document.querySelectorAll('.movie-node').forEach(n => {
+    n.classList.remove('active');
+    n.classList.toggle('dimmed', false);
+  });
+  document.querySelectorAll('.costar-node').forEach(n => n.classList.remove('dimmed'));
+
+  const activeNode = document.getElementById(`movie-node-${id}`);
+  if (activeNode) activeNode.classList.add('active');
+
+  connLayer.innerHTML = '';
+
+  // Draw links to co-stars in this movie
+  const total = RAW_MOVIES.length;
+  const angle = ((id - 1) / total) * 2 * Math.PI - Math.PI / 2;
+  const mx = Math.cos(angle) * RADIAL_RADIUS;
+  const my = Math.sin(angle) * RADIAL_RADIUS;
+
+  movie.c.forEach(starName => {
+    TOP_CO_STARS.forEach((cs) => {
+      if (starName.toLowerCase().includes(cs.name.toLowerCase()) || cs.name.toLowerCase().includes(starName.toLowerCase())) {
+        const starEl = document.getElementById(`costar-${cs.name.replace(/\s+/g, '_')}`);
+        if (starEl) {
+          const circle = starEl.querySelector('circle');
+          const sx = parseFloat(circle.getAttribute('cx'));
+          const sy = parseFloat(circle.getAttribute('cy'));
+          
+          // Curved quadratic path
+          const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+          path.setAttribute("class", "conn-line");
+          path.setAttribute("d", `M ${sx} ${sy} Q ${(sx+mx)/2.6} ${(sy+my)/2.6} ${mx} ${my}`);
+          connLayer.appendChild(path);
+        }
+      }
+    });
+  });
+
+  // Update Detail Panel
+  panelType.textContent = "Movie Detail";
+  panelTitle.textContent = `${movie.i}. ${movie.t}`;
+  panelSubtitle.textContent = `Release Year: ${movie.y} • Film #${movie.i}`;
+  panelDirector.textContent = movie.d || 'N/A';
+  panelMusic.textContent = movie.m || 'N/A';
+  panelBanner.textContent = movie.b || 'N/A';
+  document.getElementById('directorRow').style.display = 'flex';
+  document.getElementById('musicRow').style.display = 'flex';
+  document.getElementById('bannerRow').style.display = 'flex';
+  document.getElementById('movieNav').style.display = 'flex';
+  navIdx.textContent = `${movie.i} / 209`;
+
+  panelTags.innerHTML = '';
+  movie.c.forEach(c => {
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.textContent = c;
+    span.onclick = () => selectCostarByName(c);
+    panelTags.appendChild(span);
+  });
+
+  detailPanel.classList.remove('hidden');
+}
+
+// Select a co-star and draw arcs to all associated films
+function selectCostar(name, coords) {
+  activeCostar = name;
+  connLayer.innerHTML = '';
+
+  // Dim movies not matching
+  const matchingMovies = [];
+  const total = RAW_MOVIES.length;
+
+  RAW_MOVIES.forEach((movie, i) => {
+    const isMatch = movie.c.some(c => c.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(c.toLowerCase()));
+    const node = document.getElementById(`movie-node-${movie.i}`);
+    
+    if (isMatch) {
+      matchingMovies.push(movie);
+      if (node) {
+        node.classList.remove('dimmed');
+        node.classList.add('active');
+      }
+
+      // Draw connection arc
+      const angle = (i / total) * 2 * Math.PI - Math.PI / 2;
+      const mx = Math.cos(angle) * RADIAL_RADIUS;
+      const my = Math.sin(angle) * RADIAL_RADIUS;
+
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("class", "conn-line");
+      path.setAttribute("d", `M ${coords.x} ${coords.y} Q ${(coords.x+mx)/2.5} ${(coords.y+my)/2.5} ${mx} ${my}`);
+      connLayer.appendChild(path);
+    } else {
+      if (node) {
+        node.classList.remove('active');
+        node.classList.add('dimmed');
+      }
+    }
+  });
+
+  // Update Detail Panel for Co-star
+  panelType.textContent = "Co-Star Collaboration";
+  panelTitle.textContent = name;
+  panelSubtitle.textContent = `Co-starred in ${matchingMovies.length} movies with Dr. Rajkumar`;
+  document.getElementById('directorRow').style.display = 'none';
+  document.getElementById('musicRow').style.display = 'none';
+  document.getElementById('bannerRow').style.display = 'none';
+  document.getElementById('movieNav').style.display = 'none';
+
+  panelTags.innerHTML = '';
+  matchingMovies.forEach(m => {
+    const span = document.createElement('span');
+    span.className = 'tag';
+    span.textContent = `${m.i}. ${m.t} (${m.y})`;
+    span.onclick = () => selectMovie(m.i);
+    panelTags.appendChild(span);
+  });
+
+  detailPanel.classList.remove('hidden');
+}
+
+function selectCostarByName(name) {
+  const match = TOP_CO_STARS.find(cs => cs.name.toLowerCase().includes(name.toLowerCase()) || name.toLowerCase().includes(cs.name.toLowerCase()));
+  if (match) {
+    const el = document.getElementById(`costar-${match.name.replace(/\s+/g, '_')}`);
+    if (el) {
+      const circle = el.querySelector('circle');
+      selectCostar(match.name, { x: parseFloat(circle.getAttribute('cx')), y: parseFloat(circle.getAttribute('cy')) });
+    }
+  } else {
+    // Custom filter for co-stars without a center bubble
+    selectCostar(name, { x: 0, y: 0 });
+  }
+}
+
+// Pan & Zoom handlers
+function updateTransform() {
+  const width = svg.clientWidth || 800;
+  const height = svg.clientHeight || 600;
+  scene.setAttribute("transform", `translate(${width/2 + zoomTransform.x}, ${height/2 + zoomTransform.y}) scale(${zoomTransform.k})`);
+}
+
+window.addEventListener('resize', updateTransform);
+
+// Drag Pan
+const container = document.getElementById('canvas-container');
+container.addEventListener('mousedown', (e) => {
+  if (e.target.closest('#detail-panel') || e.target.closest('.zoom-controls')) return;
+  isDragging = true;
+  startPan = { x: e.clientX - zoomTransform.x, y: e.clientY - zoomTransform.y };
+});
+
+window.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  zoomTransform.x = e.clientX - startPan.x;
+  zoomTransform.y = e.clientY - startPan.y;
+  updateTransform();
+});
+
+window.addEventListener('mouseup', () => isDragging = false);
+
+// Wheel Zoom
+container.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+  zoomTransform.k = Math.max(0.35, Math.min(3.2, zoomTransform.k * zoomFactor));
+  updateTransform();
+}, { passive: false });
+
+// Zoom buttons
+document.getElementById('btnZoomIn').onclick = () => { zoomTransform.k = Math.min(3.2, zoomTransform.k * 1.2); updateTransform(); };
+document.getElementById('btnZoomOut').onclick = () => { zoomTransform.k = Math.max(0.35, zoomTransform.k * 0.8); updateTransform(); };
+document.getElementById('btnRecenter').onclick = () => { zoomTransform = { x: 0, y: 0, k: 0.9 }; updateTransform(); };
+document.getElementById('btnReset').onclick = () => {
+  zoomTransform = { x: 0, y: 0, k: 0.9 };
+  connLayer.innerHTML = '';
+  document.querySelectorAll('.movie-node').forEach(n => { n.classList.remove('active'); n.classList.remove('dimmed'); });
+  document.querySelectorAll('.costar-node').forEach(n => n.classList.remove('dimmed'));
+  detailPanel.classList.add('hidden');
+  updateTransform();
+};
+
+document.getElementById('panelCloseBtn').onclick = () => detailPanel.classList.add('hidden');
+
+// Prev / Next Navigation
+document.getElementById('btnPrevMovie').onclick = () => {
+  const prev = selectedMovieIdx > 1 ? selectedMovieIdx - 1 : 209;
+  selectMovie(prev);
+};
+document.getElementById('btnNextMovie').onclick = () => {
+  const next = selectedMovieIdx < 209 ? selectedMovieIdx + 1 : 1;
+  selectMovie(next);
+};
+
+// Search filter
+document.getElementById('searchInput').addEventListener('input', (e) => {
+  const q = e.target.value.toLowerCase().trim();
+  if (!q) {
+    document.querySelectorAll('.movie-node').forEach(n => { n.classList.remove('active'); n.classList.remove('dimmed'); });
+    connLayer.innerHTML = '';
+    return;
+  }
+
+  let firstMatch = null;
+  RAW_MOVIES.forEach(m => {
+    const match = m.t.toLowerCase().includes(q) || m.c.some(c => c.toLowerCase().includes(q)) || m.i.toString() === q;
+    const node = document.getElementById(`movie-node-${m.i}`);
+    if (match) {
+      if (!firstMatch) firstMatch = m.i;
+      if (node) { node.classList.remove('dimmed'); node.classList.add('active'); }
+    } else {
+      if (node) { node.classList.remove('active'); node.classList.add('dimmed'); }
+    }
+  });
+
+  if (firstMatch) selectMovie(firstMatch);
+});
+
+// Initialize on mount
+initRadialChart();
+selectMovie(1);
+</script>
+</body>
+</html>
