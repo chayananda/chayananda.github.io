@@ -5,7 +5,8 @@ Chart.defaults.font.family = "'Geist', -apple-system, sans-serif";
 Chart.defaults.borderColor = '#ebebeb';
 
 // 1. Language Doughnut
-new Chart(document.getElementById('chartLang'), {
+const isMobile = window.innerWidth < 640;
+const langChart = new Chart(document.getElementById('chartLang'), {
   type: 'doughnut',
   data: {
     labels: langData.labels,
@@ -19,10 +20,10 @@ new Chart(document.getElementById('chartLang'), {
   options: {
     responsive: true,
     maintainAspectRatio: false,
-    cutout: '68%',
+    cutout: isMobile ? '60%' : '68%',
     plugins: {
       legend: {
-        position: 'right',
+        position: isMobile ? 'bottom' : 'right',
         labels: { boxWidth: 12, usePointStyle: true, pointStyle: 'circle' }
       }
     }
@@ -70,9 +71,9 @@ new Chart(document.getElementById('chartGenre'), {
     maintainAspectRatio: false,
     plugins: { legend: { display: false } },
     scales: {
-      x: { 
+      x: {
         ticks: { maxRotation: 45, minRotation: 20 },
-        grid: { display: false } 
+        grid: { display: false }
       },
       y: { grid: { color: '#f2f2f2' } }
     }
@@ -138,13 +139,13 @@ new Chart(document.getElementById('chartTimeline'), {
     datasets: [{
       label: 'Monthly Videos',
       data: timelineData.counts,
-      borderColor: '#0070f3',
+      borderColor: '#171717',
       borderWidth: 2,
-      backgroundColor: 'rgba(0, 112, 243, 0.04)',
+      backgroundColor: 'rgba(0, 0, 0, 0.03)',
       fill: true,
       tension: 0.3,
       pointRadius: 3.5,
-      pointBackgroundColor: '#0070f3'
+      pointBackgroundColor: '#171717'
     }]
   },
   options: {
@@ -169,9 +170,9 @@ function applyFilters() {
   const genre = document.getElementById('genreFilter').value;
 
   filteredData = rawData.filter(item => {
-    const matchesQuery = !query || 
-      item.t.toLowerCase().includes(query) || 
-      item.c.toLowerCase().includes(query) || 
+    const matchesQuery = !query ||
+      item.t.toLowerCase().includes(query) ||
+      item.c.toLowerCase().includes(query) ||
       item.d.toLowerCase().includes(query);
     const matchesLang = !lang || item.l === lang;
     const matchesGenre = !genre || item.g === genre;
@@ -206,7 +207,7 @@ function renderTable() {
     });
   }
 
-  document.getElementById('pageInfo').innerText = filteredData.length === 0 
+  document.getElementById('pageInfo').innerText = filteredData.length === 0
     ? 'Showing 0 of 0 entries'
     : `Showing ${start + 1} to ${end} of ${filteredData.length.toLocaleString()} entries`;
 
