@@ -1,340 +1,246 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Personality | Chayananda Nagesh</title>
-  <meta name="description" content="A closer look at how Chayananda Nagesh thinks, works, and pays attention.">
-  <link rel="canonical" href="https://chayananda.github.io/personality/">
-  <style>
-    :root {
-      --ink: #171717;
-      --muted: #69645e;
-      --paper: #f4f0e9;
-      --paper-deep: #e8e1d7;
-      --coral: #e7654f;
-      --teal: #176d70;
-      --yellow: #e7b94f;
-      --line: rgba(23, 23, 23, 0.18);
-      --sans: "Noto Sans", "Helvetica Neue", sans-serif;
-      --serif: Georgia, "Times New Roman", serif;
-      --max-width: 1140px;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--paper);
-      font-family: var(--sans);
-      line-height: 1.55;
-    }
-
-    a { color: inherit; }
-
-    .shell {
-      width: min(100% - 40px, var(--max-width));
-      margin: 0 auto;
-    }
-
-    .site-header {
-      border-bottom: 1px solid var(--line);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 80px;
-    }
-
-    .logo {
-      font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      text-decoration: none;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 28px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .nav-links a { text-decoration: none; }
-    .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--coral); }
-
-    .hero {
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
-      gap: clamp(40px, 8vw, 120px);
-      align-items: end;
-      padding: clamp(70px, 12vw, 150px) 0 100px;
-    }
-
-    .eyebrow {
-      margin: 0 0 18px;
-      color: var(--coral);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    h1, h2, p { margin-top: 0; }
-
-    h1 {
-      max-width: 720px;
-      margin-bottom: 28px;
-      font-family: var(--serif);
-      font-size: clamp(3.5rem, 9vw, 7.5rem);
-      font-weight: 400;
-      letter-spacing: -0.07em;
-      line-height: 0.9;
-    }
-
-    .hero-copy {
-      max-width: 360px;
-      margin-bottom: 6px;
-      color: var(--muted);
-      font-size: 1rem;
-    }
-
-    .hero-note {
-      padding: 24px 0 0 24px;
-      border-left: 3px solid var(--teal);
-    }
-
-    .hero-note p {
-      margin-bottom: 8px;
-      font-family: var(--serif);
-      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-      line-height: 1.2;
-    }
-
-    .hero-note small { color: var(--muted); }
-
-    .overview {
-      display: grid;
-      grid-template-columns: 0.7fr 1.3fr;
-      gap: clamp(36px, 8vw, 120px);
-      padding: 72px 0 100px;
-      border-top: 1px solid var(--line);
-    }
-
-    .section-label {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-    }
-
-    .overview h2 {
-      max-width: 620px;
-      margin-bottom: 48px;
-      font-family: var(--serif);
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      font-weight: 400;
-      letter-spacing: -0.05em;
-      line-height: 1;
-    }
-
-    .traits {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 1px;
-      background: var(--line);
-      border: 1px solid var(--line);
-    }
-
-    .trait {
-      min-height: 190px;
-      padding: 26px;
-      background: var(--paper);
-    }
-
-    .trait:nth-child(2) { background: var(--paper-deep); }
-    .trait:nth-child(3) { background: var(--paper-deep); }
-    .trait:nth-child(4) { background: var(--paper); }
-
-    .trait-number {
-      display: block;
-      margin-bottom: 36px;
-      color: var(--coral);
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-
-    .trait h3 {
-      margin-bottom: 8px;
-      font-size: 1.15rem;
-      line-height: 1.1;
-    }
-
-    .trait p {
-      max-width: 220px;
-      margin-bottom: 0;
-      color: var(--muted);
-      font-size: 0.88rem;
-    }
-
-    .principles {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 28px;
-      padding: 72px 0 110px;
-      border-top: 1px solid var(--line);
-    }
-
-    .principles h2 {
-      margin-bottom: 0;
-      font-family: var(--serif);
-      font-size: clamp(2rem, 4vw, 3.4rem);
-      font-weight: 400;
-      letter-spacing: -0.05em;
-      line-height: 1;
-    }
-
-    .principles-list { display: grid; gap: 0; }
-
-    .principle {
-      display: grid;
-      grid-template-columns: 48px 1fr;
-      gap: 18px;
-      padding: 18px 0;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .principle:first-child { border-top: 1px solid var(--line); }
-
-    .principle-index {
-      color: var(--teal);
-      font-family: var(--serif);
-      font-size: 1.25rem;
-    }
-
-    .principle h3 { margin: 0 0 4px; font-size: 1rem; }
-    .principle p { margin: 0; color: var(--muted); font-size: 0.9rem; }
-
-    .site-footer {
-      padding: 28px 0;
-      border-top: 1px solid var(--line);
-      color: var(--muted);
-      font-size: 0.8rem;
-    }
-
-    .site-footer .shell { display: flex; justify-content: space-between; gap: 20px; }
-    .site-footer a { color: var(--ink); font-weight: 700; text-decoration: none; }
-
-    @media (max-width: 700px) {
-      .shell { width: min(100% - 32px, var(--max-width)); }
-      .nav { min-height: 68px; }
-      .nav-links { gap: 14px; font-size: 0.68rem; }
-      .hero, .overview, .principles { grid-template-columns: 1fr; }
-      .hero { gap: 48px; padding: 76px 0 72px; }
-      .hero-note { max-width: 340px; }
-      .overview, .principles { padding: 52px 0 72px; }
-      .overview h2 { margin-bottom: 32px; }
-      .trait { min-height: 170px; padding: 20px; }
-      .trait-number { margin-bottom: 24px; }
-      .site-footer .shell { display: block; }
-      .site-footer p { margin-bottom: 10px; }
-    }
-
-    @media (max-width: 420px) {
-      .nav-links { gap: 10px; }
-      .traits { grid-template-columns: 1fr; }
-      .trait:nth-child(n) { background: var(--paper); }
-      .trait:nth-child(even) { background: var(--paper-deep); }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weight Loss Journey - Interactive Graph</title>
+    <!-- Outfit Font from Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS for basic styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Plotly.js for interactive graphing -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif; /* Applied Outfit font */
+            background-color: #f0f4f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 900px;
+        }
+        h1 {
+            color: #1a202c;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.875rem; /* text-3xl */
+            font-weight: 700; /* font-bold */
+        }
+        /* Ensure Plotly graph takes full width */
+        #weightLossGraph {
+            width: 100%;
+            height: 500px; /* Adjust height as needed */
+        }
+    </style>
 </head>
 <body>
-  <header class="site-header">
-    <nav class="nav shell" aria-label="Main navigation">
-      <a class="logo" href="/">Chaya.</a>
-      <div class="nav-links">
-        <a href="/portfolio/">Portfolio</a>
-        <a href="/about/">About</a>
-        <a href="/personality/" aria-current="page">Personality</a>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <section class="hero shell">
-      <div>
-        <p class="eyebrow">A personal field guide</p>
-        <h1>How I<br>show up.</h1>
-        <p class="hero-copy">The instincts behind the work: curious enough to ask one more question, precise enough to make the answer useful.</p>
-      </div>
-      <aside class="hero-note">
-        <p>"Good design starts with paying attention."</p>
-        <small>Chayananda Nagesh, probably taking notes</small>
-      </aside>
-    </section>
-
-    <section class="overview shell">
-      <p class="section-label">01 / At a glance</p>
-      <div>
-        <h2>Part analyst,<br>part instigator.</h2>
-        <div class="traits">
-          <article class="trait">
-            <span class="trait-number">01</span>
-            <h3>Deeply curious</h3>
-            <p>I follow the interesting thread, especially when it leads somewhere unexpected.</p>
-          </article>
-          <article class="trait">
-            <span class="trait-number">02</span>
-            <h3>Quietly rigorous</h3>
-            <p>Details earn their place. Clarity is a kindness to the person using the thing.</p>
-          </article>
-          <article class="trait">
-            <span class="trait-number">03</span>
-            <h3>Warmly direct</h3>
-            <p>I like honest conversations, generous critique, and decisions that keep moving.</p>
-          </article>
-          <article class="trait">
-            <span class="trait-number">04</span>
-            <h3>Always collecting</h3>
-            <p>Books, interfaces, overheard phrases, small rituals. Everything is research.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="principles shell">
-      <h2>What keeps<br>me oriented.</h2>
-      <div class="principles-list">
-        <article class="principle">
-          <span class="principle-index">A.</span>
-          <div><h3>Make the complex legible</h3><p>Find the shape of a problem before reaching for the polish.</p></div>
-        </article>
-        <article class="principle">
-          <span class="principle-index">B.</span>
-          <div><h3>Leave room for surprise</h3><p>The best answer is often hiding just outside the first obvious one.</p></div>
-        </article>
-        <article class="principle">
-          <span class="principle-index">C.</span>
-          <div><h3>Be useful, then memorable</h3><p>Restraint makes the moments of personality matter more.</p></div>
-        </article>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="shell">
-      <p>© 2026 Chayananda Nagesh</p>
-      <a href="/">Back to portfolio</a>
+    <div class="container">
+        <h1>Weight Loss Journey</h1>
+        <div id="weightLossGraph"></div>
     </div>
-  </footer>
+
+    <script>
+        // Raw CSV data provided by the user
+        const csvData = `,,Food,,,,Fitness,,,,,,,,
+Date,Shift,Breakfast,Lunch,Snacks,Dinner,Kg,Loss,Time,Tread Mill,Cross,Cycling,Weights,Walks,Meditation
+21 Aug . Mon,Night,1 Cup Upma,Carrot & Cucumber,Bhel Puri,Papaya,98,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+22 Aug . Tue,Night,2 Chapati 1 Cucumber,1 Cucumber 2 Sweet Lime,Skip,3 Chapati + Ladies Finger,98,0,40,5% 5s 30m,5i + 20m,10m,Skip,Skip,Skip
+23 Aug . Wed,Night,1 Ragi Ball + Horse Gram,3 Sweet Limes,1 Cucumber 1 Apple,2 Chapati + Pineapple Gravy,98,0,120,5% 5s 30m,5i + 20m,10m,Yes,Skip,Skip
+24 Aug . Thu,Night,1 Plate Pulav + 1 Slice Cake,Skip,1 Cucumber 3 Sweet Lime,1 Cup Chitranna + 1 Cup Millet,98,0,120,5% 5s 30m,5i + 20m,10m,Yes,Skip,Skip
+25 Aug . Fri,Night,1 Ragi Ball + Chutney,1 Cucumber,Skip,1 Plate Avalakki + 3 Poori + Chitranna,98,0,100,5% 5s 30m,5i + 20m,Skip,Yes,Skip,Skip
+26 Aug . Sat,Night,2 Chapati + Dal,Skip,1 Apple,2 Sweet Lime,98,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+27 Aug . Sun,Night,1 Apple,1 Cucumber,1 Banana,1 Plate Avalakki + 2 Boiled Eggs,98,0,80,5% 6s 30m,5i + 20m,10m,Skip,Skip,Skip
+28 Aug . Mon,Day,Skip,1 Cucumber,Skip,1 Plate Avalakki + 2 Boiled Eggs,95,3,70,5% 6s 30m,5i + 20m,10m,Skip,Skip,Skip
+29 Aug . Tue,Day,Kadle Puri + Onion Carrot Mix,1 Plate Avalakki + 2 Boiled Eggs,Kadle Puri,Skip,95,0,100,5% 6s 30m,5i + 20m,10m,Yes,Skip,Skip
+30 Aug . Wed,Day,2 Bananas,2 Idly + Chutney + Saaru,1 Sweet Lime,1 Banana,95,0,100,5% 6s 30m,5i + 20m,Skip,Yes,Skip,Skip
+31 Aug . Thu,Day,1 Pineapple 1 Sweet Lime,1 Plate Avalakki + 2 Boiled Eggs,1 Pomegranate,Skip,95,0,100,5% 6s 30m,5i + 20m,10m,Yes,Skip,Skip
+01 Sep . Fri,Day,1 Guava,3 Idly + Chutney + Saaru,1 Apple,1 Gobi Noodles Mix,95,0,110,5% 6s 30m,5i + 20m,10m,Yes,4 Rounds,Skip
+02 Sep . Sat,Day,1 Sweet Lime,1 Plate Avalakki + 4 Boiled Eggs,1 Sweet Lime + 1 Apple,Skip,95,0,80,Skip,Skip,Skip,Yes,Skip,Skip
+03 Sep . Sun,Day,2 Idly + Chutney + Saaru,1 Plate Avalakki + 4 Boiled Eggs,1Butter Milk + 1 Tub Pop Corn ,Masala Puri,94.2,0.8,Skip,Skip,Skip,Skip,Skip,4 Rounds,Skip
+04 Sep . Mon,Day,1 Apple,1 Ragi Ball + 1/2 Rice Sambar ,1 Tender Coconut,1 Ragi Ball +  Sopp Saru,94.2,0,120,5% 6s 30m,5i + 20m,10m,Yes,8km Walk,Skip
+05 Sep . Tue,Day,1 Apple,1/2 Rice Sambar + Tender Coconut,1Butter Milk,Skip,94.2,0,90,5% 6s 30m,5i + 20m,10m,Skip,Skip,Skip
+06 Sep . Wed,Day,1 Cucumber,2 Ragi Ball + Sambar ,Skip,1 Gobi Noodles Mix,94.2,0,120,5% 6s 30m,5i + 20m,15m,Yes,Skip,Skip
+07 Sep . Thu,Day,1 Sweet Lime,2 Ragi Ball + Sambar,Skip,Skip,94.2,0,120,5% 6s 30m,5i + 20m,15m,Yes,Skip,Skip
+08 Sep . Fri,Day,Skip,2 Ragi Ball + Sambar,1 Bhel Puri + 1 Samosa,Skip,94.2,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+09 Sep . Sat,Day,1 Cucumber,2 Ragi Ball + Sambar,Skip,1 Cucumber + 1 Cup Ice Cream,94.2,0,120,5% 6s 30m,5i + 20m,15m,Yes,Skip,Skip
+10 Sep . Sun,Day,1 Pulav B,2 Ragi Ball + Sambar,1 Papaya,Skip,93,1.2,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+11 Sep . Mon,Day,Don't Remember,Don't Remember,Don't Remember,Don't Remember,92.8,0.2,120,5% 6s 30m,5i + 20m,15m,Yes,Skip,Skip
+12 Sep . Tue,Day,1 Cup Papaya,1 Ragi Ball ,Skip,1 Gobi Noodles + 1/2 Gobi,92.8,0,120,5% 6s 30m,5i + 20m,15m,Yes,Skip,Skip
+13 Sep . Wed,Day,Skip,1 Sweet Lime + 1 Ragi Ball,Skip,1 Bhel Puri,92.8,0,120,5% 6s 6s 30m,5i + 20m,15m,Yes,Skip,Skip
+14 Sep . Thu,Day,1/2 Water Melon,1 Ragi Ball ,Skip,1 Bhel Puri + 1 Bajji,92.8,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+15 Sep . Fri,Day,Skip,2 Ragi Ball,Skip,1 Bhel Puri + 1 Ragi Ball,92.1,0.7,120,5% 6s 30m,5i + 20m,15m,Yes,Skip,Skip
+16 Sep . Sat,Day,Skip,1 Ragi Ball + Omlette + 2 BoilEggs,Skip,1 Gobi Rice Mix + 1/2 Pine Apple,91.4,0.7,120,5% 6s 30m,5i + 20m,15m,Yes,5km Walk,Skip
+17 Sep . Sun,Day,Skip,1 Plate Pulav,Skip,1 Bhel Puri + 1 Bajji,90.9,0.5,Skip,Skip,Skip,Skip,Skip,14 Km Walk,Skip
+18 Sep . Mon,Day,Skip,3 Ragi Dosa,1/2 Pine Apple,1 Masala Dosa + 1 Pani Puri + 1Bajji,92,-1.1,120,5% 6s 30m,6i + 20m,15m,Yes,Skip,Skip
+19 Sep . Tue,Day,Skip,1 Ragi Ball + 1 Bajji,Skip,2 Carrots,91.2,0.8,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,Skip
+20 Sep . Wed,Day,Skip,1 Ragi Ball + 1 Butter Milk,Skip,3 Carrots,90.7,0.5,120,5% 6.5s 30m,6i + 20m,15m,Yes,14 Km Walk,Skip
+21 Sep . Thu,Day,Skip,1 Ragi Ball + 1 Butter Milk,Skip,1 Sweet Lemon + 1 Apple,90.1,0.6,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,Skip
+22 Sep . Fri,Day,Skip,1/2 Pineapple + Double Omlette,Skip,1/2 ( Apple + Papaya + Pomo),89.2,0.9,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,Skip
+23 Sep . Sat,Day,Skip,3 Dosa + Potato Chutney,1 Tender Coconut + 1 Bhel Puri,1 Plain Dosa,89.6,-0.4,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+24 Sep . Sun,Day,2 Idly + 1 Puri,2 Kerala Parota,1 Tender Coconut,Skip,89.6,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+25 Sep . Mon,Day,Skip,1 Plate Pulav*,Skip,1/2 ( Apple + Papaya + Pomo),89.5,0.1,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,Skip
+26 Sep . Tue,Day,Skip,2 Ragi Ball + Sambar,Skip,1/2 ( Sweet Lime + Papaya + Pomo),88.8,0.7,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,Skip
+27 Sep . Wed,Day,Skip,1 Bhel Puri + 1 Egg Puff,Skip,1 Bhel Puri + 1 Set Dosa,88.4,0.4,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+28 Sep . Thu,Day,Skip,Skip,1 Samosa + 1 Aloo Bun,Skip,89,-0.6,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,Skip
+29 Sep . Fri,Day,Skip,Skip,1 Masala Dosa,1 Gobi Noodles,88.1,0.9,Skip,Skip,Skip,Skip,Skip,7.2km Walk,Skip
+30 Sep . Sat,Day,1/2 Water Melon,Vermicelli Upma,Skip,1/2 Noodles + watermelon + Butterfruit,88,0.1,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+01 Oct . Sun,Day,1/2 Noodles,1 Upittu + 1 Manchow Soup,Skip,3 Tatte Idli + Apple Juice,88.2,-0.2,Skip,Skip,Skip,Skip,Skip,6.2km Walk,30m
+02 Oct . Mon,Day,Skip,Skip,1 Avalakki + 1 Capscium  5 Bajji,1 Lemon Sugarcane Juice,88.5,-0.3,45,5% 6.5s 30m,Skip,Skip,Skip,6.5km Walk,10m
+03 Oct . Tue,Day,Skip,Skip,Skip,1 Ragi Ball + Sambar,88.2,0.3,120,5% 6.5s 30m,6i + 20m,15m,Yes,2.4km Walk,10m
+04 Oct . Wed,Day,2 Idly + Sambar,Skip,1 Ragi Ball + Sambar,3 Tatte Idli + Bajji,88.2,0,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,60m
+05 Oct . Thu,Day,Skip,Skip,1 Ragi Ball + Sambar,2 Chapati + Tomato Gojju,87.8,0.4,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,30m
+06 Oct . Fri,Day,Skip,Skip,Skip,3 Chapati + Gojju + Bele,86.7,1.1,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,Skip
+07 Oct . Sat,Day,1 Sweet Lime + 1 Guava,1 Ragi Ball + Sambar + 1 Vada,Skip,1 Sweet Lime + 1 Bhel + 1 Jolad Rotti,86.7,0,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,Skip
+08 Oct . Sun,Day,Skip,Skip,1 Omlette + 2 Cup Pop Corn,1 Masala Dosa + 2 Parota + Sweet Lime Juice,86.1,0.6,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+09 Oct . Mon,Day,Skip,Skip,Skip,2 Chapati + Huli + Sweet Lime Juice,86.3,-0.2,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,60m
+10 Oct . Tue,Day,Skip,1 Ragi Ball + Sambar,Skip,2 Chapati + Huli + Sweet Lime Juice,85.8,0.5,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,60m
+11 Oct . Wed,Day,Skip,1 Ragi Ball + Sambar + 2 Bajji,Skip,2 Chapati + Tomato Gojju,86.3,-0.5,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,15m
+12 Oct . Thu,Day,Skip,1 Ragi Ball + Sambar + 1 Vada,Skip,2 Sweet Lime + 1 Pomegranate + Bajji,86.4,-0.1,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,20m
+13 Oct . Fri,Day,Skip,1 Ragi Ball + Sambar,Skip,2 Chapati + Soppu Huli,86.2,0.2,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,20m
+14 Oct . Sat,Day,Skip,1 Ragi Ball + Sambar + 1 Sweet Lime,Skip,2 Brown Rice Dosa + 2 Custard Apple,85.4,0.8,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,20m
+15 Oct . Sun,Day,Skip,Skip,2 Idly Sambar + 1 Gobi Noodles Mix,1 Egg Dosa + Groundnuts,83.7,1.7,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+16 Oct . Mon,Day,Skip,1 Ragi Ball + Sambar,1 Double Omlette + 1/2 Double Egg Rice,1 Custard Apple + 1 Ragi Ball + Sambar,84.7,-1,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+17 Oct . Tue,Day,Skip,2 Ragi Ball + Sambar + 1 Custard Apple,Skip,1 Veg Biryani + Ground Nut + 1 Tender Coconut,84.1,0.6,120,5% 6.5s 30m,6i + 20m,15m,Yes,Skip,20m
+18 Oct . Wed,Day,Skip,1/2 Papaya + 1 Carrot,Skip,1 Roti Curry + 1 Tender Coconut + 1 Ragi Ball + Sambar,85.3,-1.2,120,5% 6.5s 30m,7i + 20m,15m,Yes,Skip,20m
+19 Oct . Thu,Day,Skip,1/2 Papaya + 1 Sweet Lime,Skip,1 Roti Curry + 1 Masala Puri,85.3,0,120,5% 6.5s 30m,7i + 20m,15m,Yes,Skip,20m
+20 Oct . Fri,Day,Skip,Skip,1 Double Egg Noodles + Double Omlette + 1 Tender Coconut,2 Chapathi + Chutney,85.3,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+21 Oct . Sat,Day,1 Ragi Ball + Sambar,Skip,1/2 Egg Rice + Double Omlette + 1 Tender Coconut,1 Ragi Ball + Sambar,85,0.3,120,5% 6.5s 30m,7i + 20m,15m,Yes,Skip,20m
+22 Oct . Sun,Day,Skip,1 Ragi Ball + Sambar,Skip,1/2 Egg Rice + Double Omlette + 1 Masala Puri,85,0,120,5% 6.5s 30m,7i + 20m,15m,Yes,Skip,20m
+23 Oct . Mon,Day,Skip,1 Ragi Ball + Sambar,Skip,1/2 Egg Noodles + Double Omlette,84.8,0.2,120,6% 6.5s 30m,7i + 20m,15m,Yes,6.6km Walk,20m
+24 Oct . Tue,Day,Skip,1 Ragi Ball + Sambar,Skip,2 Single Egg Omlette  + Bhajji + 1 Ragi Ball + Sambar,84.3,0.5,120,6% 6.5s 30m,7i + 20m,15m,Yes,3.2km Walk,20m
+25 Oct . Wed,Day,Skip,1 Ragi Ball + Sambar + 1 Double Omlette,Skip,2 Chapati + Ladies Finger Palya + 1 Spinach Corn Bun,84.1,0.2,120,6% 6.5s 30m,7i + 20m,15m,Yes,Skip,20m
+26 Oct . Thu,Day,Skip,1 Ragi Ball + Sambar + 2 Bajji,Skip,1 Puliogare + 1 Double Omlette,84.2,-0.1,120,6% 6.5s 30m,7i + 20m,15m,Yes,3.2km Walk,20m
+27 Oct . Fri,Day,Skip,1 Ragi Ball + Sambar + 2 Bajji,1 Mushroom Noodles + 1 Double Egg Masala,Skip,83.7,0.5,120,6% 6.5s 30m,7i + 20m,15m,Yes,3.2km Walk,20m
+28 Oct . Sat,Day,Skip,1 Ragi Ball + Sambar + 1/2 Watermelon,Skip,Skip,83.3,0.4,120,6% 6.5s 30m,7i + 20m,15m,Yes,3.2km Walk,20m
+29 Oct . Sun,Day,Skip,1 Ragi Ball + Sambar,Skip,1/2 Egg Rice + 1 Double Omlette,83.5,-0.2,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+30 Oct . Mon,Day,Skip,1 Ragi Ball + Sambar,Skip,1 Gobi Fried Rice Mix,83.2,0.3,120,6% 6.5s 30m,7i + 20m,15m,Yes,3.2km Walk,20m
+31 Oct . Tue,Day,Skip,1 Ragi Ball + Sambar,1/2  Veg Pulao + 1 Boiled Egg,3 Idli + 2 Vada + 1 LimeTea + 1 ORS,83.5,-0.3,120,6% 6.5s 30m,7i + 20m,15m,Yes,Skip,20m
+01 Nov . Wed,Day,Skip,1 Ragi Ball + Sambar,1 Boiled Egg + 3 Custard Apples,1 Ragi Ball + Sambar,83,0.5,120,6% 6.5s 30m,Skip,Skip,Yes,Skip,20m
+02 Nov . Thu,Day,Skip,Skip,1/2 Egg Ricek + 1 Boiled Egg + 2 ORS,3 Idli + 2 ORS,82.3,0.7,60,0% 6.5s 20m,Skip,Skip,Yes,Skip,Skip
+03 Nov . Fri,Day,Skip,1 Ragi Ball + Sambar,Skip,1 Upittu + 2 Strepsils + 1 Bhel Puri,82.3,0,Skip,Skip,Skip,Skip,Skip,3.2km Walk,Skip
+04 Nov . Sat,Day,Skip,1/2 Egg Rice + Double Omlette,1/2 Pulav,1 Ragi Ball + Sambar,82.9,-0.6,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+05 Nov . Sun,Day,Skip,3 Chapati + Brinjal Curry,Skip,1 Pulav*,82.6,0.3,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+06 Nov . Mon,Day,Skip,3 Chapati + Ladies Finger + 1 Pomegranate,Skip,1/2 Egg Rice + 1 Boiled Egg + 1 Puffed Rice,83.1,-0.5,60,0% 6.5s 20m,8i + 7m,Skip,Yes,Skip,Skip
+07 Nov . Tue,Day,Skip,1 Ragi Ball + Sambar,Skip,1/2 Egg Rice + 1 Boiled Egg + 1/2 Veg Biryani,82.4,0.7,120,0% 7.4s 20m,8i + 20m,15m,Yes,Skip,Skip
+08 Nov . Wed,Day,Skip,1 Ragi Ball + Sambar,Skip,1/2 Egg Rice + 1 Boiled Egg + 1 Single Omlette + 1 Ragi Ball + Sambar,82.2,0.2,120,0% 7.4s 20m,8i + 20m,15m,Yes,Skip,Skip
+09 Nov . Thu,Day,Skip,1 Ragi Ball + Sambar + 1 Double Omlette,Skip,1 Pulav* + 1 Boiled Egg + 2 Custard Apple,82.5,-0.3,120,0% 7.4s 10m,8i + 20m,15m,Yes,5km Walk,Skip
+10 Nov . Fri,Day,Skip,1/2 Egg Rice + 1 Single Omlette,Skip,1/2 Gobi Manchurian + 1 Roti Curry + 1 Bread Slice,82.9,-0.4,120,Skip,Skip,Skip,Yes,Skip,Skip
+11 Nov . Sat,Day,Skip,1 Ragi Ball + Sambar,Skip,1/2 Pizza + 1 Garlic Bread + 2 Custard Apple,82.9,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+12 Nov . Sun,Day,1 Pasta + 1 Custard Apple,Skip,1/2 Egg Rice + 2 Boiled Egg,1 Ragi Ball + Sambar,81.4,1.5,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+13 Nov . Mon,Day,Skip,1/2 Egg Rice + 1 Boiled Egg + 1 Single Omlette,Skip,3 Chapati + Curry + 1 Bowl Manchow Soup,81.6,-0.2,120,0% 7.4s 10m,8i + 20m,15m,Yes,Skip,Skip
+14 Nov . Tue,Day,Skip,1 Ragi Ball + Sambar,Skip,1/2 Egg Rice + 1 Boiled Egg + 4 Boiled Egg + 1/2 Cup Manchow Soup,81.7,-0.1,120,Skip,Skip,Skip,Yes,Skip,Skip
+15 Nov . Wed,Day,Skip,1 Ragi Ball + Sambar,Skip,1 Pulav* + 6 Boiled Eggs,81.7,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+16 Nov . Thu,Day,Skip,Skip,1 Ragi Ball + 4 Bajji,1 Cucumber + 1 Cup Manchow Soup,81.7,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+17 Nov . Fri,Day,1 Avalakki,Skip,1 Rava Dosa,1/2 Egg Rice + 1 Double Omlette,81.6,0.1,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+18 Nov . Sat,Day,Skip,2 Double Omlette + 1 Tub Popcorn,Skip,1/2 Egg Rice + 1 Double Omlette + 2 Chocolates + 1/2 Tea,81.3,0.3,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+19 Nov . Sun,Day,3 Chapati + 2 Dosa ,Skip,1 Ragi Ball + Sambar,1 Tea + 2 Chapathi + Curry,81.3,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+20 Nov . Mon,Day,1 Avalakki,2 Roti + Curry ,Skip,2 Roti + Curry ,81.3,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+21 Nov . Tue,Day,Skip,1 Ragi Ball + Sambar,Skip,1/2 Egg Rice + 1 Double Omlette + 1 Frooti,80.4,0.9,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+22 Nov . Wed,Day,Skip,Skip,Skip,1 Bhel Puri + 2 Double Omlettes + 2 Tender Coconut,80.4,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+23 Nov . Thu,Day,1 Capsicum Bath + 2 Maggi Bricks + 1 Chocolate,Skip,Skip,1/2 Egg Rice + 1 Double Omlette,80.4,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+24 Nov . Fri,Day,1 Avalakki + 1 Coffee,1 Ragi Ball + Sambar,Skip,1/2 Egg Rice + 1 Double Omlette + 1 Boiled Egg,80.2,0.2,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+25 Nov . Sat,Day,1 Rava Dosa + 1 Coffee,1 Ragi Ball + Sambar,Skip,1 Vegc Roll + 2 Double Omlette,80.1,0.1,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+26 Nov . Sun,Day,1 Avalakki + 2 Coffee,Skip,Skip,1/2 Egg Rice + 1 Double Omlette + 1 Cup Manchow Soup,80.5,-0.4,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+27 Nov . Mon,Day,Skip,6 Puri,1 Pulav,1 Tub Groundnuts,80.5,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+28 Nov . Tue,Day,1 Rava Dosa,1 Fruit Salad,Skip,1 Mushroom Noodles,80.5,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+29 Nov . Wed,Day,1 Rava Dosa + 2 Coffee,1 Coffee,Skip,1/2 Egg Rice + 1 Double Omlette,80.5,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+30 Nov . Thu,Day,3 Chapathi + 2 Coffee + 1 Tub Popcorn,Skip,1 Capsicum Rice,1/2 Egg Rice + 1 Double Omlette + 1 Tender Coconut + 1 Coffee,79.8,0.7,Skip,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+01 Dec . Fri,Day,4 Boiled Eggs + 1 Tender Coconut + 1 Avalakki + 1 Coffee,Skip,1/2 Egg Rice + 1 Double Omlette,1 ORS + 2 Bhel Puri  + 1 Tender Coconut,80.1,-0.3,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+02 Dec . Sat,Day,1 Rava Dosa + 1 Coffee,Skip,Skip,1/2 Egg Rice + 1 Double Omlette,80.1,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+03 Dec . Sun,Day,1 Puri Sagu + 1 Coffee,1 Coffee + 1 Tender Coconut + 1 Rasam Rice,1 Roti + 2 Dosa + 1 Pulav + 2 Rasagulla + 1 Paan,Skip,80.1,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+04 Dec . Mon,Day,6 Puri + 1 Pongal,Marriage Lunch ( many items),Skip,1/2 Egg Rice + 1 Double Omlette,80.1,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+05 Dec . Tue,Day,1 Vada + 1 Coffee,Skip,1 Rice Sambar,Skip,80.1,0,10,0% 7.5s 10m,Skip,Skip,Skip,Skip,Skip
+06 Dec . Wed,Day,1 Puri Sagu + 3 Coffee,Skip,No Data,No Data,80.1,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+07 Dec . Thu,Day,No Data,No Data,No Data,No Data,80.1,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+08 Dec . Fri,Day,No Data,No Data,No Data,No Data,80.1,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+09 Dec . Sat,Day,No Data,No Data,No Data,1/2 Egg Rice + 1 Double Omlette,80.1,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+10 Dec . Sun,Day,1 Coffee + 4 Akki Rotti,Skip,1 Ragi Ball + Sambar,1/2 Egg Rice + 1 Double Omlette,80.1,0,Skip,Skip,Skip,Skip,Skip,Skip,Skip
+11 Dec . Mon,Day,1 Avarekayi Uppittu,Skip,Skip,6 Bajji + 1/2 Egg Rice + 1 Double Omlette + 1 Frooti,81.1,-1,Skip,Skip,Skip,Skip,Skip,Skip,Skip`;
+
+        function parseCSV(csv) {
+            const lines = csv.split('\n');
+            const headers = lines[1].split(',');
+            const dataRows = lines.slice(2);
+            return dataRows.map(row => {
+                const values = row.split(',');
+                const rowData = {};
+                headers.forEach((header, index) => {
+                    rowData[header.trim()] = values[index] ? values[index].trim() : '';
+                });
+                return rowData;
+            });
+        }
+
+        const data = parseCSV(csvData);
+        const dates = [];
+        const weights = [];
+        const hoverTexts = [];
+        const currentYear = 2023;
+
+        data.forEach(row => {
+            let dateString = row['Date'];
+            const kg = parseFloat(row['Kg']);
+            dateString = dateString.replace(/ \. (Mon|Tue|Wed|Thu|Fri|Sat|Sun)/, '');
+            const date = new Date(`${dateString} ${currentYear}`);
+            if (!isNaN(date.getTime()) && !isNaN(kg)) {
+                dates.push(date);
+                weights.push(kg);
+                hoverTexts.push(
+                    `Date: ${date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}<br>` +
+                    `Weight: ${kg} kg<br>` +
+                    `Breakfast: ${row['Breakfast']}<br>` +
+                    `Lunch: ${row['Lunch']}<br>` +
+                    `Snacks: ${row['Snacks']}<br>` +
+                    `Dinner: ${row['Dinner']}`
+                );
+            }
+        });
+
+        const layout = {
+            title: { text: 'Weight Loss Journey Over Time', font: { family: 'Outfit, sans-serif', size: 24, color: '#2d3748' } },
+            xaxis: { title: { text: 'Date', font: { family: 'Outfit, sans-serif', size: 18, color: '#4a5568' } }, type: 'date', tickformat: '%b %d', showgrid: true, gridcolor: '#e2e8f0' },
+            yaxis: { title: { text: 'Weight (kg)', font: { family: 'Outfit, sans-serif', size: 18, color: '#4a5568' } }, zeroline: false, showgrid: true, gridcolor: '#e2e8f0' },
+            hovermode: 'closest', margin: { l: 60, r: 40, b: 60, t: 80 }, plot_bgcolor: '#ffffff', paper_bgcolor: '#ffffff'
+        };
+
+        function interpolateColor(color1, color2, factor) {
+            const c1 = color1.match(/\w\w/g).map(x => parseInt(x, 16));
+            const c2 = color2.match(/\w\w/g).map(x => parseInt(x, 16));
+            const result = c1.map((v, i) => Math.round(v + factor * (c2[i] - v)));
+            return `#${result.map(x => x.toString(16).padStart(2, '0')).join('')}`;
+        }
+
+        const gradientTraces = [];
+        for (let i = 0; i < dates.length - 1; i++) {
+            const color = interpolateColor('#DC433E', '#50B75C', i / (dates.length - 2));
+            gradientTraces.push({ x: [dates[i], dates[i + 1]], y: [weights[i], weights[i + 1]], mode: 'lines', line: { color, width: 3 }, hoverinfo: 'skip', showlegend: false });
+        }
+
+        const markerTrace = {
+            x: dates, y: weights, mode: 'markers', type: 'scatter', name: 'Weight (kg)',
+            marker: { color: '#ffffff', size: 8, symbol: 'circle', line: { color: '#5D5D5D', width: 1 } },
+            hoverinfo: 'text', text: hoverTexts
+        };
+
+        if (dates.length > 0 && weights.length > 0) {
+            Plotly.newPlot('weightLossGraph', [...gradientTraces, markerTrace], layout, {
+                responsive: true,
+                modeBarButtonsToRemove: ['lasso2d', 'select2d', 'pan2d', 'zoomIn2d', 'zoomOut2d', 'zoom2d', 'resetScale2d', 'toImage', 'sendDataToCloud', 'autoScale2d'],
+                displaylogo: false
+            });
+        } else {
+            document.getElementById('weightLossGraph').innerHTML = '<p class="text-center text-gray-600">No valid weight data to display the graph.</p>';
+        }
+    </script>
 </body>
 </html>
