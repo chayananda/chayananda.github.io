@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Personality | Chayananda Nagesh</title>
+  <meta name="description" content="A closer look at how Chayananda Nagesh thinks, works, and pays attention.">
+  <link rel="canonical" href="https://chayananda.github.io/personality/">
+  <style>
+    :root {
+      --ink: #171717;
+      --muted: #69645e;
+      --paper: #f4f0e9;
+      --paper-deep: #e8e1d7;
+      --coral: #e7654f;
+      --teal: #176d70;
+      --yellow: #e7b94f;
+      --line: rgba(23, 23, 23, 0.18);
+      --sans: "Noto Sans", "Helvetica Neue", sans-serif;
+      --serif: Georgia, "Times New Roman", serif;
+      --max-width: 1140px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: var(--sans);
+      line-height: 1.55;
+    }
+
+    a { color: inherit; }
+
+    .shell {
+      width: min(100% - 40px, var(--max-width));
+      margin: 0 auto;
+    }
+
+    .site-header {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 80px;
+    }
+
+    .logo {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover, .nav-links a[aria-current="page"] { color: var(--coral); }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.9fr);
+      gap: clamp(40px, 8vw, 120px);
+      align-items: end;
+      padding: clamp(70px, 12vw, 150px) 0 100px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--coral);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1 {
+      max-width: 720px;
+      margin-bottom: 28px;
+      font-family: var(--serif);
+      font-size: clamp(3.5rem, 9vw, 7.5rem);
+      font-weight: 400;
+      letter-spacing: -0.07em;
+      line-height: 0.9;
+    }
+
+    .hero-copy {
+      max-width: 360px;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .hero-note {
+      padding: 24px 0 0 24px;
+      border-left: 3px solid var(--teal);
+    }
+
+    .hero-note p {
+      margin-bottom: 8px;
+      font-family: var(--serif);
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      line-height: 1.2;
+    }
+
+    .hero-note small { color: var(--muted); }
+
+    .overview {
+      display: grid;
+      grid-template-columns: 0.7fr 1.3fr;
+      gap: clamp(36px, 8vw, 120px);
+      padding: 72px 0 100px;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .overview h2 {
+      max-width: 620px;
+      margin-bottom: 48px;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 400;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    .traits {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border: 1px solid var(--line);
+    }
+
+    .trait {
+      min-height: 190px;
+      padding: 26px;
+      background: var(--paper);
+    }
+
+    .trait:nth-child(2) { background: var(--paper-deep); }
+    .trait:nth-child(3) { background: var(--paper-deep); }
+    .trait:nth-child(4) { background: var(--paper); }
+
+    .trait-number {
+      display: block;
+      margin-bottom: 36px;
+      color: var(--coral);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .trait h3 {
+      margin-bottom: 8px;
+      font-size: 1.15rem;
+      line-height: 1.1;
+    }
+
+    .trait p {
+      max-width: 220px;
+      margin-bottom: 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .principles {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      padding: 72px 0 110px;
+      border-top: 1px solid var(--line);
+    }
+
+    .principles h2 {
+      margin-bottom: 0;
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      font-weight: 400;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    .principles-list { display: grid; gap: 0; }
+
+    .principle {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 18px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .principle:first-child { border-top: 1px solid var(--line); }
+
+    .principle-index {
+      color: var(--teal);
+      font-family: var(--serif);
+      font-size: 1.25rem;
+    }
+
+    .principle h3 { margin: 0 0 4px; font-size: 1rem; }
+    .principle p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+
+    .site-footer {
+      padding: 28px 0;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .site-footer .shell { display: flex; justify-content: space-between; gap: 20px; }
+    .site-footer a { color: var(--ink); font-weight: 700; text-decoration: none; }
+
+    @media (max-width: 700px) {
+      .shell { width: min(100% - 32px, var(--max-width)); }
+      .nav { min-height: 68px; }
+      .nav-links { gap: 14px; font-size: 0.68rem; }
+      .hero, .overview, .principles { grid-template-columns: 1fr; }
+      .hero { gap: 48px; padding: 76px 0 72px; }
+      .hero-note { max-width: 340px; }
+      .overview, .principles { padding: 52px 0 72px; }
+      .overview h2 { margin-bottom: 32px; }
+      .trait { min-height: 170px; padding: 20px; }
+      .trait-number { margin-bottom: 24px; }
+      .site-footer .shell { display: block; }
+      .site-footer p { margin-bottom: 10px; }
+    }
+
+    @media (max-width: 420px) {
+      .nav-links { gap: 10px; }
+      .traits { grid-template-columns: 1fr; }
+      .trait:nth-child(n) { background: var(--paper); }
+      .trait:nth-child(even) { background: var(--paper-deep); }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav shell" aria-label="Main navigation">
+      <a class="logo" href="/">Chaya.</a>
+      <div class="nav-links">
+        <a href="/portfolio/">Portfolio</a>
+        <a href="/about/">About</a>
+        <a href="/personality/" aria-current="page">Personality</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div>
+        <p class="eyebrow">A personal field guide</p>
+        <h1>How I<br>show up.</h1>
+        <p class="hero-copy">The instincts behind the work: curious enough to ask one more question, precise enough to make the answer useful.</p>
+      </div>
+      <aside class="hero-note">
+        <p>"Good design starts with paying attention."</p>
+        <small>Chayananda Nagesh, probably taking notes</small>
+      </aside>
+    </section>
+
+    <section class="overview shell">
+      <p class="section-label">01 / At a glance</p>
+      <div>
+        <h2>Part analyst,<br>part instigator.</h2>
+        <div class="traits">
+          <article class="trait">
+            <span class="trait-number">01</span>
+            <h3>Deeply curious</h3>
+            <p>I follow the interesting thread, especially when it leads somewhere unexpected.</p>
+          </article>
+          <article class="trait">
+            <span class="trait-number">02</span>
+            <h3>Quietly rigorous</h3>
+            <p>Details earn their place. Clarity is a kindness to the person using the thing.</p>
+          </article>
+          <article class="trait">
+            <span class="trait-number">03</span>
+            <h3>Warmly direct</h3>
+            <p>I like honest conversations, generous critique, and decisions that keep moving.</p>
+          </article>
+          <article class="trait">
+            <span class="trait-number">04</span>
+            <h3>Always collecting</h3>
+            <p>Books, interfaces, overheard phrases, small rituals. Everything is research.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="principles shell">
+      <h2>What keeps<br>me oriented.</h2>
+      <div class="principles-list">
+        <article class="principle">
+          <span class="principle-index">A.</span>
+          <div><h3>Make the complex legible</h3><p>Find the shape of a problem before reaching for the polish.</p></div>
+        </article>
+        <article class="principle">
+          <span class="principle-index">B.</span>
+          <div><h3>Leave room for surprise</h3><p>The best answer is often hiding just outside the first obvious one.</p></div>
+        </article>
+        <article class="principle">
+          <span class="principle-index">C.</span>
+          <div><h3>Be useful, then memorable</h3><p>Restraint makes the moments of personality matter more.</p></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+      <p>© 2026 Chayananda Nagesh</p>
+      <a href="/">Back to portfolio</a>
+    </div>
+  </footer>
+</body>
+</html>
