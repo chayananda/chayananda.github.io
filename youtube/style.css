@@ -404,6 +404,10 @@ tr:hover td {
 }
 
 .button-ghost-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
   background: var(--canvas-elevated);
   color: var(--ink);
   border: 1px solid var(--hairline);
