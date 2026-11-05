@@ -421,6 +421,7 @@ LOGOS = [
     ("bms.svg", "Bristol Myers Squibb", 22),
     ("hilton.svg", "Hilton", 42),
     ("nokia.svg", "Nokia", 19),
+    ("pmi.svg", "Project Management Institute", 32),
     ("schneider.svg", "Schneider Electric", 32),
     ("tcs.svg", "Tata Consultancy Services", 32),
     ("urbanladder.svg", "Urban Ladder", 36),
