@@ -413,6 +413,35 @@ def contact_panel() -> str:
 </section>"""
 
 
+# Companies and clients for the logo marquee: (file in assets/img/logos/, name, height in px).
+# Heights are tuned by eye so wide wordmarks and compact marks look the same size.
+LOGOS = [
+    ("brillio.svg", "Brillio", 30),
+    ("impaktiq.svg", "Impakt IQ", 21),
+    ("bms.svg", "Bristol Myers Squibb", 22),
+    ("hilton.svg", "Hilton", 42),
+    ("nokia.svg", "Nokia", 19),
+    ("schneider.svg", "Schneider Electric", 32),
+    ("tcs.svg", "Tata Consultancy Services", 32),
+    ("urbanladder.svg", "Urban Ladder", 36),
+]
+
+
+def logo_marquee() -> str:
+    """Slow, endless logo strip. The list is rendered twice so the loop is seamless;
+    the copy is hidden from screen readers."""
+    def items(copy: bool) -> str:
+        hidden = ' aria-hidden="true"' if copy else ""
+        return "".join(
+            f'<li{hidden}><img src="/assets/img/logos/{f}" alt="{"" if copy else n}" style="--h:{h}px" loading="lazy" decoding="async"></li>'
+            for f, n, h in LOGOS
+        )
+    return f"""<div class="logos reveal" style="margin-top:40px">
+        <p class="sr-only">Companies and clients I've worked with</p>
+        <ul class="logos__track">{items(False)}{items(True)}</ul>
+      </div>"""
+
+
 def holo_cards() -> str:
     """Education badges: metallic medallions that tilt, catch light and spin on tap."""
     def badge(mod: str, label: str, core: str, kind: str, degree: str, field: str, inst: str, years: str, delay: str = "") -> str:
@@ -525,9 +554,7 @@ def page_home() -> str:
         <div class="kpi"><span class="kpi__num">2<small>×</small></span><span class="kpi__label">0→1 platforms led</span><span class="kpi__note">Impakt IQ · UL Studio</span></div>
         <div class="kpi"><span class="kpi__num">−76<small>%</small></span><span class="kpi__label">Time to log a workday</span><span class="kpi__note">Mobile vs web timesheet</span></div>
       </div>
-      <div class="logos reveal" style="margin-top:40px" aria-label="Where I've worked and studied">
-        <span>Brillio</span><span>Schneider Electric</span><span>Tata Consultancy Services</span><span>Urban Ladder</span><span>Impakt IQ</span><span class="is-nid">NID</span>
-      </div>
+      {logo_marquee()}
     </div>
   </section>
 
