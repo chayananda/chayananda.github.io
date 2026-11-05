@@ -49,31 +49,38 @@
     });
   }
 
-  /* ---- Hologram credential cards ---- */
+  /* ---- Education badges: tilt, follow the light, spin on tap ---- */
   document.querySelectorAll('.holo').forEach((card) => {
     let frame = 0;
-    const MAX = 14; // degrees
+    const MAX = 18; // degrees of tilt at the edges
+    const medal = card.querySelector('.badge__medal');
 
     const apply = (x, y) => {
-      // x, y in 0..1
+      // x, y in 0..1 across the whole card
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
-        card.style.setProperty('--ry', `${(x - 0.5) * MAX * 2}deg`);
-        card.style.setProperty('--rx', `${(0.5 - y) * MAX * 2}deg`);
+        const dx = x - 0.5, dy = y - 0.5;
+        card.style.setProperty('--ry', `${dx * MAX * 2}deg`);
+        card.style.setProperty('--rx', `${-dy * MAX * 2}deg`);
         card.style.setProperty('--mx', `${x * 100}%`);
         card.style.setProperty('--my', `${y * 100}%`);
+        card.style.setProperty('--a', `${Math.atan2(dy, dx) * 180 / Math.PI + 90}deg`);
         card.style.setProperty('--o', '1');
       });
     };
     const reset = () => {
       cancelAnimationFrame(frame);
       card.classList.remove('is-active');
-      card.style.setProperty('--rx', '0deg');
-      card.style.setProperty('--ry', '0deg');
+      ['--rx', '--ry', '--a'].forEach((v) => card.style.setProperty(v, '0deg'));
       card.style.setProperty('--mx', '50%');
-      card.style.setProperty('--my', '50%');
+      card.style.setProperty('--my', '30%');
       card.style.setProperty('--o', '0');
     };
+    const spin = () => {
+      if (reduceMotion || card.classList.contains('is-spinning')) return;
+      card.classList.add('is-spinning');
+    };
+    medal?.addEventListener('animationend', () => card.classList.remove('is-spinning'));
 
     card.addEventListener('pointerenter', () => card.classList.add('is-active'));
     card.addEventListener('pointermove', (e) => {
@@ -83,9 +90,13 @@
     });
     card.addEventListener('pointerleave', reset);
     card.addEventListener('pointercancel', reset);
+    card.addEventListener('click', spin);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); spin(); }
+    });
 
-    // Keyboard: focus shows a gentle angled shine
-    card.addEventListener('focus', () => { card.classList.add('is-active'); if (!reduceMotion) apply(0.72, 0.28); });
+    // Keyboard focus: tip the badge toward the light
+    card.addEventListener('focus', () => { card.classList.add('is-active'); if (!reduceMotion) apply(0.7, 0.3); });
     card.addEventListener('blur', reset);
   });
 
