@@ -52,6 +52,15 @@ I = {
 }
 
 # --------------------------------------------------------------------------
+# Image covers (files in assets/img/, 16:9, cropped to fit on smaller screens)
+# --------------------------------------------------------------------------
+def cover_image(src: str):
+    def render() -> str:
+        return f'<div class="cover cover--img" aria-hidden="true"><img src="/assets/img/{src}" alt="" decoding="async"></div>'
+    return render
+
+
+# --------------------------------------------------------------------------
 # Code-drawn covers (no image requests, crisp at any size)
 # --------------------------------------------------------------------------
 def cover_iiq() -> str:
@@ -146,7 +155,7 @@ CASES = [
         "timeline": "4 months (2024)",
         "role": "Lead product designer",
         "tags": ["0→1", "ESG", "B2B SaaS", "Design system"],
-        "cover": cover_iiq,
+        "cover": cover_image("iiq.jpg"),
         "card_stats": [("−80%", "client onboarding time"), ("2.3×", "audits run per analyst"), ("16 wk", "kickoff to MVP")],
         "problem": (
             "Impakt IQ helps companies measure and report their sustainability impact. Every audit ran on email, "
@@ -200,7 +209,7 @@ CASES = [
         "timeline": "6 months, 2 releases",
         "role": "UX designer & researcher",
         "tags": ["Enterprise mobile", "600K+ users", "Usability testing"],
-        "cover": cover_ts,
+        "cover": cover_image("timesheet.jpg"),
         "card_stats": [("600K+", "employees"), ("−76%", "time to log a day"), ("100%", "task success in testing")],
         "problem": (
             "Every TCS employee must log their hours before month-end to get paid. The timesheet lived in a dense web "
@@ -254,7 +263,7 @@ CASES = [
         "timeline": "6 months",
         "role": "UX designer (NID graduation project)",
         "tags": ["0→1", "3D tooling", "Retail", "NID project"],
-        "cover": cover_uls,
+        "cover": cover_image("ulstudio.jpg"),
         "card_stats": [("20", "stakeholder interviews"), ("−64%", "image turnaround"), ("−55%", "cost per hero shot")],
         "problem": (
             "Product images drive furniture purchases online, and every new Urban Ladder product needed them before "

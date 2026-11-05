@@ -284,7 +284,7 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
 .work-card:hover { border-color: var(--line-strong); }
 .work-card:hover::after { opacity: 1; }
 .work-card__media {
-  position: relative; aspect-ratio: 16 / 9; max-width: 100%;
+  position: relative; aspect-ratio: 16 / 9; max-width: 100%; box-sizing: content-box;
   overflow: hidden; border-bottom: 1px solid var(--line);
 }
 .work-card__media > .cover { transition: transform .8s var(--ease); }
@@ -306,12 +306,10 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
 .work-card:hover .work-card__cta svg { transform: translateX(4px); }
 @media (max-width: 900px) {
   .work-card__body { grid-template-columns: 1fr; gap: 20px; }
-  .work-card__media { aspect-ratio: 4 / 3; }
 }
 @media (max-width: 480px) {
   .work-card__stats { grid-template-columns: 1fr 1fr 1fr; }
   .work-card__stats b { font-size: 1.2rem; }
-  .work-card__media { aspect-ratio: 1 / 1; }
 }
 
 /* ---------- Covers (code-drawn product mockups) ---------- */
@@ -319,6 +317,9 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
 .cover--iiq { background: radial-gradient(80% 70% at 30% 0%, #2a1c12 0%, #120d0a 55%, #0c0b0a 100%); }
 .cover--ts  { background: radial-gradient(80% 80% at 70% 0%, #10223b 0%, #0b1220 55%, #090c12 100%); }
 .cover--uls { background: radial-gradient(80% 80% at 50% 10%, #2a2420 0%, #151210 60%, #0d0b0a 100%); }
+.cover--img { background: #0c0b0a; }
+.cover--img::before { display: none; }
+.cover--img img { width: 100%; height: 100%; object-fit: cover; object-position: center; }
 .cover::before {
   content: ""; position: absolute; inset: 0; pointer-events: none;
   background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
@@ -590,10 +591,9 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
 
 .cs-cover {
   position: relative; margin-top: clamp(32px, 5vw, 56px);
-  aspect-ratio: 16 / 8; max-width: 100%;
+  aspect-ratio: 16 / 9; max-width: 100%; box-sizing: content-box;
   border-radius: var(--r-lg); overflow: hidden; border: 1px solid var(--line);
 }
-@media (max-width: 720px) { .cs-cover { aspect-ratio: 4 / 3; } }
 
 .cs-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
 .cs-toc { position: sticky; top: calc(88px + env(safe-area-inset-top, 0px)); display: grid; gap: 4px; font-size: 14px; }
