@@ -9,10 +9,21 @@ Edit content (CASES, EXPERIENCE, EDUCATION) below, then rebuild to preview.
 """
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 from textwrap import dedent
 
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def asset_version(rel: str) -> str:
+    """Short content hash for a static file. Added to its URL so a changed file
+    gets a new URL and browsers never pair new pages with an old cached copy."""
+    return hashlib.sha256((ROOT / rel).read_bytes()).hexdigest()[:10]
+
+
+CSS_V = asset_version("assets/css/site.css")
+JS_V = asset_version("assets/js/site.js")
 
 SITE = {
     "name": "Chayananda Nagesh",
@@ -192,11 +203,12 @@ CASES = [
             ("Shipped on Material, tuned to the brand", "I compared Material, Ant, Fluent, Carbon and Lightning against the engineers' component library. Material with a warm brand palette let the team ship <b>60+ dev-ready screens</b> without a single design-blocked sprint."),
             ("Re-scoped the work plan to what could ship", "The first concept paired a list with a Gantt chart that the front-end library couldn't support. I reworked it into a progress list with milestone chips, kept the information and saved an estimated <b>3 sprints</b>."),
         ],
-        "shots": [
-            ("https://framerusercontent.com/images/81jR64fvwHIvZj5mBw6hjdLDo.png?width=1200", "Final screens: companies, setup and work plan", True),
-            ("https://framerusercontent.com/images/vGyM7wlc6KdGks0aeYHKhb1YG0w.png?width=1200", "Visual direction", False),
-            ("https://framerusercontent.com/images/C2InrC7rKSzqGdcv6en5Jnw8WyA.png?width=1200", "Brand-tuned Material system", False),
-        ],
+        # Screens section hidden until new images are ready. To bring it back, add
+        # entries here: (image URL, caption, crop?). Previous entries:
+        #   ("https://framerusercontent.com/images/81jR64fvwHIvZj5mBw6hjdLDo.png?width=1200", "Final screens: companies, setup and work plan", True),
+        #   ("https://framerusercontent.com/images/vGyM7wlc6KdGks0aeYHKhb1YG0w.png?width=1200", "Visual direction", False),
+        #   ("https://framerusercontent.com/images/C2InrC7rKSzqGdcv6en5Jnw8WyA.png?width=1200", "Brand-tuned Material system", False),
+        "shots": [],
         "reflection": "The fastest way through a 0→1 project with a fixed deadline was to agree early on what the MVP would leave out. Reports stayed outside the product for v1, which kept the team focused on the part of the workflow that cost the client the most time.",
     },
     {
@@ -246,11 +258,12 @@ CASES = [
             ("Week first, month on demand", "A full-month grid doesn't fit a 360 px screen. The week strip shows status at a glance and expands into a month view through a single handle."),
             ("One framework, two audiences", "Release 2 reused release 1's components and added a hub-and-spoke model for overtime: billing type, breaks and on-call each open their own sub-page. Reuse cut release 2's design time by about <b>40%</b>."),
         ],
-        "shots": [
-            ("https://framerusercontent.com/images/9qXuNAxqO7ypx4u55fba0EFqHZM.png?width=1200", "Final screens: regular timesheet", True),
-            ("https://framerusercontent.com/images/8UvxL2jLQx8krAajyMWrIiD7YqU.png?width=1200", "Final screens: overtime timesheet", True),
-            ("https://framerusercontent.com/images/bikvkehBoSXSoA5d89BIPR3OvQE.png?width=1000", "Interactive concept exploration in Axure", False),
-        ],
+        # Screens section hidden until new images are ready. To bring it back, add
+        # entries here: (image URL, caption, crop?). Previous entries:
+        #   ("https://framerusercontent.com/images/9qXuNAxqO7ypx4u55fba0EFqHZM.png?width=1200", "Final screens: regular timesheet", True),
+        #   ("https://framerusercontent.com/images/8UvxL2jLQx8krAajyMWrIiD7YqU.png?width=1200", "Final screens: overtime timesheet", True),
+        #   ("https://framerusercontent.com/images/bikvkehBoSXSoA5d89BIPR3OvQE.png?width=1000", "Interactive concept exploration in Axure", False),
+        "shots": [],
         "reflection": "At this scale the best features were the ones that removed decisions. Most of the time savings came from good defaults rather than new functionality.",
     },
     {
@@ -299,11 +312,12 @@ CASES = [
             ("Prototyped 3D interaction with real users", "Sketch couldn't prototype 3D, so I tested gestures in Set A Light Studio and recorded art directors moving cameras and lights. That fixed the orbit, pan and drop-in gestures before engineering started."),
             ("Moved steps to the back end", "Leadership reviews pushed for automation. Rendering, file naming and versioning happen on the server, which cut the flow from <b>11 steps to 6</b>."),
         ],
-        "shots": [
-            ("https://framerusercontent.com/images/H9aqZ2Xuw9PYMoyH4F5eZRfBs.png?width=1200", "Proof of concept: scene setup and shot composition", True),
-            ("https://framerusercontent.com/images/ZHPw5qOET90XAVIBuYZxaqns.png?width=1200", "Tablet wireframes", True),
-            ("https://framerusercontent.com/images/dpv34NqCC5xItzXYYT3Z60yu0.png?width=1200", "Information architecture", False),
-        ],
+        # Screens section hidden until new images are ready. To bring it back, add
+        # entries here: (image URL, caption, crop?). Previous entries:
+        #   ("https://framerusercontent.com/images/H9aqZ2Xuw9PYMoyH4F5eZRfBs.png?width=1200", "Proof of concept: scene setup and shot composition", True),
+        #   ("https://framerusercontent.com/images/ZHPw5qOET90XAVIBuYZxaqns.png?width=1200", "Tablet wireframes", True),
+        #   ("https://framerusercontent.com/images/dpv34NqCC5xItzXYYT3Z60yu0.png?width=1200", "Information architecture", False),
+        "shots": [],
         "reflection": "Working with a CEO who reviewed every week taught me to bring decisions, not options. The project also set the approach I still use from NID: understand the whole system before designing any single screen.",
     },
 ]
@@ -349,8 +363,8 @@ def head(title: str, desc: str, root: str) -> str:
     <link rel="icon" href="{root}assets/icons/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="{root}assets/icons/apple-touch-icon.png">
     {FONTS}
-    <link rel="stylesheet" href="{root}assets/css/site.css">
-    <script src="{root}assets/js/site.js" defer></script>
+    <link rel="stylesheet" href="{root}assets/css/site.css?v={CSS_V}">
+    <script src="{root}assets/js/site.js?v={JS_V}" defer></script>
     </head>
     <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -721,7 +735,16 @@ def page_case(c: dict, idx: int) -> str:
     toc = "".join(
         f'<a href="#{k}">{v}</a>'
         for k, v in (("overview", "Overview"), ("impact", "Impact"), ("shift", "What changed"), ("decisions", "Key decisions"), ("screens", "Screens"), ("reflection", "Reflection"))
+        if k != "screens" or c["shots"]
     )
+    # The Screens section only appears when the project has screens to show.
+    screens = f"""
+        <section class="cs-sec" id="screens">
+          <span class="eyebrow">Screens</span>
+          <h2>The work</h2>
+          <div class="gallery">{shots}</div>
+        </section>
+""" if c["shots"] else ""
     nid_note = (
         '<p class="muted" style="font-size:14px">Design approach grounded in my Interaction Design training at the National Institute of Design (NID).</p>'
     )
@@ -773,13 +796,7 @@ def page_case(c: dict, idx: int) -> str:
           <h2>The calls that shaped it</h2>
           <div class="decisions">{decisions}</div>
         </section>
-
-        <section class="cs-sec" id="screens">
-          <span class="eyebrow">Screens</span>
-          <h2>The work</h2>
-          <div class="gallery">{shots}</div>
-        </section>
-
+{screens}
         <section class="cs-sec" id="reflection">
           <span class="eyebrow">Reflection</span>
           <h2>What I took away</h2>
