@@ -263,7 +263,7 @@ CASES = [
         "timeline": "6 months",
         "role": "UX designer (NID graduation project)",
         "tags": ["0→1", "3D tooling", "Retail", "NID project"],
-        "cover": cover_uls,
+        "cover": cover_image("ulstudio.jpg"),
         "card_stats": [("20", "stakeholder interviews"), ("−64%", "image turnaround"), ("−55%", "cost per hero shot")],
         "problem": (
             "Product images drive furniture purchases online, and every new Urban Ladder product needed them before "
