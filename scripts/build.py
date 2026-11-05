@@ -52,6 +52,15 @@ I = {
 }
 
 # --------------------------------------------------------------------------
+# Image covers (files in assets/img/, 16:9, cropped to fit on smaller screens)
+# --------------------------------------------------------------------------
+def cover_image(src: str):
+    def render() -> str:
+        return f'<div class="cover cover--img" aria-hidden="true"><img src="/assets/img/{src}" alt="" decoding="async"></div>'
+    return render
+
+
+# --------------------------------------------------------------------------
 # Code-drawn covers (no image requests, crisp at any size)
 # --------------------------------------------------------------------------
 def cover_iiq() -> str:
@@ -146,7 +155,7 @@ CASES = [
         "timeline": "4 months (2024)",
         "role": "Lead product designer",
         "tags": ["0→1", "ESG", "B2B SaaS", "Design system"],
-        "cover": cover_iiq,
+        "cover": cover_image("iiq.jpg"),
         "card_stats": [("−80%", "client onboarding time"), ("2.3×", "audits run per analyst"), ("16 wk", "kickoff to MVP")],
         "problem": (
             "Impakt IQ helps companies measure and report their sustainability impact. Every audit ran on email, "
