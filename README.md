@@ -21,12 +21,17 @@ The generated pages are git-ignored. Edit `build.py`, not the HTML.
 
 ## Deploy
 
-Push to `main`. Vercel runs `python3 scripts/build.py` and publishes the result to chayananda.vercel.app. Other branches get preview URLs.
+Live at **www.chayananda.com** (chayananda.com redirects there), served by GitHub Pages from the
+`chayananda/chayananda.github.io` repo.
 
-## Keeping local, GitHub and Vercel in sync
+Push to `master` in that repo. The workflow in `.github/workflows/pages.yml` runs
+`python3 scripts/build.py`, collects the pages and `assets/`, and publishes them. Watch it under the
+repo's **Actions** tab; it takes about a minute.
+
+## Keeping local and GitHub in sync
 
 1. `git pull` before you start (picks up changes made elsewhere).
 2. Edit, preview locally, then `git add -A && git commit -m "..." && git push`.
-3. Vercel deploys `main` to production automatically; any other branch gets a preview URL.
+3. GitHub Actions builds and publishes `master` automatically.
 
-Never upload files to Vercel by hand — GitHub is the single source of truth.
+The previous site is kept in the `old-site` branch of the same repo.
