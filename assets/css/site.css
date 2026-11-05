@@ -273,6 +273,10 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
 .grad {
   background: linear-gradient(180deg, #ffffff 0%, #ffffff 35%, #9a9cab 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
+  /* background-clip: text only paints inside the box, and the tight heading
+     line-height lets descenders (g, p, y) on the last line hang below it.
+     Extra bottom padding keeps them painted; the negative margin keeps spacing. */
+  padding-bottom: .14em; margin-bottom: -.14em;
 }
 .lede { font-size: var(--step-1); color: var(--fg-2); max-width: 60ch; line-height: 1.6; }
 .muted { color: var(--fg-3); }
