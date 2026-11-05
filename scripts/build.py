@@ -349,7 +349,7 @@ CASES = [
         "platform": "Web + mobile · SaaS",
         "role": "Senior Product Designer",
         "tags": ["Project Echo", "Financial reporting", "Role-based"],
-        "cover": cover_image("hilton-echo.jpg"),
+        "cover": cover_image("hilton-echo-fees.jpg"),
         "card_stats": [("2", "user groups: BOSS users and hotel owners"), ("Web + app", "one platform"), ("Fee-level", "drill-down")],
         "problem": (
             "Hilton applies Quality Fees to properties that fail to maintain its brand standards, and Incentives to those that "
