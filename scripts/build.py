@@ -895,8 +895,8 @@ def page_about() -> str:
       <div class="stack" style="gap:24px">
         {nid_chip("Interaction Design alumnus · 2014 batch")}
         <h1 class="grad reveal" data-delay="1" style="font-size:var(--step-4)">From engineer to designer, {SITE['years']} years in.</h1>
-        <p class="lede reveal" data-delay="2">I studied computer science at VTU, then Interaction Design at the National Institute of Design. Since then I've designed enterprise products at Tata Consultancy Services, Schneider Electric and Brillio, across HR, energy, ESG audit and retail technology.</p>
-        <p class="lede reveal" data-delay="2">I'm at my best on products with many roles, rules and edge cases, where clear structure matters more than decoration. I work closely with engineers, and I like to leave teams with systems they can keep using after I've moved on.</p>
+        <p class="lede reveal" data-delay="2">I started out writing code, studying computer science at VTU, then went to the National Institute of Design to learn who that code is really for. Since then I've designed enterprise products at Tata Consultancy Services, Schneider Electric and Brillio, for teams at Hilton, Nokia, PMI and BRAC Bank, across HR, energy, ESG, hospitality, banking and retail.</p>
+        <p class="lede reveal" data-delay="2">I'm happiest inside the messy stuff: tools people rely on every day, full of roles, rules and edge cases. I untangle them until they feel obvious, work side by side with engineers so good ideas actually ship, and leave teams with systems they can keep using long after I've moved on. If your product feels harder than it should, let's talk.</p>
         <div class="hero__actions reveal" data-delay="3"><a class="btn btn--primary" href="../index.html#work">See the work {I['arrow']}</a><a class="btn" href="../index.html#contact">Contact</a></div>
       </div>
       <div class="portrait reveal" data-delay="2">
