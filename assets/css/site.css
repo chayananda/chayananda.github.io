@@ -195,24 +195,28 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
   background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
 }
 /* NID chip: shining emblem, text, and a play button for the convocation video */
-.chip--nid { position: relative; padding: 4px 4px 4px 10px; gap: 6px; width: fit-content; justify-self: start; align-self: start; }
+.chip--nid {
+  /* gold palette, matching the VTU badge */
+  --g-hi: #fff6dc; --g-1: #f1d58f; --g-2: #c9a24f; --g-3: #8a6a2a;
+  position: relative; padding: 4px 4px 4px 10px; gap: 6px; width: fit-content; justify-self: start; align-self: start;
+}
 .chip__main { display: inline-flex; align-items: center; gap: 9px; min-width: 0; }
 .chip__main:hover { color: var(--fg); }
 .chip__nid {
   flex: none; width: 25px; height: 20px;
   /* the emblem is a mask; a bright band sweeps across it on a loop */
-  background: linear-gradient(110deg, var(--accent-2) 0%, #fff 30%, var(--accent) 45%, #fff 50%, var(--accent-2) 70%, #9fe7ff 85%, var(--accent-2) 100%);
+  background: linear-gradient(110deg, var(--g-2) 0%, var(--g-1) 25%, var(--g-hi) 42%, #fff 50%, var(--g-hi) 58%, var(--g-1) 75%, var(--g-3) 100%);
   background-size: 250% 100%;
   -webkit-mask: url("/assets/img/nid-mark.svg") center / contain no-repeat;
   mask: url("/assets/img/nid-mark.svg") center / contain no-repeat;
   animation: nid-shine 3.2s linear infinite;
-  filter: drop-shadow(0 0 6px rgba(139,140,248,.55));
+  filter: drop-shadow(0 0 6px rgba(241,213,143,.45));
 }
 @keyframes nid-shine { from { background-position: 100% 0; } to { background-position: -150% 0; } }
 /* a soft glint that runs along the chip border now and then */
 .chip--nid::before {
   content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
-  background: linear-gradient(110deg, transparent 35%, rgba(182,166,255,.9) 50%, transparent 65%) 0 0 / 300% 100%;
+  background: linear-gradient(110deg, transparent 35%, rgba(241,213,143,.95) 50%, transparent 65%) 0 0 / 300% 100%;
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
   animation: nid-glint 6s ease-in-out infinite;
@@ -221,14 +225,14 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
 .chip__play {
   flex: none; width: 24px; height: 24px; border-radius: 50%;
   display: grid; place-items: center; margin-left: 4px;
-  color: var(--accent-ink); background: linear-gradient(135deg, #fff, var(--accent-2));
-  box-shadow: 0 0 0 0 rgba(139,140,248,.6);
+  color: #3a2a0c; background: linear-gradient(135deg, var(--g-hi), var(--g-1) 45%, var(--g-2));
+  box-shadow: 0 0 0 0 rgba(241,213,143,.6);
   animation: play-pulse 2.4s ease-out infinite;
   transition: transform .2s var(--ease);
 }
 .chip__play svg { width: 12px; height: 12px; margin-left: 1px; }
 .chip__play:hover, .chip__play:focus-visible { transform: scale(1.1); animation: none; }
-@keyframes play-pulse { 0% { box-shadow: 0 0 0 0 rgba(139,140,248,.55); } 70%, 100% { box-shadow: 0 0 0 8px rgba(139,140,248,0); } }
+@keyframes play-pulse { 0% { box-shadow: 0 0 0 0 rgba(241,213,143,.55); } 70%, 100% { box-shadow: 0 0 0 8px rgba(241,213,143,0); } }
 /* hover preview window (added by site.js on devices with a mouse) */
 .yt-peek {
   position: absolute; z-index: 40; top: calc(100% + 10px); right: 0;
