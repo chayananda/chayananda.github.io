@@ -258,11 +258,12 @@ CASES = [
             ("Week first, month on demand", "A full-month grid doesn't fit a 360 px screen. The week strip shows status at a glance and expands into a month view through a single handle."),
             ("One framework, two audiences", "Release 2 reused release 1's components and added a hub-and-spoke model for overtime: billing type, breaks and on-call each open their own sub-page. Reuse cut release 2's design time by about <b>40%</b>."),
         ],
-        "shots": [
-            ("https://framerusercontent.com/images/9qXuNAxqO7ypx4u55fba0EFqHZM.png?width=1200", "Final screens: regular timesheet", True),
-            ("https://framerusercontent.com/images/8UvxL2jLQx8krAajyMWrIiD7YqU.png?width=1200", "Final screens: overtime timesheet", True),
-            ("https://framerusercontent.com/images/bikvkehBoSXSoA5d89BIPR3OvQE.png?width=1000", "Interactive concept exploration in Axure", False),
-        ],
+        # Screens section hidden until new images are ready. To bring it back, add
+        # entries here: (image URL, caption, crop?). Previous entries:
+        #   ("https://framerusercontent.com/images/9qXuNAxqO7ypx4u55fba0EFqHZM.png?width=1200", "Final screens: regular timesheet", True),
+        #   ("https://framerusercontent.com/images/8UvxL2jLQx8krAajyMWrIiD7YqU.png?width=1200", "Final screens: overtime timesheet", True),
+        #   ("https://framerusercontent.com/images/bikvkehBoSXSoA5d89BIPR3OvQE.png?width=1000", "Interactive concept exploration in Axure", False),
+        "shots": [],
         "reflection": "At this scale the best features were the ones that removed decisions. Most of the time savings came from good defaults rather than new functionality.",
     },
     {
@@ -311,11 +312,12 @@ CASES = [
             ("Prototyped 3D interaction with real users", "Sketch couldn't prototype 3D, so I tested gestures in Set A Light Studio and recorded art directors moving cameras and lights. That fixed the orbit, pan and drop-in gestures before engineering started."),
             ("Moved steps to the back end", "Leadership reviews pushed for automation. Rendering, file naming and versioning happen on the server, which cut the flow from <b>11 steps to 6</b>."),
         ],
-        "shots": [
-            ("https://framerusercontent.com/images/H9aqZ2Xuw9PYMoyH4F5eZRfBs.png?width=1200", "Proof of concept: scene setup and shot composition", True),
-            ("https://framerusercontent.com/images/ZHPw5qOET90XAVIBuYZxaqns.png?width=1200", "Tablet wireframes", True),
-            ("https://framerusercontent.com/images/dpv34NqCC5xItzXYYT3Z60yu0.png?width=1200", "Information architecture", False),
-        ],
+        # Screens section hidden until new images are ready. To bring it back, add
+        # entries here: (image URL, caption, crop?). Previous entries:
+        #   ("https://framerusercontent.com/images/H9aqZ2Xuw9PYMoyH4F5eZRfBs.png?width=1200", "Proof of concept: scene setup and shot composition", True),
+        #   ("https://framerusercontent.com/images/ZHPw5qOET90XAVIBuYZxaqns.png?width=1200", "Tablet wireframes", True),
+        #   ("https://framerusercontent.com/images/dpv34NqCC5xItzXYYT3Z60yu0.png?width=1200", "Information architecture", False),
+        "shots": [],
         "reflection": "Working with a CEO who reviewed every week taught me to bring decisions, not options. The project also set the approach I still use from NID: understand the whole system before designing any single screen.",
     },
 ]
