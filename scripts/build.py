@@ -660,8 +660,7 @@ def page_about() -> str:
         <div class="hero__actions reveal" data-delay="3"><a class="btn btn--primary" href="../index.html#work">See the work {I['arrow']}</a><a class="btn" href="../index.html#contact">Contact</a></div>
       </div>
       <div class="portrait reveal" data-delay="2">
-        <span class="portrait__mono" aria-hidden="true">CN</span>
-        <img src="{SITE['portrait']}" alt="Portrait of {SITE['name']}" loading="lazy" onerror="this.remove()">
+        <img src="{SITE['portrait']}" alt="Portrait of {SITE['name']}" fetchpriority="high" decoding="async" onerror="this.remove()">
         <div class="portrait__tag"><span>{SITE['name']}</span><span class="muted">Bengaluru</span></div>
       </div>
     </div>
