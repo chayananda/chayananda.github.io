@@ -209,7 +209,7 @@ CASES = [
         "timeline": "6 months, 2 releases",
         "role": "UX designer & researcher",
         "tags": ["Enterprise mobile", "600K+ users", "Usability testing"],
-        "cover": cover_ts,
+        "cover": cover_image("timesheet.jpg"),
         "card_stats": [("600K+", "employees"), ("−76%", "time to log a day"), ("100%", "task success in testing")],
         "problem": (
             "Every TCS employee must log their hours before month-end to get paid. The timesheet lived in a dense web "
