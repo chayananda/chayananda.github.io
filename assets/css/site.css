@@ -364,7 +364,8 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
 .cs-facts.cs-facts--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 720px) { .cs-facts.cs-facts--3 { grid-template-columns: 1fr; } }
 .soon-note { max-width: 640px; display: grid; gap: 14px; margin-bottom: clamp(32px, 4vw, 48px); }
-.next-cs.next-cs--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.next-cs.next-cs--3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+.ba.ba--single { grid-template-columns: 1fr; }
 @media (max-width: 860px) { .next-cs.next-cs--3 { grid-template-columns: 1fr; } }
 
 /* ---------- Covers (code-drawn product mockups) ---------- */

@@ -71,14 +71,15 @@ def cover_image(src: str):
     return render
 
 
-def cover_soon(logo: str, label: str):
-    """Placeholder cover for a case study that isn't written yet: client logo + "Coming soon"."""
+def cover_soon(logo: str, label: str, pill: str = "Case study coming soon"):
+    """Placeholder cover until real artwork is ready: client logo, plus an optional pill."""
     def render() -> str:
+        pill_html = f'<span class="cover--soon__pill">{pill}</span>' if pill else ""
         return (
             '<div class="cover cover--soon" aria-hidden="true">'
             f'<span class="cover__label">{label}</span>'
             f'<img class="cover--soon__logo" src="/assets/img/logos/{logo}" alt="" decoding="async">'
-            '<span class="cover--soon__pill">Case study coming soon</span>'
+            f'{pill_html}'
             '</div>'
         )
     return render
@@ -333,18 +334,47 @@ CASES = [
         "shots": [],
         "reflection": "Working with a CEO who reviewed every week taught me to bring decisions, not options. The project also set the approach I still use from NID: understand the whole system before designing any single screen.",
     },
+    {
+        # Project Echo (previously "Hilton BOSS Quality Fee"). Lighter case study:
+        # no metrics, before/after, decisions or reflection yet, so those sections stay hidden.
+        "slug": "hilton-echo",
+        "title": "Hilton BOSS Echo",
+        "headline": "Making Hilton's Quality Fees and Incentives clear to the hotel owners they apply to",
+        "card_desc": "A web and mobile SaaS platform where BOSS users and hotel owners see the Quality Fees and Incentives on their properties, and drill into how each one was calculated.",
+        "company": "Hilton",
+        "platform": "Web + mobile · SaaS",
+        "role": "Senior Product Designer",
+        "tags": ["Project Echo", "Financial reporting", "Role-based"],
+        "cover": cover_image("hilton-echo.jpg"),
+        "card_stats": [("2", "user groups: BOSS users and hotel owners"), ("Web + app", "one platform"), ("Fee-level", "drill-down")],
+        "problem": (
+            "Hilton applies Quality Fees to properties that fail to maintain its brand standards, and Incentives to those that "
+            "perform well. The structures behind both are complex. "
+            "BOSS users and hotel owners had little visibility into which fees applied, how they were calculated and why, "
+            "which led to manual reconciliation and support queries to corporate teams. Project Echo set out to make that "
+            "information transparent in one web and mobile platform, with drill-down from fee types to calculations and rationale."
+        ),
+        "roles": [
+            ("My role", "Senior Product Designer. Led discovery, user flows, wireframes and interactive prototypes through to cross-functional sign-off."),
+            ("Users", "BOSS users and Hilton hotel owners."),
+            ("Scope", "Quality Fee and Incentive reporting with drill-down into fee types, calculations and rationale, on web and mobile, with role-based access."),
+        ],
+        "process": [
+            ("Discovery with the people who pay the fees", "I led discovery workshops with BOSS users and hotel owners to understand where fee transparency broke down and which reports were missing."),
+            ("Turned fee structures into user flows", "I translated the Quality Fee and Incentive structures into user flows that people outside finance could follow."),
+            ("Wireframed the drill-down", "Low-fidelity wireframes simplified the path from fee types to calculations and the rationale behind each one."),
+            ("Prototyped to align the teams", "Through iterative feedback sessions with business and engineering stakeholders, I built interactive prototypes that clarified the data hierarchy, improved usability and secured cross-functional alignment."),
+        ],
+        "outcomes": [
+            "Clearer transparency around Quality Fees and Incentives",
+            "Less manual reconciliation and fewer support queries from hotel owners",
+            "Stronger trust between corporate teams and property stakeholders, through clearer drill-down reporting",
+            "A scalable, role-based architecture ready for advanced analytics, performance benchmarking and automated financial reporting",
+        ],
+        "shots": [],
+    },
     # ---- Coming soon: card + placeholder page until the case study is written.
     # Set "coming_soon": False and fill in the full fields (see the projects above) to publish.
-    {
-        "slug": "hilton-quality-fee",
-        "title": "Hilton BOSS Quality Fee",
-        "headline": "Hilton BOSS Quality Fee",
-        "card_desc": "The full case study is being written up. Check back soon.",
-        "company": "Hilton",
-        "tags": ["BOSS"],
-        "cover": cover_soon("hilton.svg", "Hilton · BOSS Quality Fee"),
-        "coming_soon": True,
-    },
     {
         "slug": "hilton-design-system",
         "title": "Hilton BOSS Design System",
@@ -628,7 +658,7 @@ def page_home() -> str:
       <div class="sec-head reveal">
         <span class="eyebrow">Selected work</span>
         <h2 class="h-section grad">Shipped products, measured outcomes.</h2>
-        <p class="lede">Three in-depth case studies across web, mobile and tablet, with more on the way. Each one starts with the problem, then shows the decisions and the numbers that moved.</p>
+        <p class="lede">Four case studies across web, mobile and tablet, with more on the way. Each one starts with the problem, then shows how I worked and what changed.</p>
       </div>
       <div class="work">{cards}</div>
     </div>
@@ -755,45 +785,102 @@ def page_about() -> str:
 
 
 def page_case(c: dict, idx: int) -> str:
+    """Full case study page. Every section after the overview is optional and only
+    renders when the project has content for it (and only then appears in the menu)."""
     root = "../../"
     facts = "".join(
         f"<div><dt>{k}</dt><dd>{v}</dd></div>"
-        for k, v in (("Company", c["company"]), ("Platform", c["platform"]), ("Timeline", c["timeline"]), ("Role", c["role"]))
+        for k, v in (("Company", c.get("company")), ("Platform", c.get("platform")), ("Timeline", c.get("timeline")), ("Role", c.get("role")))
+        if v
     )
+    n_facts = sum(1 for k in ("company", "platform", "timeline", "role") if c.get(k))
+    facts_cls = "cs-facts" if n_facts == 4 else f"cs-facts cs-facts--{n_facts}"
     roles = "".join(f"<div><h3>{t}</h3><p>{d}</p></div>" for t, d in c["roles"])
-    impact = "".join(
-        f'<div class="impact__item"><span class="impact__num">{n}<span class="unit">{u}</span></span>'
-        f'<span class="impact__label">{l}</span><span class="impact__ctx">{ctx}</span>'
-        f'<div class="impact__bar" aria-hidden="true"><i style="--w:{w}%"></i></div></div>'
-        for n, u, l, ctx, w in c["impact"]
-    )
-    before = "".join(f"<li>{x}</li>" for x in c["before"])
-    after = "".join(f"<li>{x}</li>" for x in c["after"])
-    decisions = "".join(f'<div class="decision"><div><h3>{t}</h3><p>{d}</p></div></div>' for t, d in c["decisions"])
-    shots = "".join(
-        f'<figure class="shot{" shot--crop" if crop else ""}" data-alt="{cap}. Image unavailable.">'
-        f'<img src="{src}" alt="{cap}" loading="lazy" decoding="async">'
-        f'<figcaption><span>{cap}</span><span>{c["title"]}</span></figcaption></figure>'
-        for src, cap, crop in c["shots"]
-    )
+
+    sections = []  # (id, menu label, html)
+
+    if c.get("process"):
+        steps = "".join(f'<div class="decision"><div><h3>{t}</h3><p>{d}</p></div></div>' for t, d in c["process"])
+        sections.append(("process", "How I worked", f"""
+        <section class="cs-sec" id="process">
+          <span class="eyebrow">Process</span>
+          <h2>How I worked</h2>
+          <div class="decisions">{steps}</div>
+        </section>"""))
+
+    if c.get("impact"):
+        impact = "".join(
+            f'<div class="impact__item"><span class="impact__num">{n}<span class="unit">{u}</span></span>'
+            f'<span class="impact__label">{l}</span><span class="impact__ctx">{ctx}</span>'
+            f'<div class="impact__bar" aria-hidden="true"><i style="--w:{w}%"></i></div></div>'
+            for n, u, l, ctx, w in c["impact"]
+        )
+        sections.append(("impact", "Impact", f"""
+        <section class="cs-sec" id="impact">
+          <span class="eyebrow">Impact</span>
+          <h2>What moved</h2>
+          <div class="impact">{impact}</div>
+        </section>"""))
+    elif c.get("outcomes"):
+        outcomes = "".join(f"<li>{x}</li>" for x in c["outcomes"])
+        sections.append(("impact", "Impact", f"""
+        <section class="cs-sec" id="impact">
+          <span class="eyebrow">Business impact</span>
+          <h2>What it changed</h2>
+          <div class="ba ba--single"><div class="ba__col ba__col--after"><ul>{outcomes}</ul></div></div>
+        </section>"""))
+
+    if c.get("before") and c.get("after"):
+        before = "".join(f"<li>{x}</li>" for x in c["before"])
+        after = "".join(f"<li>{x}</li>" for x in c["after"])
+        sections.append(("shift", "What changed", f"""
+        <section class="cs-sec" id="shift">
+          <span class="eyebrow">Before / after</span>
+          <h2>What changed for users</h2>
+          <div class="ba">
+            <div class="ba__col"><h3>Before</h3><ul>{before}</ul></div>
+            <div class="ba__col ba__col--after"><h3>After</h3><ul>{after}</ul></div>
+          </div>
+        </section>"""))
+
+    if c.get("decisions"):
+        decisions = "".join(f'<div class="decision"><div><h3>{t}</h3><p>{d}</p></div></div>' for t, d in c["decisions"])
+        sections.append(("decisions", "Key decisions", f"""
+        <section class="cs-sec" id="decisions">
+          <span class="eyebrow">Key decisions</span>
+          <h2>The calls that shaped it</h2>
+          <div class="decisions">{decisions}</div>
+        </section>"""))
+
+    if c.get("shots"):
+        shots = "".join(
+            f'<figure class="shot{" shot--crop" if crop else ""}" data-alt="{cap}. Image unavailable.">'
+            f'<img src="{src}" alt="{cap}" loading="lazy" decoding="async">'
+            f'<figcaption><span>{cap}</span><span>{c["title"]}</span></figcaption></figure>'
+            for src, cap, crop in c["shots"]
+        )
+        sections.append(("screens", "Screens", f"""
+        <section class="cs-sec" id="screens">
+          <span class="eyebrow">Screens</span>
+          <h2>The work</h2>
+          <div class="gallery">{shots}</div>
+        </section>"""))
+
+    if c.get("reflection"):
+        sections.append(("reflection", "Reflection", f"""
+        <section class="cs-sec" id="reflection">
+          <span class="eyebrow">Reflection</span>
+          <h2>What I took away</h2>
+          <blockquote class="quote">{c['reflection']}<cite>{SITE['name']} · {c['role']}</cite></blockquote>
+        </section>"""))
+
     others = [o for o in CASES if o["slug"] != c["slug"] and not o.get("coming_soon")]
     nxt = "".join(
         f'<a href="{root}case-studies/{o["slug"]}/index.html"><small>{"Next" if i == 0 else "Also see"}</small><b>{o["title"]}</b><span class="muted">{o["company"]} · {o["platform"]}</span></a>'
         for i, o in enumerate(others)
     )
-    toc = "".join(
-        f'<a href="#{k}">{v}</a>'
-        for k, v in (("overview", "Overview"), ("impact", "Impact"), ("shift", "What changed"), ("decisions", "Key decisions"), ("screens", "Screens"), ("reflection", "Reflection"))
-        if k != "screens" or c["shots"]
-    )
-    # The Screens section only appears when the project has screens to show.
-    screens = f"""
-        <section class="cs-sec" id="screens">
-          <span class="eyebrow">Screens</span>
-          <h2>The work</h2>
-          <div class="gallery">{shots}</div>
-        </section>
-""" if c["shots"] else ""
+    toc = '<a href="#overview">Overview</a>' + "".join(f'<a href="#{k}">{v}</a>' for k, v, _ in sections)
+    body = "\n".join(html for _, _, html in sections)
     nid_note = (
         '<p class="muted" style="font-size:14px">Design approach grounded in my Interaction Design training at the National Institute of Design (NID).</p>'
     )
@@ -808,7 +895,7 @@ def page_case(c: dict, idx: int) -> str:
       <a class="cs-back" href="{root}index.html#work">{I['back']}All work</a>
       <span class="eyebrow">Case study · {c['title']}</span>
       <h1 class="grad">{c['headline']}</h1>
-      <dl class="cs-facts">{facts}</dl>
+      <dl class="{facts_cls}">{facts}</dl>
       <div class="cs-cover">{c['cover']()}</div>
     </div>
   </section>
@@ -824,33 +911,7 @@ def page_case(c: dict, idx: int) -> str:
           <div class="role-card">{roles}</div>
           {nid_note}
         </section>
-
-        <section class="cs-sec" id="impact">
-          <span class="eyebrow">Impact</span>
-          <h2>What moved</h2>
-          <div class="impact">{impact}</div>
-        </section>
-
-        <section class="cs-sec" id="shift">
-          <span class="eyebrow">Before / after</span>
-          <h2>What changed for users</h2>
-          <div class="ba">
-            <div class="ba__col"><h3>Before</h3><ul>{before}</ul></div>
-            <div class="ba__col ba__col--after"><h3>After</h3><ul>{after}</ul></div>
-          </div>
-        </section>
-
-        <section class="cs-sec" id="decisions">
-          <span class="eyebrow">Key decisions</span>
-          <h2>The calls that shaped it</h2>
-          <div class="decisions">{decisions}</div>
-        </section>
-{screens}
-        <section class="cs-sec" id="reflection">
-          <span class="eyebrow">Reflection</span>
-          <h2>What I took away</h2>
-          <blockquote class="quote">{c['reflection']}<cite>{SITE['name']} · {c['role']}</cite></blockquote>
-        </section>
+{body}
 
         <div class="next-cs">{nxt}</div>
       </div>
