@@ -335,7 +335,10 @@ def head(title: str, desc: str, root: str) -> str:
     <meta property="og:title" content="{title}">
     <meta property="og:description" content="{desc}">
     <meta property="og:type" content="website">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%238b8cf8'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='700' font-size='16' text-anchor='middle' fill='%230b0b1a'%3EC%3C/text%3E%3C/svg%3E">
+    <link rel="icon" href="{root}favicon.ico" sizes="48x48">
+    <link rel="icon" href="{root}assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="icon" href="{root}assets/icons/favicon-32.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{root}assets/icons/apple-touch-icon.png">
     {FONTS}
     <link rel="stylesheet" href="{root}assets/css/site.css">
     <script src="{root}assets/js/site.js" defer></script>
