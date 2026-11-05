@@ -400,14 +400,58 @@ CASES = [
         "coming_soon": True,
     },
     {
+        # From the NokiaGPT Jira-integration requirements page. Internal details (accounts,
+        # databases, APIs, project keys, names, ticket IDs) are deliberately left out.
+        # Role/company line are assumptions to confirm.
         "slug": "nokia-gpt",
         "title": "Nokia GPT",
-        "headline": "Nokia GPT",
-        "card_desc": "The full case study is being written up. Check back soon.",
+        "headline": "Letting Nokia teams ask Jira anything in plain language, inside NokiaGPT",
+        "card_desc": "A Jira integration for NokiaGPT, Nokia's internal GenAI assistant, so people can search, summarize and track tickets in plain language, and update them from the chat.",
         "company": "Nokia",
-        "tags": ["AI", "GenAI"],
+        "platform": "Web · Internal GenAI",
+        "timeline": "2024",
+        "role": "Senior Product Designer",
+        "tags": ["GenAI", "Conversational UX", "Jira"],
         "cover": cover_image("nokia-gpt.jpg"),
-        "coming_soon": True,
+        "card_stats": [("15+", "Jira use cases mapped"), ("2", "personas: end users and project owners"), ("0", "query language needed")],
+        "problem": (
+            "Nokia teams track their work across many Jira projects. Finding similar issues or past fixes meant keyword "
+            "searches or Jira's query language, long tickets and comment threads had to be read end to end, and project "
+            "owners pieced together status, velocity and effort by hand. NokiaGPT, Nokia's internal GenAI assistant, was "
+            "adding a Jira integration so people could search, summarize and update Jira in natural language with metadata "
+            "filters. It had to work for both everyday users and project owners."
+        ),
+        "roles": [
+            ("My role", "Senior Product Designer. Led use-case discovery and designed the conversational experience for the Jira integration."),
+            ("Users", "End users who work in Jira every day, and project owners who track teams and releases."),
+            ("Scope", "Finding information (search, similar fixes, summaries, status), updating Jira (comments, assignment) and project insights (velocity, effort, resolution time)."),
+        ],
+        "process": [
+            ("Gathered use cases from the teams", "Collected use cases from several Nokia teams and mapped each one to a persona (end user or project owner) and a type: finding information or updating it."),
+            ("Kept GenAI where it adds value", "Dropped requests Jira already handles well, like reports its query language can build, and parked ones that needed visual generation or automatic assignment for a later release."),
+            ("Designed around real questions", "For each use case I wrote example prompts and the ideal answer, such as finding similar issues from the last quarter, summarizing the latest comments on a ticket, or listing a sprint's open and closed work."),
+            ("Planned for the data early", "Worked with engineering on data sources, data quality and how content is chunked, and on a shared vector store so other Nokia teams could reuse the same Jira data without duplicating it."),
+        ],
+        "impact": [
+            ("15+", "", "Jira use cases mapped", "Gathered from teams across both personas, then prioritized into what ships first and what's parked.", 80),
+            ("0", "", "Query language needed", "People ask in plain language instead of writing Jira queries, with metadata filters when they need them.", 100),
+            ("1", "", "Place to find, read and act", "Search, summarize, comment on and assign tickets without leaving the chat.", 90),
+            ("2", "", "Personas served", "End users get answers and summaries; project owners get status, velocity and effort insights.", 60),
+        ],
+        "before": [
+            "Finding related issues meant keyword search or writing Jira queries",
+            "Long tickets and comment threads read end to end",
+            "Epic and sprint status pieced together from many tickets",
+            "Velocity, effort and resolution time analysed by hand",
+        ],
+        "after": [
+            "Ask in plain language, narrow down with metadata filters",
+            "Short summaries of tickets, comments and documents",
+            "Status of an epic or sprint summarized on request",
+            "Comment on and assign tickets straight from the chat",
+        ],
+        "reflection": "The most useful step was talking to the people who actually live in Jira. Their questions decided which use cases were worth building with GenAI, and planning the data early kept the work reusable for other teams.",
+        "shots": [],
     },
     {
         # From the BRAC + BRAC Bank Design System 1.0 one-pager and detailed write-up.
@@ -746,7 +790,7 @@ def page_home() -> str:
       <div class="sec-head reveal">
         <span class="eyebrow">Selected work</span>
         <h2 class="h-section grad">Shipped products, measured outcomes.</h2>
-        <p class="lede">Five case studies across web, mobile and tablet, with more on the way. Each one starts with the problem, then shows how I worked and what changed.</p>
+        <p class="lede">Six case studies across web, mobile and tablet, with more on the way. Each one starts with the problem, then shows how I worked and what changed.</p>
       </div>
       <div class="work">{cards}</div>
     </div>
