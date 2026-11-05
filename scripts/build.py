@@ -452,6 +452,32 @@ CASES = [
             "Comment on and assign tickets straight from the chat",
             "Jira content kept up to date by a crawler admins schedule",
         ],
+        "feature": {
+            "id": "crawler", "menu": "The crawler",
+            "eyebrow": "Feature", "title": "Crawler details, field by field",
+            "intro": (
+                "Admins add Jira to NokiaGPT from the Document Crawler in the LLM Gateway portal. I built the form with Nokia's "
+                "existing design system, so the fields, dropdowns, date pickers and info tooltips work like the rest of the portal "
+                "and admins don't have to learn anything new. Each field answers one question the crawler can't guess."
+            ),
+            "image": "/assets/img/nokia-crawler.png",
+            "caption": "Add Folder: crawler and scheduler details for a Jira source (internal values hidden)",
+            "groups": [
+                ("What to crawl", [
+                    ("Source type", "The crawler is built for more than one source. Picking Jira first lets the rest of the form show only the fields Jira needs."),
+                    ("Jira data center", "Nokia runs more than one Jira instance, so admins choose which one the crawler connects to."),
+                    ("Project key", "Limits the crawl to one project, so NokiaGPT only learns from data that team owns and is allowed to share."),
+                    ("Start date", "Skips years of old tickets, keeps answers current and makes the first crawl faster."),
+                    ("Custom fields", "Teams keep key context in their own fields, like acceptance criteria. Admins opt in to the ones that matter instead of indexing everything."),
+                    ("Crawl attachments?", "Attachments add useful context but take more time and storage, so it's a yes/no choice per project."),
+                ]),
+                ("When to crawl", [
+                    ("Frequency", "Teams update Jira at different rates. Presets cover most needs, and Custom handles the rest."),
+                    ("Days of week", "Runs the sync on the days that suit the team, for example before sprint planning."),
+                    ("Schedule start and end", "Time-boxes the sync to a release or pilot so it stops on its own instead of running forever."),
+                ]),
+            ],
+        },
         "reflection": "The most useful step was talking to the people who actually live in Jira. Their questions decided which use cases were worth building with GenAI, and planning the data early kept the work reusable for other teams.",
         "shots": [],
     },
@@ -940,6 +966,26 @@ def page_case(c: dict, idx: int) -> str:
           <span class="eyebrow">Process</span>
           <h2>How I worked</h2>
           <div class="decisions">{steps}</div>
+        </section>"""))
+
+    if c.get("feature"):
+        f = c["feature"]
+        groups = "".join(
+            f'<div class="fields__group"><h3>{g}</h3><dl>'
+            + "".join(f"<div><dt>{n}</dt><dd>{why}</dd></div>" for n, why in items)
+            + "</dl></div>"
+            for g, items in f["groups"]
+        )
+        sections.append((f["id"], f["menu"], f"""
+        <section class="cs-sec" id="{f['id']}">
+          <span class="eyebrow">{f['eyebrow']}</span>
+          <h2>{f['title']}</h2>
+          <p>{f['intro']}</p>
+          <figure class="shot shot--feature" data-alt="{f['caption']}. Image unavailable.">
+            <img src="{f['image']}" alt="{f['caption']}" loading="lazy" decoding="async">
+            <figcaption><span>{f['caption']}</span><span>{c['title']}</span></figcaption>
+          </figure>
+          <div class="fields">{groups}</div>
         </section>"""))
 
     if c.get("impact"):
