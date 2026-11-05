@@ -356,7 +356,7 @@ def nav(root: str, current: str) -> str:
     return f"""
 <header class="nav">
   <div class="wrap nav__inner">
-    <a class="brand" href="{root}index.html" aria-label="{SITE['name']}, home"><span class="brand__mark">C</span>{SITE['name']}</a>
+    <a class="brand" href="{root}index.html" aria-label="{SITE['name']}, home">{SITE['name']}</a>
     <button class="nav__toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">{I['menu']}</button>
     <nav class="nav__links" id="nav-links" aria-label="Primary">
       {link("index.html#work", "Work", "work")}
