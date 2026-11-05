@@ -406,14 +406,14 @@ CASES = [
         "slug": "nokia-gpt",
         "title": "Nokia GPT",
         "headline": "Letting Nokia teams ask Jira anything in plain language, inside NokiaGPT",
-        "card_desc": "A Jira integration for NokiaGPT, Nokia's internal GenAI assistant, so people can search, summarize and track tickets in plain language, and update them from the chat.",
+        "card_desc": "A Jira integration for NokiaGPT, Nokia's internal GenAI assistant: ask, summarize and update tickets in plain language, kept fresh by a scheduled crawler admins set up.",
         "company": "Nokia",
-        "platform": "Web · Internal GenAI",
+        "platform": "Web · GenAI assistant + admin portal",
         "timeline": "2024",
         "role": "Senior Product Designer",
         "tags": ["GenAI", "Conversational UX", "Jira"],
         "cover": cover_image("nokia-gpt.jpg"),
-        "card_stats": [("15+", "Jira use cases mapped"), ("2", "personas: end users and project owners"), ("0", "query language needed")],
+        "card_stats": [("15+", "Jira use cases mapped"), ("3", "personas: users, project owners, admins"), ("0", "query language needed")],
         "problem": (
             "Nokia teams track their work across many Jira projects. Finding similar issues or past fixes meant keyword "
             "searches or Jira's query language, long tickets and comment threads had to be read end to end, and project "
@@ -423,20 +423,21 @@ CASES = [
         ),
         "roles": [
             ("My role", "Senior Product Designer. Led use-case discovery and designed the conversational experience for the Jira integration."),
-            ("Users", "End users who work in Jira every day, and project owners who track teams and releases."),
-            ("Scope", "Finding information (search, similar fixes, summaries, status), updating Jira (comments, assignment) and project insights (velocity, effort, resolution time)."),
+            ("Users", "End users who work in Jira every day, project owners who track teams and releases, and admins who manage the data NokiaGPT can see."),
+            ("Scope", "Finding information (search, similar fixes, summaries, status), updating Jira (comments, assignment), project insights (velocity, effort, resolution time), and an admin crawler with a scheduler that keeps the Jira data fresh."),
         ],
         "process": [
             ("Gathered use cases from the teams", "Collected use cases from several Nokia teams and mapped each one to a persona (end user or project owner) and a type: finding information or updating it."),
             ("Kept GenAI where it adds value", "Dropped requests Jira already handles well, like reports its query language can build, and parked ones that needed visual generation or automatic assignment for a later release."),
             ("Designed around real questions", "For each use case I wrote example prompts and the ideal answer, such as finding similar issues from the last quarter, summarizing the latest comments on a ticket, or listing a sprint's open and closed work."),
+            ("Designed the Jira crawler for admins", "In the LLM Gateway admin portal I designed a crawler page where admins add a Jira project as a source, choose the start date, which custom fields to include (such as acceptance criteria) and whether to crawl attachments, then set a schedule: how often, which days, and start and end dates. NokiaGPT's Jira knowledge stays current without manual uploads."),
             ("Planned for the data early", "Worked with engineering on data sources, data quality and how content is chunked, and on a shared vector store so other Nokia teams could reuse the same Jira data without duplicating it."),
         ],
         "impact": [
             ("15+", "", "Jira use cases mapped", "Gathered from teams across both personas, then prioritized into what ships first and what's parked.", 80),
             ("0", "", "Query language needed", "People ask in plain language instead of writing Jira queries, with metadata filters when they need them.", 100),
             ("1", "", "Place to find, read and act", "Search, summarize, comment on and assign tickets without leaving the chat.", 90),
-            ("2", "", "Personas served", "End users get answers and summaries; project owners get status, velocity and effort insights.", 60),
+            ("3", "", "Personas served", "End users get answers and summaries, project owners get status and effort insights, and admins control what gets crawled and when.", 75),
         ],
         "before": [
             "Finding related issues meant keyword search or writing Jira queries",
@@ -449,6 +450,7 @@ CASES = [
             "Short summaries of tickets, comments and documents",
             "Status of an epic or sprint summarized on request",
             "Comment on and assign tickets straight from the chat",
+            "Jira content kept up to date by a crawler admins schedule",
         ],
         "reflection": "The most useful step was talking to the people who actually live in Jira. Their questions decided which use cases were worth building with GenAI, and planning the data early kept the work reusable for other teams.",
         "shots": [],
