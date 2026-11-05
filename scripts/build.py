@@ -71,15 +71,19 @@ def cover_image(src: str):
     return render
 
 
-def cover_soon(logo: str, label: str, pill: str = "Case study coming soon"):
-    """Placeholder cover until real artwork is ready: client logo, plus an optional pill."""
+def cover_soon(logo: str, label: str, pill: str = "Case study coming soon", wordmark: str = ""):
+    """Placeholder cover until real artwork is ready: client logo (or a text wordmark when
+    there's no logo file), plus an optional pill."""
     def render() -> str:
         pill_html = f'<span class="cover--soon__pill">{pill}</span>' if pill else ""
+        mark = (
+            f'<span class="cover--soon__word">{wordmark}</span>' if wordmark
+            else f'<img class="cover--soon__logo" src="/assets/img/logos/{logo}" alt="" decoding="async">'
+        )
         return (
             '<div class="cover cover--soon" aria-hidden="true">'
             f'<span class="cover__label">{label}</span>'
-            f'<img class="cover--soon__logo" src="/assets/img/logos/{logo}" alt="" decoding="async">'
-            f'{pill_html}'
+            f'{mark}{pill_html}'
             '</div>'
         )
     return render
@@ -395,6 +399,60 @@ CASES = [
         "cover": cover_soon("pmi.svg", "PMI · MCP Integration"),
         "coming_soon": True,
     },
+    {
+        # From the BRAC + BRAC Bank Design System 1.0 one-pager and detailed write-up.
+        # No role, timeline, decisions or reflection given yet, so those stay hidden.
+        "slug": "brac-bank",
+        "title": "BRAC Bank Design System",
+        "headline": "Rebuilding BRAC Bank's design system so one library serves every theme, device and banking segment",
+        "card_desc": "A documented Atomic Design System for BRAC Bank's app, with brand-correct tokens and themes for dark/light, desktop/mobile and the Core, Tara and Platinum segments.",
+        "company": "Brillio for BRAC Bank",
+        "platform": "Web + mobile · FinTech",
+        "tags": ["Design system", "Accessibility", "Multi-theme"],
+        "cover": cover_soon("", "BRAC Bank · Design System 1.0", pill="Atomic design system", wordmark="BRAC Bank"),
+        "card_stats": [("100%", "brand alignment"), ("AA", "WCAG 2.1 built into tokens"), ("2–3×", "team productivity")],
+        "problem": (
+            "BRAC Bank's app ran on an incomplete design system left by a previous vendor. The component library was "
+            "undocumented and missing key molecules and organisms, and the colour palette didn't match the bank's own logo "
+            "and brand. It also couldn't scale to dark and light modes, desktop and mobile, or the bank's Core, Tara and "
+            "Platinum segments, and accessibility wasn't fully addressed. BRAC Bank partnered with Brillio to rebuild it as "
+            "one unified, accessible Atomic Design System."
+        ),
+        "roles": [
+            ("Engagement", "Brillio design team working with BRAC Bank's internal design team and brand stakeholders, with biweekly governance reviews."),
+            ("Sector", "Financial services (FinTech)."),
+            ("Scope", "Design-debt audit, brand-aligned tokens, an Atomic component library, multi-theme support and WCAG 2.1 AA accessibility, delivered as Figma documentation."),
+        ],
+        "process": [
+            ("Discovery and audit", "Audited the legacy system to find gaps in documentation, missing component hierarchies and brand colour misalignment."),
+            ("Brand and token realignment", "Built a unified, brand-aligned token system that matches BRAC Bank's logo and corporate identity."),
+            ("System architecture", "Expanded the limited library with Atomic Design, scaling basic atoms into fully documented molecules and organisms."),
+            ("Multi-theme strategy", "Optimised components for dark and light modes, desktop and mobile, and the Core, Tara and Platinum banking segments."),
+            ("Governance", "Ran biweekly review workshops with BRAC's design team and brand stakeholders to keep decisions aligned and approved."),
+            ("Validation and handoff", "Embedded WCAG 2.1 AA into the core tokens and handed off production-ready Figma documentation for cross-functional review."),
+        ],
+        "impact": [
+            ("100", "%", "Brand alignment", "Colour palette corrected to match BRAC Bank's logo and corporate identity across all digital platforms.", 100),
+            ("AA", "", "WCAG 2.1 compliance", "Built into the core tokens: colour contrast, type hierarchy and component states.", 100),
+            ("2–3", "×", "Team productivity", "For internal design and development teams, from pre-approved components and production-ready documentation.", 70),
+            ("12", "", "Theme combinations", "2 viewports × 2 lighting modes × 3 banking segments (Core, Tara, Platinum) from one library.", 85),
+        ],
+        "before": [
+            "Fragmented web and mobile experience on an incomplete legacy system",
+            "Colour system that didn't match BRAC Bank's logo and brand",
+            "Small, undocumented library missing key molecules and organisms",
+            "No structure for dark mode, light mode or responsive viewports",
+            "Accessibility not fully addressed",
+        ],
+        "after": [
+            "One cross-platform framework on a documented Atomic Design System",
+            "Colour palette that mirrors the corporate identity",
+            "Reusable atoms, molecules and organisms, all documented",
+            "Themes across 2 lighting modes, 2 viewports and 3 banking segments",
+            "WCAG 2.1 AA built into tokens and component states",
+        ],
+        "shots": [],
+    },
 ]
 
 EXPERIENCE = [
@@ -658,7 +716,7 @@ def page_home() -> str:
       <div class="sec-head reveal">
         <span class="eyebrow">Selected work</span>
         <h2 class="h-section grad">Shipped products, measured outcomes.</h2>
-        <p class="lede">Four case studies across web, mobile and tablet, with more on the way. Each one starts with the problem, then shows how I worked and what changed.</p>
+        <p class="lede">Five case studies across web, mobile and tablet, with more on the way. Each one starts with the problem, then shows how I worked and what changed.</p>
       </div>
       <div class="work">{cards}</div>
     </div>

@@ -352,6 +352,11 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
   width: auto; height: clamp(44px, 9vw, 92px); max-width: 46%;
   filter: brightness(0) invert(1); opacity: .85;
 }
+.cover--soon__word {
+  position: relative; z-index: 2;
+  font-family: var(--font-display); font-weight: 700; letter-spacing: -0.04em;
+  font-size: clamp(2rem, 1.2rem + 4vw, 4.4rem); line-height: 1; color: rgba(255,255,255,.88);
+}
 .cover--soon__pill {
   position: relative; z-index: 2;
   font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
