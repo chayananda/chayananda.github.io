@@ -36,7 +36,7 @@ SITE = {
     "instagram": "https://www.instagram.com/chayananda.nagesh/",
     "goodreads": "https://www.goodreads.com/chayananda",
     "letterboxd": "https://letterboxd.com/chayananda/",
-    "portrait": "https://framerusercontent.com/images/kZ0YMk93M25yCTgeSQVlRtni9KA.jpg?width=921&height=1247",
+    "portrait": "/assets/img/portrait.jpg",
 }
 
 FONTS = (
@@ -68,6 +68,24 @@ I = {
 def cover_image(src: str):
     def render() -> str:
         return f'<div class="cover cover--img" aria-hidden="true"><img src="/assets/img/{src}" alt="" decoding="async"></div>'
+    return render
+
+
+def cover_soon(logo: str, label: str, pill: str = "Case study coming soon", wordmark: str = ""):
+    """Placeholder cover until real artwork is ready: client logo (or a text wordmark when
+    there's no logo file), plus an optional pill."""
+    def render() -> str:
+        pill_html = f'<span class="cover--soon__pill">{pill}</span>' if pill else ""
+        mark = (
+            f'<span class="cover--soon__word">{wordmark}</span>' if wordmark
+            else f'<img class="cover--soon__logo" src="/assets/img/logos/{logo}" alt="" decoding="async">'
+        )
+        return (
+            '<div class="cover cover--soon" aria-hidden="true">'
+            f'<span class="cover__label">{label}</span>'
+            f'{mark}{pill_html}'
+            '</div>'
+        )
     return render
 
 
@@ -320,6 +338,203 @@ CASES = [
         "shots": [],
         "reflection": "Working with a CEO who reviewed every week taught me to bring decisions, not options. The project also set the approach I still use from NID: understand the whole system before designing any single screen.",
     },
+    {
+        # Project Echo (previously "Hilton BOSS Quality Fee"). Lighter case study:
+        # no metrics, before/after, decisions or reflection yet, so those sections stay hidden.
+        "slug": "hilton-echo",
+        "title": "Hilton BOSS Echo",
+        "headline": "Making Hilton's Quality Fees and Incentives clear to the hotel owners they apply to",
+        "card_desc": "A web and mobile SaaS platform where BOSS users and hotel owners see the Quality Fees and Incentives on their properties, and drill into how each one was calculated.",
+        "company": "Hilton",
+        "platform": "Web + mobile · SaaS",
+        "role": "Senior Product Designer",
+        "tags": ["Project Echo", "Financial reporting", "Role-based"],
+        "cover": cover_image("hilton-echo-fees.jpg"),
+        "card_stats": [("2", "user groups: BOSS users and hotel owners"), ("Web + app", "one platform"), ("Fee-level", "drill-down")],
+        "problem": (
+            "Hilton applies Quality Fees to properties that fail to maintain its brand standards, and Incentives to those that "
+            "perform well. The structures behind both are complex. "
+            "BOSS users and hotel owners had little visibility into which fees applied, how they were calculated and why, "
+            "which led to manual reconciliation and support queries to corporate teams. Project Echo set out to make that "
+            "information transparent in one web and mobile platform, with drill-down from fee types to calculations and rationale."
+        ),
+        "roles": [
+            ("My role", "Senior Product Designer. Led discovery, user flows, wireframes and interactive prototypes through to cross-functional sign-off."),
+            ("Users", "BOSS users and Hilton hotel owners."),
+            ("Scope", "Quality Fee and Incentive reporting with drill-down into fee types, calculations and rationale, on web and mobile, with role-based access."),
+        ],
+        "process": [
+            ("Discovery with the people who pay the fees", "I led discovery workshops with BOSS users and hotel owners to understand where fee transparency broke down and which reports were missing."),
+            ("Turned fee structures into user flows", "I translated the Quality Fee and Incentive structures into user flows that people outside finance could follow."),
+            ("Wireframed the drill-down", "Low-fidelity wireframes simplified the path from fee types to calculations and the rationale behind each one."),
+            ("Prototyped to align the teams", "Through iterative feedback sessions with business and engineering stakeholders, I built interactive prototypes that clarified the data hierarchy, improved usability and secured cross-functional alignment."),
+        ],
+        "outcomes": [
+            "Clearer transparency around Quality Fees and Incentives",
+            "Less manual reconciliation and fewer support queries from hotel owners",
+            "Stronger trust between corporate teams and property stakeholders, through clearer drill-down reporting",
+            "A scalable, role-based architecture ready for advanced analytics, performance benchmarking and automated financial reporting",
+        ],
+        "shots": [],
+    },
+    # ---- Coming soon: card + placeholder page until the case study is written.
+    # Set "coming_soon": False and fill in the full fields (see the projects above) to publish.
+    {
+        "slug": "hilton-design-system",
+        "title": "Hilton BOSS Design System",
+        "headline": "Hilton BOSS Design System",
+        "card_desc": "The full case study is being written up. Check back soon.",
+        "company": "Hilton",
+        "tags": ["BOSS", "Design system"],
+        "cover": cover_soon("hilton.svg", "Hilton · BOSS Design System"),
+        "coming_soon": True,
+    },
+    {
+        "slug": "pmi-mcp",
+        "title": "PMI MCP Integration",
+        "headline": "PMI MCP Integration",
+        "card_desc": "The full case study is being written up. Check back soon.",
+        "company": "PMI",
+        "tags": ["MCP", "AI"],
+        "cover": cover_soon("pmi.svg", "PMI · MCP Integration"),
+        "coming_soon": True,
+    },
+    {
+        # From the NokiaGPT Jira-integration requirements page. Internal details (accounts,
+        # databases, APIs, project keys, names, ticket IDs) are deliberately left out.
+        # Role/company line are assumptions to confirm.
+        "slug": "nokia-gpt",
+        "title": "Nokia GPT",
+        "headline": "Letting Nokia teams ask Jira anything in plain language, inside NokiaGPT",
+        "card_desc": "A Jira integration for NokiaGPT, Nokia's internal GenAI assistant: ask, summarize and update tickets in plain language, kept fresh by a scheduled crawler admins set up.",
+        "company": "Nokia",
+        "platform": "Web · GenAI assistant + admin portal",
+        "timeline": "2024",
+        "role": "Senior Product Designer",
+        "tags": ["GenAI", "Conversational UX", "Jira"],
+        "cover": cover_image("nokia-gpt.jpg"),
+        "card_stats": [("15+", "Jira use cases mapped"), ("3", "personas: users, project owners, admins"), ("0", "query language needed")],
+        "problem": (
+            "Nokia teams track their work across many Jira projects. Finding similar issues or past fixes meant keyword "
+            "searches or Jira's query language, long tickets and comment threads had to be read end to end, and project "
+            "owners pieced together status, velocity and effort by hand. NokiaGPT, Nokia's internal GenAI assistant, was "
+            "adding a Jira integration so people could search, summarize and update Jira in natural language with metadata "
+            "filters. It had to work for both everyday users and project owners."
+        ),
+        "roles": [
+            ("My role", "Senior Product Designer. Led use-case discovery and designed the conversational experience for the Jira integration."),
+            ("Users", "End users who work in Jira every day, project owners who track teams and releases, and admins who manage the data NokiaGPT can see."),
+            ("Scope", "Finding information (search, similar fixes, summaries, status), updating Jira (comments, assignment), project insights (velocity, effort, resolution time), and an admin crawler with a scheduler that keeps the Jira data fresh."),
+        ],
+        "process": [
+            ("Gathered use cases from the teams", "Collected use cases from several Nokia teams and mapped each one to a persona (end user or project owner) and a type: finding information or updating it."),
+            ("Kept GenAI where it adds value", "Dropped requests Jira already handles well, like reports its query language can build, and parked ones that needed visual generation or automatic assignment for a later release."),
+            ("Designed around real questions", "For each use case I wrote example prompts and the ideal answer, such as finding similar issues from the last quarter, summarizing the latest comments on a ticket, or listing a sprint's open and closed work."),
+            ("Designed the Jira crawler for admins", "In the LLM Gateway admin portal I designed a crawler page where admins add a Jira project as a source, choose the start date, which custom fields to include (such as acceptance criteria) and whether to crawl attachments, then set a schedule: how often, which days, and start and end dates. NokiaGPT's Jira knowledge stays current without manual uploads."),
+            ("Planned for the data early", "Worked with engineering on data sources, data quality and how content is chunked, and on a shared vector store so other Nokia teams could reuse the same Jira data without duplicating it."),
+        ],
+        "impact": [
+            ("15+", "", "Jira use cases mapped", "Gathered from teams across both personas, then prioritized into what ships first and what's parked.", 80),
+            ("0", "", "Query language needed", "People ask in plain language instead of writing Jira queries, with metadata filters when they need them.", 100),
+            ("1", "", "Place to find, read and act", "Search, summarize, comment on and assign tickets without leaving the chat.", 90),
+            ("3", "", "Personas served", "End users get answers and summaries, project owners get status and effort insights, and admins control what gets crawled and when.", 75),
+        ],
+        "before": [
+            "Finding related issues meant keyword search or writing Jira queries",
+            "Long tickets and comment threads read end to end",
+            "Epic and sprint status pieced together from many tickets",
+            "Velocity, effort and resolution time analysed by hand",
+        ],
+        "after": [
+            "Ask in plain language, narrow down with metadata filters",
+            "Short summaries of tickets, comments and documents",
+            "Status of an epic or sprint summarized on request",
+            "Comment on and assign tickets straight from the chat",
+            "Jira content kept up to date by a crawler admins schedule",
+        ],
+        "feature": {
+            "id": "crawler", "menu": "The crawler",
+            "eyebrow": "Feature", "title": "Crawler details, field by field",
+            "intro": (
+                "Admins add Jira to NokiaGPT from the Document Crawler in the LLM Gateway portal. I built the form with Nokia's "
+                "existing design system, so the fields, dropdowns, date pickers and info tooltips work like the rest of the portal "
+                "and admins don't have to learn anything new. Each field answers one question the crawler can't guess."
+            ),
+            "image": "/assets/img/nokia-crawler.png",
+            "caption": "Add Folder: crawler and scheduler details for a Jira source (internal values hidden)",
+            "groups": [
+                ("What to crawl", [
+                    ("Source type", "The crawler is built for more than one source. Picking Jira first lets the rest of the form show only the fields Jira needs."),
+                    ("Jira data center", "Nokia runs more than one Jira instance, so admins choose which one the crawler connects to."),
+                    ("Project key", "Limits the crawl to one project, so NokiaGPT only learns from data that team owns and is allowed to share."),
+                    ("Start date", "Skips years of old tickets, keeps answers current and makes the first crawl faster."),
+                    ("Custom fields", "Teams keep key context in their own fields, like acceptance criteria. Admins opt in to the ones that matter instead of indexing everything."),
+                    ("Crawl attachments?", "Attachments add useful context but take more time and storage, so it's a yes/no choice per project."),
+                ]),
+                ("When to crawl", [
+                    ("Frequency", "Teams update Jira at different rates. Presets cover most needs, and Custom handles the rest."),
+                    ("Days of week", "Runs the sync on the days that suit the team, for example before sprint planning."),
+                    ("Schedule start and end", "Time-boxes the sync to a release or pilot so it stops on its own instead of running forever."),
+                ]),
+            ],
+        },
+        "reflection": "The most useful step was talking to the people who actually live in Jira. Their questions decided which use cases were worth building with GenAI, and planning the data early kept the work reusable for other teams.",
+        "shots": [],
+    },
+    {
+        # From the BRAC + BRAC Bank Design System 1.0 one-pager and detailed write-up.
+        # No role, timeline, decisions or reflection given yet, so those stay hidden.
+        "slug": "brac-bank",
+        "title": "BRAC Bank Design System",
+        "headline": "Rebuilding BRAC Bank's design system so one library serves every theme, device and banking segment",
+        "card_desc": "A documented Atomic Design System for BRAC Bank's app, with brand-correct tokens and themes for dark/light, desktop/mobile and the Core, Tara and Platinum segments.",
+        "company": "Brillio for BRAC Bank",
+        "platform": "Web + mobile · FinTech",
+        "tags": ["Design system", "Accessibility", "Multi-theme"],
+        "cover": cover_soon("", "BRAC Bank · Design System 1.0", pill="Atomic design system", wordmark="BRAC Bank"),
+        "card_stats": [("100%", "brand alignment"), ("AA", "WCAG 2.1 built into tokens"), ("2–3×", "team productivity")],
+        "problem": (
+            "BRAC Bank's app ran on an incomplete design system left by a previous vendor. The component library was "
+            "undocumented and missing key molecules and organisms, and the colour palette didn't match the bank's own logo "
+            "and brand. It also couldn't scale to dark and light modes, desktop and mobile, or the bank's Core, Tara and "
+            "Platinum segments, and accessibility wasn't fully addressed. BRAC Bank partnered with Brillio to rebuild it as "
+            "one unified, accessible Atomic Design System."
+        ),
+        "roles": [
+            ("Engagement", "Brillio design team working with BRAC Bank's internal design team and brand stakeholders, with biweekly governance reviews."),
+            ("Sector", "Financial services (FinTech)."),
+            ("Scope", "Design-debt audit, brand-aligned tokens, an Atomic component library, multi-theme support and WCAG 2.1 AA accessibility, delivered as Figma documentation."),
+        ],
+        "process": [
+            ("Discovery and audit", "Audited the legacy system to find gaps in documentation, missing component hierarchies and brand colour misalignment."),
+            ("Brand and token realignment", "Built a unified, brand-aligned token system that matches BRAC Bank's logo and corporate identity."),
+            ("System architecture", "Expanded the limited library with Atomic Design, scaling basic atoms into fully documented molecules and organisms."),
+            ("Multi-theme strategy", "Optimised components for dark and light modes, desktop and mobile, and the Core, Tara and Platinum banking segments."),
+            ("Governance", "Ran biweekly review workshops with BRAC's design team and brand stakeholders to keep decisions aligned and approved."),
+            ("Validation and handoff", "Embedded WCAG 2.1 AA into the core tokens and handed off production-ready Figma documentation for cross-functional review."),
+        ],
+        "impact": [
+            ("100", "%", "Brand alignment", "Colour palette corrected to match BRAC Bank's logo and corporate identity across all digital platforms.", 100),
+            ("AA", "", "WCAG 2.1 compliance", "Built into the core tokens: colour contrast, type hierarchy and component states.", 100),
+            ("2–3", "×", "Team productivity", "For internal design and development teams, from pre-approved components and production-ready documentation.", 70),
+            ("12", "", "Theme combinations", "2 viewports × 2 lighting modes × 3 banking segments (Core, Tara, Platinum) from one library.", 85),
+        ],
+        "before": [
+            "Fragmented web and mobile experience on an incomplete legacy system",
+            "Colour system that didn't match BRAC Bank's logo and brand",
+            "Small, undocumented library missing key molecules and organisms",
+            "No structure for dark mode, light mode or responsive viewports",
+            "Accessibility not fully addressed",
+        ],
+        "after": [
+            "One cross-platform framework on a documented Atomic Design System",
+            "Colour palette that mirrors the corporate identity",
+            "Reusable atoms, molecules and organisms, all documented",
+            "Themes across 2 lighting modes, 2 viewports and 3 banking segments",
+            "WCAG 2.1 AA built into tokens and component states",
+        ],
+        "shots": [],
+    },
 ]
 
 EXPERIENCE = [
@@ -385,7 +600,6 @@ def nav(root: str, current: str) -> str:
       {link("index.html#work", "Work", "work")}
       {link("about/index.html", "About", "about")}
       {link("index.html#education", "Education", "education")}
-      <a class="btn btn--primary nav__cta" href="{root}index.html#contact">Get in touch</a>
     </nav>
   </div>
 </header>"""
@@ -425,6 +639,26 @@ def contact_panel() -> str:
     </div>
   </div>
 </section>"""
+
+
+# NID convocation video: the chip's play button opens it where I receive my degree,
+# and hovering the button previews a 3-second clip just after that moment.
+NID_VIDEO = {"id": "W79XS-WR3tA", "start": 52 * 60 + 55, "preview": (53 * 60 + 5, 53 * 60 + 8)}
+
+
+def nid_chip(text: str, href: str = "#education") -> str:
+    """NID chip: shining NID emblem + text, with a play button for the convocation video."""
+    v = NID_VIDEO
+    watch = f"https://www.youtube.com/watch?v={v['id']}&t={v['start']}s"
+    return (
+        f'<div class="chip chip--nid reveal">'
+        f'<a class="chip__main" href="{href}"><span class="chip__nid" role="img" aria-label="NID"></span>{text}</a>'
+        f'<a class="chip__play" href="{watch}" target="_blank" rel="noopener"'
+        f' data-yt="{v["id"]}" data-from="{v["preview"][0]}" data-to="{v["preview"][1]}"'
+        f' aria-label="Watch me receive my degree at the NID convocation (opens YouTube at 52:55)">'
+        f'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z" fill="currentColor"/></svg></a>'
+        f'</div>'
+    )
 
 
 # Companies and clients for the logo marquee: (file in assets/img/logos/, name, height in px).
@@ -501,8 +735,14 @@ def holo_cards() -> str:
 
 def work_card(c: dict, root: str, delay: int = 0) -> str:
     href = f"{root}case-studies/{c['slug']}/index.html"
+    soon = c.get("coming_soon", False)
     tags = "".join(f'<span class="tag">{t}</span>' for t in c["tags"])
-    stats = "".join(f"<div><b>{n}</b><span>{l}</span></div>" for n, l in c["card_stats"])
+    if soon:
+        tags += '<span class="tag tag--soon">Coming soon</span>'
+        stats = '<div class="work-card__soon"><b>Coming soon</b><span>Case study in progress</span></div>'
+    else:
+        stats = "".join(f"<div><b>{n}</b><span>{l}</span></div>" for n, l in c["card_stats"])
+    cta = "Preview project" if soon else "Read case study"
     return f"""
 <article class="work-card reveal" data-delay="{delay}">
   <div class="work-card__media">{c['cover']()}</div>
@@ -511,11 +751,11 @@ def work_card(c: dict, root: str, delay: int = 0) -> str:
       <div class="work-card__meta"><span class="tag">{c['company']}</span>{tags}</div>
       <h3 class="work-card__title">{c['headline']}</h3>
       <p class="work-card__desc">{c['card_desc']}</p>
-      <span class="work-card__cta">Read case study {I['arrow']}</span>
+      <span class="work-card__cta">{cta} {I['arrow']}</span>
     </div>
     <div class="work-card__stats">{stats}</div>
   </div>
-  <a class="work-card__link" href="{href}" aria-label="Read the {c['title']} case study"></a>
+  <a class="work-card__link" href="{href}" aria-label="{cta}: {c['title']}"></a>
 </article>"""
 
 
@@ -546,9 +786,9 @@ def page_home() -> str:
     <div class="glow" aria-hidden="true"></div>
     <div class="grid-bg" aria-hidden="true"></div>
     <div class="wrap hero__inner">
-      <a class="chip reveal" href="#education"><span class="chip__dot">NID</span>M.Des Interaction Design, National Institute of Design</a>
+      {nid_chip("M.Des Interaction Design, National Institute of Design · 2014 batch")}
       <h1 class="grad reveal" data-delay="1">Calm, clear products for complex enterprise work.</h1>
-      <p class="lede reveal" data-delay="2">I'm Chaya, a Senior Product Designer with {SITE['years']} years of experience shipping enterprise software across ESG, HR-tech, energy and retail. Trained at the National Institute of Design, I turn tangled workflows into products teams actually finish using.</p>
+      <p class="lede reveal" data-delay="2">I'm Chaya, a Senior Product Designer who makes complex enterprise work feel simple: taking timesheets for 600,000+ TCS employees to mobile, bringing Jira into Nokia's GenAI assistant, making Quality Fees clear for Hilton hotel owners and designing an MCP integration for PMI. {SITE['years']} years in, trained at the National Institute of Design.</p>
       <div class="hero__actions reveal" data-delay="3">
         <a class="btn btn--primary" href="#work">View selected work {I['arrow']}</a>
         <a class="btn" href="about/index.html">About me</a>
@@ -564,10 +804,10 @@ def page_home() -> str:
   <section class="section--tight" aria-label="Career highlights">
     <div class="wrap">
       <div class="kpis reveal">
-        <div class="kpi"><span class="kpi__num">{SITE['years']}<small>yrs</small></span><span class="kpi__label">Product &amp; UX design</span><span class="kpi__note">Since 2016 · NID-trained</span></div>
         <div class="kpi"><span class="kpi__num">600K<small>+</small></span><span class="kpi__label">Users on products I've shipped</span><span class="kpi__note">TCS Timesheet, 46 countries</span></div>
-        <div class="kpi"><span class="kpi__num">2<small>×</small></span><span class="kpi__label">0→1 platforms led</span><span class="kpi__note">Impakt IQ · UL Studio</span></div>
-        <div class="kpi"><span class="kpi__num">−76<small>%</small></span><span class="kpi__label">Time to log a workday</span><span class="kpi__note">Mobile vs web timesheet</span></div>
+        <div class="kpi"><span class="kpi__num">10</span><span class="kpi__label">Companies and clients</span><span class="kpi__note">Nokia · Hilton · PMI · TCS · BMS</span></div>
+        <div class="kpi"><span class="kpi__num">−80<small>%</small></span><span class="kpi__label">Client onboarding time</span><span class="kpi__note">Impakt IQ, 0→1 in 16 weeks</span></div>
+        <div class="kpi"><span class="kpi__num">2</span><span class="kpi__label">GenAI products designed</span><span class="kpi__note">NokiaGPT × Jira · PMI MCP</span></div>
       </div>
       {logo_marquee()}
     </div>
@@ -578,7 +818,7 @@ def page_home() -> str:
       <div class="sec-head reveal">
         <span class="eyebrow">Selected work</span>
         <h2 class="h-section grad">Shipped products, measured outcomes.</h2>
-        <p class="lede">Three projects across web, mobile and tablet. Each one starts with the problem, then shows the decisions and the numbers that moved.</p>
+        <p class="lede">Six case studies across web, mobile and tablet, with more on the way. Each one starts with the problem, then shows how I worked and what changed.</p>
       </div>
       <div class="work">{cards}</div>
     </div>
@@ -653,15 +893,14 @@ def page_about() -> str:
     <div class="glow" aria-hidden="true"></div>
     <div class="wrap about-hero" style="position:relative;z-index:1">
       <div class="stack" style="gap:24px">
-        <a class="chip reveal" href="#education"><span class="chip__dot">NID</span>Interaction Design alumnus</a>
+        {nid_chip("Interaction Design alumnus · 2014 batch")}
         <h1 class="grad reveal" data-delay="1" style="font-size:var(--step-4)">From engineer to designer, {SITE['years']} years in.</h1>
-        <p class="lede reveal" data-delay="2">I studied computer science at VTU, then Interaction Design at the National Institute of Design. Since then I've designed enterprise products at Tata Consultancy Services, Schneider Electric and Brillio, across HR, energy, ESG audit and retail technology.</p>
-        <p class="lede reveal" data-delay="2">I'm at my best on products with many roles, rules and edge cases, where clear structure matters more than decoration. I work closely with engineers, and I like to leave teams with systems they can keep using after I've moved on.</p>
+        <p class="lede reveal" data-delay="2">I started out writing code, studying computer science at VTU, then went to the National Institute of Design to learn who that code is really for. Since then I've designed enterprise products at Tata Consultancy Services, Schneider Electric and Brillio, for teams at Hilton, Nokia, PMI and BRAC Bank, across HR, energy, ESG, hospitality, banking and retail.</p>
+        <p class="lede reveal" data-delay="2">I'm happiest inside the messy stuff: tools people rely on every day, full of roles, rules and edge cases. I untangle them until they feel obvious, work side by side with engineers so good ideas actually ship, and leave teams with systems they can keep using long after I've moved on. If your product feels harder than it should, let's talk.</p>
         <div class="hero__actions reveal" data-delay="3"><a class="btn btn--primary" href="../index.html#work">See the work {I['arrow']}</a><a class="btn" href="../index.html#contact">Contact</a></div>
       </div>
       <div class="portrait reveal" data-delay="2">
-        <span class="portrait__mono" aria-hidden="true">CN</span>
-        <img src="{SITE['portrait']}" alt="Portrait of {SITE['name']}" loading="lazy" onerror="this.remove()">
+        <img src="{SITE['portrait']}" alt="Portrait of {SITE['name']}" fetchpriority="high" decoding="async" onerror="this.remove()">
         <div class="portrait__tag"><span>{SITE['name']}</span><span class="muted">Bengaluru</span></div>
       </div>
     </div>
@@ -706,45 +945,122 @@ def page_about() -> str:
 
 
 def page_case(c: dict, idx: int) -> str:
+    """Full case study page. Every section after the overview is optional and only
+    renders when the project has content for it (and only then appears in the menu)."""
     root = "../../"
     facts = "".join(
         f"<div><dt>{k}</dt><dd>{v}</dd></div>"
-        for k, v in (("Company", c["company"]), ("Platform", c["platform"]), ("Timeline", c["timeline"]), ("Role", c["role"]))
+        for k, v in (("Company", c.get("company")), ("Platform", c.get("platform")), ("Timeline", c.get("timeline")), ("Role", c.get("role")))
+        if v
     )
+    n_facts = sum(1 for k in ("company", "platform", "timeline", "role") if c.get(k))
+    facts_cls = "cs-facts" if n_facts == 4 else f"cs-facts cs-facts--{n_facts}"
     roles = "".join(f"<div><h3>{t}</h3><p>{d}</p></div>" for t, d in c["roles"])
-    impact = "".join(
-        f'<div class="impact__item"><span class="impact__num">{n}<span class="unit">{u}</span></span>'
-        f'<span class="impact__label">{l}</span><span class="impact__ctx">{ctx}</span>'
-        f'<div class="impact__bar" aria-hidden="true"><i style="--w:{w}%"></i></div></div>'
-        for n, u, l, ctx, w in c["impact"]
-    )
-    before = "".join(f"<li>{x}</li>" for x in c["before"])
-    after = "".join(f"<li>{x}</li>" for x in c["after"])
-    decisions = "".join(f'<div class="decision"><div><h3>{t}</h3><p>{d}</p></div></div>' for t, d in c["decisions"])
-    shots = "".join(
-        f'<figure class="shot{" shot--crop" if crop else ""}" data-alt="{cap}. Image unavailable.">'
-        f'<img src="{src}" alt="{cap}" loading="lazy" decoding="async">'
-        f'<figcaption><span>{cap}</span><span>{c["title"]}</span></figcaption></figure>'
-        for src, cap, crop in c["shots"]
-    )
-    others = [o for o in CASES if o["slug"] != c["slug"]]
-    nxt = "".join(
-        f'<a href="{root}case-studies/{o["slug"]}/index.html"><small>{"Next" if i == 0 else "Also see"}</small><b>{o["title"]}</b><span class="muted">{o["company"]} · {o["platform"]}</span></a>'
-        for i, o in enumerate(others)
-    )
-    toc = "".join(
-        f'<a href="#{k}">{v}</a>'
-        for k, v in (("overview", "Overview"), ("impact", "Impact"), ("shift", "What changed"), ("decisions", "Key decisions"), ("screens", "Screens"), ("reflection", "Reflection"))
-        if k != "screens" or c["shots"]
-    )
-    # The Screens section only appears when the project has screens to show.
-    screens = f"""
+
+    sections = []  # (id, menu label, html)
+
+    if c.get("process"):
+        steps = "".join(f'<div class="decision"><div><h3>{t}</h3><p>{d}</p></div></div>' for t, d in c["process"])
+        sections.append(("process", "How I worked", f"""
+        <section class="cs-sec" id="process">
+          <span class="eyebrow">Process</span>
+          <h2>How I worked</h2>
+          <div class="decisions">{steps}</div>
+        </section>"""))
+
+    if c.get("feature"):
+        f = c["feature"]
+        groups = "".join(
+            f'<div class="fields__group"><h3>{g}</h3><dl>'
+            + "".join(f"<div><dt>{n}</dt><dd>{why}</dd></div>" for n, why in items)
+            + "</dl></div>"
+            for g, items in f["groups"]
+        )
+        sections.append((f["id"], f["menu"], f"""
+        <section class="cs-sec" id="{f['id']}">
+          <span class="eyebrow">{f['eyebrow']}</span>
+          <h2>{f['title']}</h2>
+          <p>{f['intro']}</p>
+          <figure class="shot shot--feature" data-alt="{f['caption']}. Image unavailable.">
+            <img src="{f['image']}" alt="{f['caption']}" loading="lazy" decoding="async">
+            <figcaption><span>{f['caption']}</span><span>{c['title']}</span></figcaption>
+          </figure>
+          <div class="fields">{groups}</div>
+        </section>"""))
+
+    if c.get("impact"):
+        impact = "".join(
+            f'<div class="impact__item"><span class="impact__num">{n}<span class="unit">{u}</span></span>'
+            f'<span class="impact__label">{l}</span><span class="impact__ctx">{ctx}</span>'
+            f'<div class="impact__bar" aria-hidden="true"><i style="--w:{w}%"></i></div></div>'
+            for n, u, l, ctx, w in c["impact"]
+        )
+        sections.append(("impact", "Impact", f"""
+        <section class="cs-sec" id="impact">
+          <span class="eyebrow">Impact</span>
+          <h2>What moved</h2>
+          <div class="impact">{impact}</div>
+        </section>"""))
+    elif c.get("outcomes"):
+        outcomes = "".join(f"<li>{x}</li>" for x in c["outcomes"])
+        sections.append(("impact", "Impact", f"""
+        <section class="cs-sec" id="impact">
+          <span class="eyebrow">Business impact</span>
+          <h2>What it changed</h2>
+          <div class="ba ba--single"><div class="ba__col ba__col--after"><ul>{outcomes}</ul></div></div>
+        </section>"""))
+
+    if c.get("before") and c.get("after"):
+        before = "".join(f"<li>{x}</li>" for x in c["before"])
+        after = "".join(f"<li>{x}</li>" for x in c["after"])
+        sections.append(("shift", "What changed", f"""
+        <section class="cs-sec" id="shift">
+          <span class="eyebrow">Before / after</span>
+          <h2>What changed for users</h2>
+          <div class="ba">
+            <div class="ba__col"><h3>Before</h3><ul>{before}</ul></div>
+            <div class="ba__col ba__col--after"><h3>After</h3><ul>{after}</ul></div>
+          </div>
+        </section>"""))
+
+    if c.get("decisions"):
+        decisions = "".join(f'<div class="decision"><div><h3>{t}</h3><p>{d}</p></div></div>' for t, d in c["decisions"])
+        sections.append(("decisions", "Key decisions", f"""
+        <section class="cs-sec" id="decisions">
+          <span class="eyebrow">Key decisions</span>
+          <h2>The calls that shaped it</h2>
+          <div class="decisions">{decisions}</div>
+        </section>"""))
+
+    if c.get("shots"):
+        shots = "".join(
+            f'<figure class="shot{" shot--crop" if crop else ""}" data-alt="{cap}. Image unavailable.">'
+            f'<img src="{src}" alt="{cap}" loading="lazy" decoding="async">'
+            f'<figcaption><span>{cap}</span><span>{c["title"]}</span></figcaption></figure>'
+            for src, cap, crop in c["shots"]
+        )
+        sections.append(("screens", "Screens", f"""
         <section class="cs-sec" id="screens">
           <span class="eyebrow">Screens</span>
           <h2>The work</h2>
           <div class="gallery">{shots}</div>
-        </section>
-""" if c["shots"] else ""
+        </section>"""))
+
+    if c.get("reflection"):
+        sections.append(("reflection", "Reflection", f"""
+        <section class="cs-sec" id="reflection">
+          <span class="eyebrow">Reflection</span>
+          <h2>What I took away</h2>
+          <blockquote class="quote">{c['reflection']}<cite>{SITE['name']} · {c['role']}</cite></blockquote>
+        </section>"""))
+
+    others = [o for o in CASES if o["slug"] != c["slug"] and not o.get("coming_soon")]
+    nxt = "".join(
+        f'<a href="{root}case-studies/{o["slug"]}/index.html"><small>{"Next" if i == 0 else "Also see"}</small><b>{o["title"]}</b><span class="muted">{o["company"]} · {o["platform"]}</span></a>'
+        for i, o in enumerate(others)
+    )
+    toc = '<a href="#overview">Overview</a>' + "".join(f'<a href="#{k}">{v}</a>' for k, v, _ in sections)
+    body = "\n".join(html for _, _, html in sections)
     nid_note = (
         '<p class="muted" style="font-size:14px">Design approach grounded in my Interaction Design training at the National Institute of Design (NID).</p>'
     )
@@ -759,7 +1075,7 @@ def page_case(c: dict, idx: int) -> str:
       <a class="cs-back" href="{root}index.html#work">{I['back']}All work</a>
       <span class="eyebrow">Case study · {c['title']}</span>
       <h1 class="grad">{c['headline']}</h1>
-      <dl class="cs-facts">{facts}</dl>
+      <dl class="{facts_cls}">{facts}</dl>
       <div class="cs-cover">{c['cover']()}</div>
     </div>
   </section>
@@ -775,36 +1091,54 @@ def page_case(c: dict, idx: int) -> str:
           <div class="role-card">{roles}</div>
           {nid_note}
         </section>
-
-        <section class="cs-sec" id="impact">
-          <span class="eyebrow">Impact</span>
-          <h2>What moved</h2>
-          <div class="impact">{impact}</div>
-        </section>
-
-        <section class="cs-sec" id="shift">
-          <span class="eyebrow">Before / after</span>
-          <h2>What changed for users</h2>
-          <div class="ba">
-            <div class="ba__col"><h3>Before</h3><ul>{before}</ul></div>
-            <div class="ba__col ba__col--after"><h3>After</h3><ul>{after}</ul></div>
-          </div>
-        </section>
-
-        <section class="cs-sec" id="decisions">
-          <span class="eyebrow">Key decisions</span>
-          <h2>The calls that shaped it</h2>
-          <div class="decisions">{decisions}</div>
-        </section>
-{screens}
-        <section class="cs-sec" id="reflection">
-          <span class="eyebrow">Reflection</span>
-          <h2>What I took away</h2>
-          <blockquote class="quote">{c['reflection']}<cite>{SITE['name']} · {c['role']}</cite></blockquote>
-        </section>
+{body}
 
         <div class="next-cs">{nxt}</div>
       </div>
+    </div>
+  </section>
+  {contact_panel()}
+</main>"""
+        + footer(root)
+    )
+
+
+def page_soon(c: dict) -> str:
+    """Placeholder project page: same header as a case study, then a short note."""
+    root = "../../"
+    facts = "".join(
+        f"<div><dt>{k}</dt><dd>{v}</dd></div>"
+        for k, v in (("Client", c["company"]), ("Project", c["title"]), ("Status", "Case study coming soon"))
+    )
+    published = [o for o in CASES if not o.get("coming_soon")]
+    nxt = "".join(
+        f'<a href="{root}case-studies/{o["slug"]}/index.html"><small>Read now</small><b>{o["title"]}</b><span class="muted">{o["company"]} · {o["platform"]}</span></a>'
+        for o in published
+    )
+    return (
+        head(f"{c['title']} · {SITE['name']}", f"{c['title']}: case study coming soon.", root)
+        + nav(root, "work")
+        + f"""
+<main id="main">
+  <section class="cs-hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap cs-hero__inner">
+      <a class="cs-back" href="{root}index.html#work">{I['back']}All work</a>
+      <span class="eyebrow">Case study · {c['title']}</span>
+      <h1 class="grad">{c['headline']}</h1>
+      <dl class="cs-facts cs-facts--3">{facts}</dl>
+      <div class="cs-cover">{c['cover']()}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="soon-note reveal">
+        <span class="eyebrow">Coming soon</span>
+        <h2>This case study is on its way.</h2>
+        <p class="lede">I'm writing up the problem, the decisions and the results for {c['title']}. In the meantime, here are the case studies you can read today.</p>
+      </div>
+      <div class="next-cs next-cs--3">{nxt}</div>
     </div>
   </section>
   {contact_panel()}
@@ -825,7 +1159,8 @@ def main() -> None:
     write("index.html", page_home())
     write("about/index.html", page_about())
     for i, c in enumerate(CASES):
-        write(f"case-studies/{c['slug']}/index.html", page_case(c, i))
+        page = page_soon(c) if c.get("coming_soon") else page_case(c, i)
+        write(f"case-studies/{c['slug']}/index.html", page)
     # Keep the old /portfolio URL working
     write("portfolio/index.html", '<!doctype html><meta charset="utf-8"><title>Work · Chayananda Nagesh</title>'
           '<meta http-equiv="refresh" content="0; url=../index.html#work"><link rel="canonical" href="../index.html#work">'
