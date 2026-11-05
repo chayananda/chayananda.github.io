@@ -406,7 +406,7 @@ CASES = [
         "card_desc": "The full case study is being written up. Check back soon.",
         "company": "Nokia",
         "tags": ["AI", "GenAI"],
-        "cover": cover_soon("nokia.svg", "Nokia · GPT"),
+        "cover": cover_image("nokia-gpt.jpg"),
         "coming_soon": True,
     },
     {
