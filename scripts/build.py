@@ -203,11 +203,12 @@ CASES = [
             ("Shipped on Material, tuned to the brand", "I compared Material, Ant, Fluent, Carbon and Lightning against the engineers' component library. Material with a warm brand palette let the team ship <b>60+ dev-ready screens</b> without a single design-blocked sprint."),
             ("Re-scoped the work plan to what could ship", "The first concept paired a list with a Gantt chart that the front-end library couldn't support. I reworked it into a progress list with milestone chips, kept the information and saved an estimated <b>3 sprints</b>."),
         ],
-        "shots": [
-            ("https://framerusercontent.com/images/81jR64fvwHIvZj5mBw6hjdLDo.png?width=1200", "Final screens: companies, setup and work plan", True),
-            ("https://framerusercontent.com/images/vGyM7wlc6KdGks0aeYHKhb1YG0w.png?width=1200", "Visual direction", False),
-            ("https://framerusercontent.com/images/C2InrC7rKSzqGdcv6en5Jnw8WyA.png?width=1200", "Brand-tuned Material system", False),
-        ],
+        # Screens section hidden until new images are ready. To bring it back, add
+        # entries here: (image URL, caption, crop?). Previous entries:
+        #   ("https://framerusercontent.com/images/81jR64fvwHIvZj5mBw6hjdLDo.png?width=1200", "Final screens: companies, setup and work plan", True),
+        #   ("https://framerusercontent.com/images/vGyM7wlc6KdGks0aeYHKhb1YG0w.png?width=1200", "Visual direction", False),
+        #   ("https://framerusercontent.com/images/C2InrC7rKSzqGdcv6en5Jnw8WyA.png?width=1200", "Brand-tuned Material system", False),
+        "shots": [],
         "reflection": "The fastest way through a 0→1 project with a fixed deadline was to agree early on what the MVP would leave out. Reports stayed outside the product for v1, which kept the team focused on the part of the workflow that cost the client the most time.",
     },
     {
@@ -732,7 +733,16 @@ def page_case(c: dict, idx: int) -> str:
     toc = "".join(
         f'<a href="#{k}">{v}</a>'
         for k, v in (("overview", "Overview"), ("impact", "Impact"), ("shift", "What changed"), ("decisions", "Key decisions"), ("screens", "Screens"), ("reflection", "Reflection"))
+        if k != "screens" or c["shots"]
     )
+    # The Screens section only appears when the project has screens to show.
+    screens = f"""
+        <section class="cs-sec" id="screens">
+          <span class="eyebrow">Screens</span>
+          <h2>The work</h2>
+          <div class="gallery">{shots}</div>
+        </section>
+""" if c["shots"] else ""
     nid_note = (
         '<p class="muted" style="font-size:14px">Design approach grounded in my Interaction Design training at the National Institute of Design (NID).</p>'
     )
@@ -784,13 +794,7 @@ def page_case(c: dict, idx: int) -> str:
           <h2>The calls that shaped it</h2>
           <div class="decisions">{decisions}</div>
         </section>
-
-        <section class="cs-sec" id="screens">
-          <span class="eyebrow">Screens</span>
-          <h2>The work</h2>
-          <div class="gallery">{shots}</div>
-        </section>
-
+{screens}
         <section class="cs-sec" id="reflection">
           <span class="eyebrow">Reflection</span>
           <h2>What I took away</h2>
