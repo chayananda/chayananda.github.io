@@ -204,7 +204,7 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
 .chip__main { display: inline-flex; align-items: center; gap: 12px; min-width: 0; min-height: 44px; }
 .chip__main:hover { color: var(--fg); }
 .chip__nid {
-  flex: none; width: 55px; height: 44px; /* 75:60 emblem at the play button's height */
+  flex: none; width: 40px; height: 32px; /* 75:60 emblem, a little smaller than the play button */
   /* the emblem is a mask; a bright band sweeps across it on a loop */
   background: linear-gradient(110deg, var(--g-2) 0%, var(--g-1) 25%, var(--g-hi) 42%, #fff 50%, var(--g-hi) 58%, var(--g-1) 75%, var(--g-3) 100%);
   background-size: 250% 100%;
