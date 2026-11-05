@@ -441,16 +441,16 @@ def holo_cards() -> str:
   </div>"""
 
     nid = badge(
-        "nid", "Master of Design in Interaction Design, National Institute of Design, 2014 to 2017",
+        "nid", "Master of Design in Interaction Design, National Institute of Design, 2.5 years, 2014 to 2017, Bengaluru, Karnataka, India",
         '<span class="badge__emboss"><i class="badge__logo badge__logo--nid"></i></span>',
-        "Postgraduate", "M.Des", "Interaction Design", "National Institute of Design, Bengaluru",
-        "2014 — 2017 · Bengaluru campus",
+        "Postgraduate · 2.5 years", "M.Des", "Interaction Design", "National Institute of Design",
+        "2014 — 2017 · Bengaluru, Karnataka, India",
     )
     vtu = badge(
-        "vtu", "Bachelor of Engineering in Computer Science, Visvesvaraya Technological University, 2009 to 2013",
+        "vtu", "Bachelor of Engineering in Computer Science, Visvesvaraya Technological University, 4 years, 2009 to 2013, Bengaluru, Karnataka, India",
         '<img class="badge__seal" src="/assets/img/vtu.png" alt="" decoding="async">',
-        "Undergraduate", "B.E", "Computer Science &amp; Engineering", "Visvesvaraya Technological University",
-        "2009 — 2013 · Bengaluru", ' data-delay="1"',
+        "Undergraduate · 4 years", "B.E", "Computer Science &amp; Engineering", "Visvesvaraya Technological University",
+        "2009 — 2013 · Bengaluru, Karnataka, India", ' data-delay="1"',
     )
     return f'<div class="creds">{nid}{vtu}\n</div>'
 
