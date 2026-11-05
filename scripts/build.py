@@ -788,7 +788,7 @@ def page_home() -> str:
     <div class="wrap hero__inner">
       {nid_chip("M.Des Interaction Design, National Institute of Design · 2014 batch")}
       <h1 class="grad reveal" data-delay="1">Calm, clear products for complex enterprise work.</h1>
-      <p class="lede reveal" data-delay="2">I'm Chaya, a Senior Product Designer with {SITE['years']} years of experience shipping enterprise software across ESG, HR-tech, energy and retail. Trained at the National Institute of Design, I turn tangled workflows into products teams actually finish using.</p>
+      <p class="lede reveal" data-delay="2">I'm Chaya, a Senior Product Designer who makes complex enterprise work feel simple: taking timesheets for 600,000+ TCS employees to mobile, bringing Jira into Nokia's GenAI assistant, making Quality Fees clear for Hilton hotel owners and designing an MCP integration for PMI. {SITE['years']} years in, trained at the National Institute of Design.</p>
       <div class="hero__actions reveal" data-delay="3">
         <a class="btn btn--primary" href="#work">View selected work {I['arrow']}</a>
         <a class="btn" href="about/index.html">About me</a>
