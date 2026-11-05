@@ -414,35 +414,45 @@ def contact_panel() -> str:
 
 
 def holo_cards() -> str:
-    return f"""
-<div class="creds">
-  <div class="reveal">
-    <div class="holo holo--nid" tabindex="0" role="group" aria-label="Master of Design in Interaction Design, National Institute of Design, 2014 to 2017">
-      <div class="holo__face">
-        <div class="holo__top"><span class="holo__seal">NID</span><span class="holo__kind">Postgraduate<br>Master of Design</span></div>
-        <div class="holo__mid"><span class="holo__degree">M.Des</span><span class="holo__field">Interaction Design</span></div>
-        <div class="holo__bottom"><span class="holo__inst">National Institute of Design, Bengaluru</span><span class="holo__chip" aria-hidden="true"></span></div>
+    """Education badges: metallic medallions that tilt, catch light and spin on tap."""
+    def badge(mod: str, label: str, core: str, kind: str, degree: str, field: str, inst: str, years: str, delay: str = "") -> str:
+        return f"""
+  <div class="reveal"{delay}>
+    <div class="holo holo--{mod}" tabindex="0" role="button" aria-label="{label}. Press to spin the badge.">
+      <div class="badge__stage">
+        <div class="badge__medal">
+          <div class="badge__front">
+            <div class="badge__rim"></div>
+            <div class="badge__core">{core}</div>
+            <div class="badge__shine"></div>
+          </div>
+          <div class="badge__back"><span>{years.split(" · ")[0]}</span></div>
+        </div>
+        <div class="badge__shadow"></div>
       </div>
-      <div class="holo__foil" aria-hidden="true"></div>
-      <div class="holo__glare" aria-hidden="true"></div>
-      <div class="holo__edge" aria-hidden="true"></div>
-    </div>
-    <p class="holo__hint mono">2014 — 2017 · Bengaluru campus</p>
-  </div>
-  <div class="reveal" data-delay="1">
-    <div class="holo holo--vtu" tabindex="0" role="group" aria-label="Bachelor of Engineering in Computer Science, Visvesvaraya Technological University, 2009 to 2013">
-      <div class="holo__face">
-        <div class="holo__top"><span class="holo__seal">VTU</span><span class="holo__kind">Undergraduate<br>Bachelor of Engineering</span></div>
-        <div class="holo__mid"><span class="holo__degree">B.E</span><span class="holo__field">Computer Science &amp; Engineering</span></div>
-        <div class="holo__bottom"><span class="holo__inst">Visvesvaraya Technological University</span><span class="holo__chip" aria-hidden="true"></span></div>
+      <div class="badge__text">
+        <span class="badge__kind">{kind}</span>
+        <span class="badge__degree">{degree}</span>
+        <span class="badge__field">{field}</span>
+        <span class="badge__inst">{inst}</span>
       </div>
-      <div class="holo__foil" aria-hidden="true"></div>
-      <div class="holo__glare" aria-hidden="true"></div>
-      <div class="holo__edge" aria-hidden="true"></div>
     </div>
-    <p class="holo__hint mono">2009 — 2013 · Bengaluru</p>
-  </div>
-</div>"""
+    <p class="holo__hint mono">{years}</p>
+  </div>"""
+
+    nid = badge(
+        "nid", "Master of Design in Interaction Design, National Institute of Design, 2014 to 2017",
+        '<span class="badge__emboss"><i class="badge__logo badge__logo--nid"></i></span>',
+        "Postgraduate", "M.Des", "Interaction Design", "National Institute of Design, Bengaluru",
+        "2014 — 2017 · Bengaluru campus",
+    )
+    vtu = badge(
+        "vtu", "Bachelor of Engineering in Computer Science, Visvesvaraya Technological University, 2009 to 2013",
+        '<img class="badge__seal" src="/assets/img/vtu.png" alt="" decoding="async">',
+        "Undergraduate", "B.E", "Computer Science &amp; Engineering", "Visvesvaraya Technological University",
+        "2009 — 2013 · Bengaluru", ' data-delay="1"',
+    )
+    return f'<div class="creds">{nid}{vtu}\n</div>'
 
 
 def work_card(c: dict, root: str, delay: int = 0) -> str:
@@ -537,7 +547,7 @@ def page_home() -> str:
       <div class="sec-head reveal">
         <span class="eyebrow">Education</span>
         <h2 class="h-section grad">Engineer by training. Designer by NID.</h2>
-        <p class="lede">A computer science degree taught me how software is built. The National Institute of Design taught me who it's for. Move your cursor over the cards.</p>
+        <p class="lede">A computer science degree taught me how software is built. The National Institute of Design taught me who it's for. Tilt the badges, or tap one to spin it.</p>
       </div>
       {holo_cards()}
       <div class="nid-band reveal" style="margin-top:clamp(40px,6vw,72px)">
