@@ -36,7 +36,7 @@ SITE = {
     "instagram": "https://www.instagram.com/chayananda.nagesh/",
     "goodreads": "https://www.goodreads.com/chayananda",
     "letterboxd": "https://letterboxd.com/chayananda/",
-    "portrait": "https://framerusercontent.com/images/kZ0YMk93M25yCTgeSQVlRtni9KA.jpg?width=921&height=1247",
+    "portrait": "/assets/img/portrait.jpg",
 }
 
 FONTS = (
