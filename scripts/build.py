@@ -805,7 +805,7 @@ def page_home() -> str:
     <div class="wrap">
       <div class="kpis reveal">
         <div class="kpi"><span class="kpi__num">600K<small>+</small></span><span class="kpi__label">Users on products I've shipped</span><span class="kpi__note">TCS Timesheet, 46 countries</span></div>
-        <div class="kpi"><span class="kpi__num">10</span><span class="kpi__label">Companies and clients</span><span class="kpi__note">Nokia · Hilton · PMI · TCS · BRAC Bank</span></div>
+        <div class="kpi"><span class="kpi__num">10</span><span class="kpi__label">Companies and clients</span><span class="kpi__note">Nokia · Hilton · PMI · TCS · BMS</span></div>
         <div class="kpi"><span class="kpi__num">−80<small>%</small></span><span class="kpi__label">Client onboarding time</span><span class="kpi__note">Impakt IQ, 0→1 in 16 weeks</span></div>
         <div class="kpi"><span class="kpi__num">2</span><span class="kpi__label">GenAI products designed</span><span class="kpi__note">NokiaGPT × Jira · PMI MCP</span></div>
       </div>
