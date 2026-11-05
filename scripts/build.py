@@ -400,6 +400,16 @@ CASES = [
         "coming_soon": True,
     },
     {
+        "slug": "nokia-gpt",
+        "title": "Nokia GPT",
+        "headline": "Nokia GPT",
+        "card_desc": "The full case study is being written up. Check back soon.",
+        "company": "Nokia",
+        "tags": ["AI", "GenAI"],
+        "cover": cover_soon("nokia.svg", "Nokia · GPT"),
+        "coming_soon": True,
+    },
+    {
         # From the BRAC + BRAC Bank Design System 1.0 one-pager and detailed write-up.
         # No role, timeline, decisions or reflection given yet, so those stay hidden.
         "slug": "brac-bank",
