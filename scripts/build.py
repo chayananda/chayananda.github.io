@@ -71,6 +71,19 @@ def cover_image(src: str):
     return render
 
 
+def cover_soon(logo: str, label: str):
+    """Placeholder cover for a case study that isn't written yet: client logo + "Coming soon"."""
+    def render() -> str:
+        return (
+            '<div class="cover cover--soon" aria-hidden="true">'
+            f'<span class="cover__label">{label}</span>'
+            f'<img class="cover--soon__logo" src="/assets/img/logos/{logo}" alt="" decoding="async">'
+            '<span class="cover--soon__pill">Case study coming soon</span>'
+            '</div>'
+        )
+    return render
+
+
 # --------------------------------------------------------------------------
 # Code-drawn covers (no image requests, crisp at any size)
 # --------------------------------------------------------------------------
@@ -320,6 +333,38 @@ CASES = [
         "shots": [],
         "reflection": "Working with a CEO who reviewed every week taught me to bring decisions, not options. The project also set the approach I still use from NID: understand the whole system before designing any single screen.",
     },
+    # ---- Coming soon: card + placeholder page until the case study is written.
+    # Set "coming_soon": False and fill in the full fields (see the projects above) to publish.
+    {
+        "slug": "hilton-quality-fee",
+        "title": "Hilton BOSS Quality Fee",
+        "headline": "Hilton BOSS Quality Fee",
+        "card_desc": "The full case study is being written up. Check back soon.",
+        "company": "Hilton",
+        "tags": ["BOSS"],
+        "cover": cover_soon("hilton.svg", "Hilton · BOSS Quality Fee"),
+        "coming_soon": True,
+    },
+    {
+        "slug": "hilton-design-system",
+        "title": "Hilton BOSS Design System",
+        "headline": "Hilton BOSS Design System",
+        "card_desc": "The full case study is being written up. Check back soon.",
+        "company": "Hilton",
+        "tags": ["BOSS", "Design system"],
+        "cover": cover_soon("hilton.svg", "Hilton · BOSS Design System"),
+        "coming_soon": True,
+    },
+    {
+        "slug": "pmi-mcp",
+        "title": "PMI MCP Integration",
+        "headline": "PMI MCP Integration",
+        "card_desc": "The full case study is being written up. Check back soon.",
+        "company": "PMI",
+        "tags": ["MCP", "AI"],
+        "cover": cover_soon("pmi.svg", "PMI · MCP Integration"),
+        "coming_soon": True,
+    },
 ]
 
 EXPERIENCE = [
@@ -500,8 +545,14 @@ def holo_cards() -> str:
 
 def work_card(c: dict, root: str, delay: int = 0) -> str:
     href = f"{root}case-studies/{c['slug']}/index.html"
+    soon = c.get("coming_soon", False)
     tags = "".join(f'<span class="tag">{t}</span>' for t in c["tags"])
-    stats = "".join(f"<div><b>{n}</b><span>{l}</span></div>" for n, l in c["card_stats"])
+    if soon:
+        tags += '<span class="tag tag--soon">Coming soon</span>'
+        stats = '<div class="work-card__soon"><b>Coming soon</b><span>Case study in progress</span></div>'
+    else:
+        stats = "".join(f"<div><b>{n}</b><span>{l}</span></div>" for n, l in c["card_stats"])
+    cta = "Preview project" if soon else "Read case study"
     return f"""
 <article class="work-card reveal" data-delay="{delay}">
   <div class="work-card__media">{c['cover']()}</div>
@@ -510,11 +561,11 @@ def work_card(c: dict, root: str, delay: int = 0) -> str:
       <div class="work-card__meta"><span class="tag">{c['company']}</span>{tags}</div>
       <h3 class="work-card__title">{c['headline']}</h3>
       <p class="work-card__desc">{c['card_desc']}</p>
-      <span class="work-card__cta">Read case study {I['arrow']}</span>
+      <span class="work-card__cta">{cta} {I['arrow']}</span>
     </div>
     <div class="work-card__stats">{stats}</div>
   </div>
-  <a class="work-card__link" href="{href}" aria-label="Read the {c['title']} case study"></a>
+  <a class="work-card__link" href="{href}" aria-label="{cta}: {c['title']}"></a>
 </article>"""
 
 
@@ -577,7 +628,7 @@ def page_home() -> str:
       <div class="sec-head reveal">
         <span class="eyebrow">Selected work</span>
         <h2 class="h-section grad">Shipped products, measured outcomes.</h2>
-        <p class="lede">Three projects across web, mobile and tablet. Each one starts with the problem, then shows the decisions and the numbers that moved.</p>
+        <p class="lede">Three in-depth case studies across web, mobile and tablet, with more on the way. Each one starts with the problem, then shows the decisions and the numbers that moved.</p>
       </div>
       <div class="work">{cards}</div>
     </div>
@@ -725,7 +776,7 @@ def page_case(c: dict, idx: int) -> str:
         f'<figcaption><span>{cap}</span><span>{c["title"]}</span></figcaption></figure>'
         for src, cap, crop in c["shots"]
     )
-    others = [o for o in CASES if o["slug"] != c["slug"]]
+    others = [o for o in CASES if o["slug"] != c["slug"] and not o.get("coming_soon")]
     nxt = "".join(
         f'<a href="{root}case-studies/{o["slug"]}/index.html"><small>{"Next" if i == 0 else "Also see"}</small><b>{o["title"]}</b><span class="muted">{o["company"]} · {o["platform"]}</span></a>'
         for i, o in enumerate(others)
@@ -811,6 +862,50 @@ def page_case(c: dict, idx: int) -> str:
     )
 
 
+def page_soon(c: dict) -> str:
+    """Placeholder project page: same header as a case study, then a short note."""
+    root = "../../"
+    facts = "".join(
+        f"<div><dt>{k}</dt><dd>{v}</dd></div>"
+        for k, v in (("Client", c["company"]), ("Project", c["title"]), ("Status", "Case study coming soon"))
+    )
+    published = [o for o in CASES if not o.get("coming_soon")]
+    nxt = "".join(
+        f'<a href="{root}case-studies/{o["slug"]}/index.html"><small>Read now</small><b>{o["title"]}</b><span class="muted">{o["company"]} · {o["platform"]}</span></a>'
+        for o in published
+    )
+    return (
+        head(f"{c['title']} · {SITE['name']}", f"{c['title']}: case study coming soon.", root)
+        + nav(root, "work")
+        + f"""
+<main id="main">
+  <section class="cs-hero">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="wrap cs-hero__inner">
+      <a class="cs-back" href="{root}index.html#work">{I['back']}All work</a>
+      <span class="eyebrow">Case study · {c['title']}</span>
+      <h1 class="grad">{c['headline']}</h1>
+      <dl class="cs-facts cs-facts--3">{facts}</dl>
+      <div class="cs-cover">{c['cover']()}</div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="soon-note reveal">
+        <span class="eyebrow">Coming soon</span>
+        <h2>This case study is on its way.</h2>
+        <p class="lede">I'm writing up the problem, the decisions and the results for {c['title']}. In the meantime, here are the case studies you can read today.</p>
+      </div>
+      <div class="next-cs next-cs--3">{nxt}</div>
+    </div>
+  </section>
+  {contact_panel()}
+</main>"""
+        + footer(root)
+    )
+
+
 def write(path: str, html: str) -> None:
     p = ROOT / path
     p.parent.mkdir(parents=True, exist_ok=True)
@@ -823,7 +918,8 @@ def main() -> None:
     write("index.html", page_home())
     write("about/index.html", page_about())
     for i, c in enumerate(CASES):
-        write(f"case-studies/{c['slug']}/index.html", page_case(c, i))
+        page = page_soon(c) if c.get("coming_soon") else page_case(c, i)
+        write(f"case-studies/{c['slug']}/index.html", page)
     # Keep the old /portfolio URL working
     write("portfolio/index.html", '<!doctype html><meta charset="utf-8"><title>Work · Chayananda Nagesh</title>'
           '<meta http-equiv="refresh" content="0; url=../index.html#work"><link rel="canonical" href="../index.html#work">'

@@ -340,6 +340,33 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
   .work-card__stats b { font-size: 1.2rem; }
 }
 
+/* ---------- Coming-soon projects ---------- */
+.cover--soon {
+  background:
+    radial-gradient(70% 80% at 50% 0%, rgba(139,140,248,.18), transparent 70%),
+    linear-gradient(160deg, #15161c 0%, #0d0e12 60%, #0a0b0e 100%);
+  align-content: center; gap: clamp(14px, 2.4vw, 22px);
+}
+.cover--soon__logo {
+  position: relative; z-index: 2;
+  width: auto; height: clamp(44px, 9vw, 92px); max-width: 46%;
+  filter: brightness(0) invert(1); opacity: .85;
+}
+.cover--soon__pill {
+  position: relative; z-index: 2;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--fg-2); padding: 7px 12px; border-radius: 999px;
+  border: 1px solid var(--line-strong); background: rgba(255,255,255,.04);
+}
+.tag--soon { color: var(--accent-2); border-color: rgba(139,140,248,.35); }
+.work-card__stats .work-card__soon { grid-column: 1 / -1; padding: 18px 16px; }
+.work-card__soon b { font-size: 1.25rem; }
+.cs-facts.cs-facts--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 720px) { .cs-facts.cs-facts--3 { grid-template-columns: 1fr; } }
+.soon-note { max-width: 640px; display: grid; gap: 14px; margin-bottom: clamp(32px, 4vw, 48px); }
+.next-cs.next-cs--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 860px) { .next-cs.next-cs--3 { grid-template-columns: 1fr; } }
+
 /* ---------- Covers (code-drawn product mockups) ---------- */
 .cover { position: absolute; inset: 0; display: grid; place-items: center; overflow: hidden; }
 .cover--iiq { background: radial-gradient(80% 70% at 30% 0%, #2a1c12 0%, #120d0a 55%, #0c0b0a 100%); }
