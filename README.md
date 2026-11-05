@@ -22,3 +22,11 @@ The generated pages are git-ignored. Edit `build.py`, not the HTML.
 ## Deploy
 
 Push to `main`. Vercel runs `python3 scripts/build.py` and publishes the result to chayananda.vercel.app. Other branches get preview URLs.
+
+## Keeping local, GitHub and Vercel in sync
+
+1. `git pull` before you start (picks up changes made elsewhere).
+2. Edit, preview locally, then `git add -A && git commit -m "..." && git push`.
+3. Vercel deploys `main` to production automatically; any other branch gets a preview URL.
+
+Never upload files to Vercel by hand — GitHub is the single source of truth.
