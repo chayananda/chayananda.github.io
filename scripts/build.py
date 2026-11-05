@@ -385,7 +385,6 @@ def nav(root: str, current: str) -> str:
       {link("index.html#work", "Work", "work")}
       {link("about/index.html", "About", "about")}
       {link("index.html#education", "Education", "education")}
-      <a class="btn btn--primary nav__cta" href="{root}index.html#contact">Get in touch</a>
     </nav>
   </div>
 </header>"""
