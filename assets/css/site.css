@@ -198,12 +198,13 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
 .chip--nid {
   /* gold palette, matching the VTU badge */
   --g-hi: #fff6dc; --g-1: #f1d58f; --g-2: #c9a24f; --g-3: #8a6a2a;
-  position: relative; padding: 4px 4px 4px 10px; gap: 6px; width: fit-content; justify-self: start; align-self: start;
+  position: relative; padding: 4px 4px 4px 12px; gap: 10px; width: fit-content; justify-self: start; align-self: start;
+  font-size: 14px;
 }
-.chip__main { display: inline-flex; align-items: center; gap: 9px; min-width: 0; }
+.chip__main { display: inline-flex; align-items: center; gap: 12px; min-width: 0; min-height: 44px; }
 .chip__main:hover { color: var(--fg); }
 .chip__nid {
-  flex: none; width: 25px; height: 20px;
+  flex: none; width: 55px; height: 44px; /* 75:60 emblem at the play button's height */
   /* the emblem is a mask; a bright band sweeps across it on a loop */
   background: linear-gradient(110deg, var(--g-2) 0%, var(--g-1) 25%, var(--g-hi) 42%, #fff 50%, var(--g-hi) 58%, var(--g-1) 75%, var(--g-3) 100%);
   background-size: 250% 100%;
@@ -223,30 +224,31 @@ h1, h2, h3, h4 { margin: 0; font-family: var(--font-display); font-weight: 600; 
 }
 @keyframes nid-glint { 0%, 55% { background-position: 120% 0; } 100% { background-position: -120% 0; } }
 .chip__play {
-  flex: none; width: 24px; height: 24px; border-radius: 50%;
-  display: grid; place-items: center; margin-left: 4px;
+  flex: none; width: 44px; height: 44px; border-radius: 50%;
+  display: grid; place-items: center; margin-left: 2px;
   color: #3a2a0c; background: linear-gradient(135deg, var(--g-hi), var(--g-1) 45%, var(--g-2));
   box-shadow: 0 0 0 0 rgba(241,213,143,.6);
   animation: play-pulse 2.4s ease-out infinite;
   transition: transform .2s var(--ease);
 }
-.chip__play svg { width: 12px; height: 12px; margin-left: 1px; }
+.chip__play svg { width: 18px; height: 18px; margin-left: 2px; }
 .chip__play:hover, .chip__play:focus-visible { transform: scale(1.1); animation: none; }
-@keyframes play-pulse { 0% { box-shadow: 0 0 0 0 rgba(241,213,143,.55); } 70%, 100% { box-shadow: 0 0 0 8px rgba(241,213,143,0); } }
+@keyframes play-pulse { 0% { box-shadow: 0 0 0 0 rgba(241,213,143,.55); } 70%, 100% { box-shadow: 0 0 0 10px rgba(241,213,143,0); } }
 /* hover preview window (added by site.js on devices with a mouse) */
 .yt-peek {
-  position: absolute; z-index: 40; top: calc(100% + 10px); right: 0;
-  width: 248px; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden;
+  position: absolute; z-index: 40; top: calc(100% + 12px); left: 0;
+  /* 480px wide: big enough that YouTube serves a sharp (480p+) stream */
+  width: min(480px, calc(100vw - 32px)); aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden;
   background: #000; border: 1px solid var(--line-strong);
   box-shadow: 0 24px 50px -16px rgba(0,0,0,.9);
-  opacity: 0; transform: translateY(-4px) scale(.98); transform-origin: top right;
+  opacity: 0; transform: translateY(-4px) scale(.98); transform-origin: top left;
   transition: opacity .2s, transform .2s var(--ease);
   pointer-events: none;
 }
 .yt-peek.is-open { opacity: 1; transform: none; }
 .yt-peek iframe { width: 100%; height: 100%; border: 0; display: block; }
 .yt-peek__cap {
-  position: absolute; left: 8px; bottom: 8px; font-size: 11px; padding: 3px 7px; border-radius: 6px;
+  position: absolute; left: 10px; bottom: 10px; font-size: 12px; padding: 4px 8px; border-radius: 6px;
   color: #fff; background: rgba(0,0,0,.6); font-family: var(--font-mono); letter-spacing: .04em;
 }
 @media (prefers-reduced-motion: reduce) {
