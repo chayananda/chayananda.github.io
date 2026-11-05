@@ -559,6 +559,26 @@ def contact_panel() -> str:
 </section>"""
 
 
+# NID convocation video: the chip's play button opens it where I receive my degree,
+# and hovering the button previews a 3-second clip just after that moment.
+NID_VIDEO = {"id": "W79XS-WR3tA", "start": 52 * 60 + 55, "preview": (53 * 60 + 5, 53 * 60 + 8)}
+
+
+def nid_chip(text: str, href: str = "#education") -> str:
+    """NID chip: shining NID emblem + text, with a play button for the convocation video."""
+    v = NID_VIDEO
+    watch = f"https://www.youtube.com/watch?v={v['id']}&t={v['start']}s"
+    return (
+        f'<div class="chip chip--nid reveal">'
+        f'<a class="chip__main" href="{href}"><span class="chip__nid" role="img" aria-label="NID"></span>{text}</a>'
+        f'<a class="chip__play" href="{watch}" target="_blank" rel="noopener"'
+        f' data-yt="{v["id"]}" data-from="{v["preview"][0]}" data-to="{v["preview"][1]}"'
+        f' aria-label="Watch me receive my degree at the NID convocation (opens YouTube at 52:55)">'
+        f'<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M5 3.5v9l7.5-4.5z" fill="currentColor"/></svg></a>'
+        f'</div>'
+    )
+
+
 # Companies and clients for the logo marquee: (file in assets/img/logos/, name, height in px).
 # Heights are tuned by eye so wide wordmarks and compact marks look the same size.
 LOGOS = [
@@ -684,7 +704,7 @@ def page_home() -> str:
     <div class="glow" aria-hidden="true"></div>
     <div class="grid-bg" aria-hidden="true"></div>
     <div class="wrap hero__inner">
-      <a class="chip reveal" href="#education"><span class="chip__dot">NID</span>M.Des Interaction Design, National Institute of Design</a>
+      {nid_chip("M.Des Interaction Design, National Institute of Design · 2014 batch")}
       <h1 class="grad reveal" data-delay="1">Calm, clear products for complex enterprise work.</h1>
       <p class="lede reveal" data-delay="2">I'm Chaya, a Senior Product Designer with {SITE['years']} years of experience shipping enterprise software across ESG, HR-tech, energy and retail. Trained at the National Institute of Design, I turn tangled workflows into products teams actually finish using.</p>
       <div class="hero__actions reveal" data-delay="3">
@@ -791,7 +811,7 @@ def page_about() -> str:
     <div class="glow" aria-hidden="true"></div>
     <div class="wrap about-hero" style="position:relative;z-index:1">
       <div class="stack" style="gap:24px">
-        <a class="chip reveal" href="#education"><span class="chip__dot">NID</span>Interaction Design alumnus</a>
+        {nid_chip("Interaction Design alumnus · 2014 batch")}
         <h1 class="grad reveal" data-delay="1" style="font-size:var(--step-4)">From engineer to designer, {SITE['years']} years in.</h1>
         <p class="lede reveal" data-delay="2">I studied computer science at VTU, then Interaction Design at the National Institute of Design. Since then I've designed enterprise products at Tata Consultancy Services, Schneider Electric and Brillio, across HR, energy, ESG audit and retail technology.</p>
         <p class="lede reveal" data-delay="2">I'm at my best on products with many roles, rules and edge cases, where clear structure matters more than decoration. I work closely with engineers, and I like to leave teams with systems they can keep using after I've moved on.</p>

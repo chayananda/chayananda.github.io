@@ -100,6 +100,72 @@
     card.addEventListener('blur', reset);
   });
 
+  /* ---- NID chip: hover the play button for a short, muted, looping preview ---- */
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  document.querySelectorAll('.chip__play[data-yt]').forEach((btn) => {
+    if (!canHover || reduceMotion) return; // touch / reduced motion: the link just opens YouTube
+    const chip = btn.closest('.chip--nid');
+    const { yt, from, to } = btn.dataset;
+    let peek = null, frame = null, timer = 0;
+
+    const send = (func, args = []) => frame?.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func, args, id: 'peek', channel: 'widget' }), '*');
+
+    const onMessage = (e) => {
+      if (!frame || e.source !== frame.contentWindow) return;
+      let data; try { data = JSON.parse(e.data); } catch { return; }
+      // Loop the clip: when playback reaches the end of the window (or the player stops), jump back.
+      const t = data.info?.currentTime;
+      const state = data.event === 'onStateChange' ? data.info : data.info?.playerState;
+      if ((typeof t === 'number' && t >= Number(to) - 0.15) || state === 0) {
+        send('seekTo', [Number(from), true]);
+        send('playVideo');
+      }
+    };
+
+    const open = () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        if (!peek) {
+          peek = document.createElement('div');
+          peek.className = 'yt-peek';
+          peek.setAttribute('aria-hidden', 'true');
+          const q = new URLSearchParams({
+            autoplay: '1', mute: '1', controls: '0', playsinline: '1', rel: '0', modestbranding: '1',
+            start: from, enablejsapi: '1', origin: location.origin,
+          });
+          frame = document.createElement('iframe');
+          frame.src = `https://www.youtube-nocookie.com/embed/${yt}?${q}`;
+          frame.title = 'NID convocation preview';
+          frame.tabIndex = -1;
+          frame.allow = 'autoplay; encrypted-media';
+          frame.addEventListener('load', () => frame.contentWindow.postMessage(
+            JSON.stringify({ event: 'listening', id: 'peek', channel: 'widget' }), '*'));
+          const cap = document.createElement('span');
+          cap.className = 'yt-peek__cap';
+          cap.textContent = 'Click to watch';
+          peek.append(frame, cap);
+          chip.append(peek);
+          window.addEventListener('message', onMessage);
+        }
+        requestAnimationFrame(() => peek.classList.add('is-open'));
+      }, 120);
+    };
+    const close = () => {
+      clearTimeout(timer);
+      if (!peek) return;
+      peek.classList.remove('is-open');
+      timer = setTimeout(() => { // remove the player so nothing keeps playing or downloading
+        window.removeEventListener('message', onMessage);
+        peek.remove(); peek = null; frame = null;
+      }, 220);
+    };
+    btn.addEventListener('pointerenter', open);
+    btn.addEventListener('pointerleave', close);
+    btn.addEventListener('focus', open);
+    btn.addEventListener('blur', close);
+  });
+
   /* ---- Case-study table of contents ---- */
   const tocLinks = [...document.querySelectorAll('.cs-toc a')];
   if (tocLinks.length && 'IntersectionObserver' in window) {
