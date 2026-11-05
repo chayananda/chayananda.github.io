@@ -546,8 +546,8 @@ def page_home() -> str:
     <div class="wrap">
       <div class="sec-head reveal">
         <span class="eyebrow">Education</span>
-        <h2 class="h-section grad">Engineer by training. Designer by NID.</h2>
-        <p class="lede">A computer science degree taught me how software is built. The National Institute of Design taught me who it's for. Tilt the badges, or tap one to spin it.</p>
+        <h2 class="h-section grad">I studied how software works.<br>Then who it's for.</h2>
+        <p class="lede">A B.E in Computer Science, then an M.Des in Interaction Design at NID. Tilt the badges, or tap one to spin it.</p>
       </div>
       {holo_cards()}
       <div class="nid-band reveal" style="margin-top:clamp(40px,6vw,72px)">
