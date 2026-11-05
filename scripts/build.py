@@ -9,10 +9,21 @@ Edit content (CASES, EXPERIENCE, EDUCATION) below, then rebuild to preview.
 """
 from __future__ import annotations
 
+import hashlib
 from pathlib import Path
 from textwrap import dedent
 
 ROOT = Path(__file__).resolve().parent.parent
+
+
+def asset_version(rel: str) -> str:
+    """Short content hash for a static file. Added to its URL so a changed file
+    gets a new URL and browsers never pair new pages with an old cached copy."""
+    return hashlib.sha256((ROOT / rel).read_bytes()).hexdigest()[:10]
+
+
+CSS_V = asset_version("assets/css/site.css")
+JS_V = asset_version("assets/js/site.js")
 
 SITE = {
     "name": "Chayananda Nagesh",
@@ -349,8 +360,8 @@ def head(title: str, desc: str, root: str) -> str:
     <link rel="icon" href="{root}assets/icons/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="{root}assets/icons/apple-touch-icon.png">
     {FONTS}
-    <link rel="stylesheet" href="{root}assets/css/site.css">
-    <script src="{root}assets/js/site.js" defer></script>
+    <link rel="stylesheet" href="{root}assets/css/site.css?v={CSS_V}">
+    <script src="{root}assets/js/site.js?v={JS_V}" defer></script>
     </head>
     <body>
     <a class="skip" href="#main">Skip to content</a>
