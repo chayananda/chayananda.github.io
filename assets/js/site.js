@@ -38,9 +38,9 @@
     setTimeout(() => reveals.forEach((el) => el.classList.add('is-in')), 2200);
   }
 
-  /* ---- Spotlight on work cards ---- */
+  /* ---- Spotlight on work and play cards ---- */
   if (finePointer) {
-    document.querySelectorAll('.work-card').forEach((card) => {
+    document.querySelectorAll('.work-card, .play-card').forEach((card) => {
       card.addEventListener('pointermove', (e) => {
         const r = card.getBoundingClientRect();
         card.style.setProperty('--px', `${e.clientX - r.left}px`);

@@ -593,6 +593,22 @@ EDUCATION = [
     ("2009 — 2013", "B.E, Computer Science & Engineering", "Visvesvaraya Technological University (VTU) · Bengaluru", "Engineering foundation that still shapes how I work with developers and scope what can ship."),
 ]
 
+# Play: vibe-coded side projects. Each one lives in its own GitHub repo and is
+# published at /play/<slug>/ by the deploy workflow, which copies the repo's
+# `dir` folder there (see scripts/fetch_play.sh). To add a project: add an entry
+# here and a 16:9 thumbnail in assets/img/play/.
+PLAY = [
+    {
+        "slug": "horoscene",
+        "title": "Horoscene",
+        "desc": "A Vedic birth chart in South and North Indian styles. Tap a graha to see its drishti, scored good, neutral or bad.",
+        "thumb": "play/horoscene.svg",
+        "tags": ["Jyotiṣa", "Carbon"],
+        "repo": "chayananda/horoscene",
+        "dir": "src",
+    },
+]
+
 PRINCIPLES = [
     ("eye", "Make it obvious", "Products that look good, read clearly and work without a manual."),
     ("cut", "Design by elimination", "I explore widely, then remove options until the strongest one is left."),
@@ -645,6 +661,7 @@ def nav(root: str, current: str) -> str:
       {link("index.html#work", "Work", "work")}
       {link("about/index.html", "About", "about")}
       {link("index.html#education", "Education", "education")}
+      {link("play/index.html", "Play", "play")}
     </nav>
   </div>
 </header>"""
@@ -801,6 +818,21 @@ def work_card(c: dict, root: str, delay: int = 0) -> str:
     <div class="work-card__stats">{stats}</div>
   </div>
   <a class="work-card__link" href="{href}" aria-label="{cta}: {c['title']}"></a>
+</article>"""
+
+
+def play_card(p: dict, root: str, delay: int = 0) -> str:
+    href = f"{root}play/{p['slug']}/"
+    tags = "".join(f'<span class="tag">{t}</span>' for t in p.get("tags", []))
+    return f"""
+<article class="play-card reveal" data-delay="{delay}">
+  <div class="play-card__media"><img src="/assets/img/{p['thumb']}" alt="" loading="lazy" decoding="async"></div>
+  <div class="play-card__body">
+    <h3 class="play-card__title">{p['title']} {I['arrow']}</h3>
+    <p class="play-card__desc">{p['desc']}</p>
+    {f'<div class="play-card__tags">{tags}</div>' if tags else ''}
+  </div>
+  <a class="play-card__link" href="{href}" aria-label="Open {p['title']}"></a>
 </article>"""
 
 
@@ -981,6 +1013,35 @@ def page_about() -> str:
     <div class="wrap">
       <div class="sec-head reveal"><span class="eyebrow">Capabilities</span><h2 class="h-section grad">What I bring to a team.</h2></div>
       <div class="skills">{sk}</div>
+    </div>
+  </section>
+  {contact_panel()}
+</main>"""
+        + footer(root)
+    )
+
+
+def page_play() -> str:
+    root = "../"
+    cards = "".join(play_card(p, root, i % 3) for i, p in enumerate(PLAY))
+    return (
+        head(f"Play · {SITE['name']}", "Small things I vibe-coded for fun: experiments, tools and side projects.", root)
+        + nav(root, "play")
+        + f"""
+<main id="main">
+  <section class="hero hero--compact">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="wrap hero__inner">
+      <span class="eyebrow reveal">Play</span>
+      <h1 class="grad reveal" data-delay="1">Things I vibe&#8209;coded for fun.</h1>
+      <p class="lede reveal" data-delay="2">Side projects, experiments and small tools I build with AI outside client work. Each one is live, so open it and play.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-label="Projects">
+    <div class="wrap">
+      <div class="play">{cards}</div>
     </div>
   </section>
   {contact_panel()}
@@ -1203,6 +1264,9 @@ def main() -> None:
     print("Building site...")
     write("index.html", page_home())
     write("about/index.html", page_about())
+    write("play/index.html", page_play())
+    # Repos the deploy workflow mounts at /play/<slug>/: "slug repo dir" per line
+    write("play/repos.txt", "".join(f"{p['slug']} {p['repo']} {p['dir']}\n" for p in PLAY))
     for i, c in enumerate(CASES):
         page = page_soon(c) if c.get("coming_soon") else page_case(c, i)
         write(f"case-studies/{c['slug']}/index.html", page)
