@@ -50,8 +50,8 @@ FONTS = (
 # --------------------------------------------------------------------------
 # Analytics — PostHog (product analytics + session replay), Microsoft Clarity
 # (heatmaps + recordings) and Google Analytics 4.
-# Both skip local previews and Vercel preview deployments so test visits don't
-# pollute the data. Set GA_ID to the "G-XXXXXXXXXX" measurement ID of the GA4
+# All of them run only on chayananda.com, so visits to chayananda.vercel.app,
+# Vercel previews and local builds are never counted. Set GA_ID to the "G-XXXXXXXXXX" measurement ID of the GA4
 # property "Portfolio"; leave it empty to omit the GA tag.
 # --------------------------------------------------------------------------
 POSTHOG_KEY = "phc_vMw7PRFKuEwADZ8BrbNswgicTB8zASubZAddMJmjdPpJ"
@@ -61,7 +61,7 @@ CLARITY_ID = "zadchz1it7"  # Microsoft Clarity project
 
 _LIVE_HOST = (
     "var h=location.hostname;"
-    "var live=!(h==='localhost'||h==='127.0.0.1'||h.endsWith('-projects.vercel.app')||location.protocol==='file:');"
+    "var live=(h==='www.chayananda.com'||h==='chayananda.com');"
 )
 
 
