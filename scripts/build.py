@@ -56,7 +56,7 @@ FONTS = (
 # --------------------------------------------------------------------------
 POSTHOG_KEY = "phc_vMw7PRFKuEwADZ8BrbNswgicTB8zASubZAddMJmjdPpJ"
 POSTHOG_HOST = "https://us.i.posthog.com"
-GA_ID = ""
+GA_ID = "G-HXCVCFE24S"
 CLARITY_ID = "zadchz1it7"  # Microsoft Clarity project
 
 _LIVE_HOST = (
