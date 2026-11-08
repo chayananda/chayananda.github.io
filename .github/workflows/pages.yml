@@ -30,9 +30,14 @@ jobs:
       - name: Collect the site
         run: |
           mkdir _site
-          cp -R index.html about case-studies portfolio assets favicon.ico _site/
+          cp -R index.html about case-studies portfolio play assets favicon.ico _site/
+          rm -f _site/play/repos.txt
           echo "www.chayananda.com" > _site/CNAME
           touch _site/.nojekyll
+      - name: Mount Play projects (separate repos) at /play/<slug>/
+        env:
+          PLAY_TOKEN: ${{ secrets.PLAY_TOKEN }}
+        run: bash scripts/fetch_play.sh _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

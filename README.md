@@ -9,6 +9,7 @@ Hand-written static site. No framework, no dependencies.
 | All content (case studies, metrics, experience, education) | `scripts/build.py` |
 | Design system (colors, type, layout) | `assets/css/site.css` |
 | Interactions (nav, reveal, hologram cards, TOC) | `assets/js/site.js` |
+| Play projects list (title, description, thumbnail, repo) | `PLAY` in `scripts/build.py` |
 
 ## Edit and preview locally
 
@@ -27,6 +28,17 @@ Live at **www.chayananda.com** (chayananda.com redirects there), served by GitHu
 Push to `master` in that repo. The workflow in `.github/workflows/pages.yml` runs
 `python3 scripts/build.py`, collects the pages and `assets/`, and publishes them. Watch it under the
 repo's **Actions** tab; it takes about a minute.
+
+## Play: vibe-coded projects in their own repos
+
+`/play/` lists small side projects. Each project keeps its **own GitHub repo** and is published at
+`/play/<slug>/` (e.g. www.chayananda.com/play/horoscene). On every deploy, the workflow runs
+`scripts/fetch_play.sh`, which clones each repo listed in `PLAY` and copies its folder into the site.
+
+- **Add a project:** add an entry to `PLAY` in `scripts/build.py` and a 16:9 thumbnail in `assets/img/play/`.
+- **Update a project:** push to its repo, then re-run "Deploy to GitHub Pages" under **Actions** here.
+- **Private repos** need the `PLAY_TOKEN` Actions secret: a fine-grained GitHub token with read-only
+  *Contents* access to those repos. Without it, the project's page shows a "back soon" holding page.
 
 ## Keeping local and GitHub in sync
 
