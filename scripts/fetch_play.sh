@@ -11,6 +11,8 @@
 set -euo pipefail
 
 site="${1:?usage: fetch_play.sh <site-dir>}"
+# Strip spaces/newlines that sneak in when the secret is pasted
+PLAY_TOKEN="$(printf '%s' "${PLAY_TOKEN:-}" | tr -d '[:space:]')"
 tmp="$(mktemp -d)"
 trap 'rm -rf "$tmp"' EXIT
 
@@ -23,13 +25,15 @@ while read -r slug repo dir; do
   else
     url="https://github.com/${repo}.git"
   fi
-  if GIT_TERMINAL_PROMPT=0 git clone --quiet --depth 1 "$url" "$tmp/$slug" 2>/dev/null \
+  if GIT_TERMINAL_PROMPT=0 git clone --quiet --depth 1 "$url" "$tmp/$slug" 2>"$tmp/$slug.err" \
      && [ -f "$tmp/$slug/$dir/index.html" ]; then
     cp -R "$tmp/$slug/$dir/." "$dest/"
     rm -f "$dest/vercel.json"
     echo "  play/$slug  <-  $repo/$dir"
   else
-    echo "::warning::Could not fetch $repo for /play/$slug/. Check the PLAY_TOKEN secret."
+    if [ -z "$PLAY_TOKEN" ]; then why="PLAY_TOKEN secret is empty or missing";
+    else why="$(sed "s/${PLAY_TOKEN}/***/g" "$tmp/$slug.err" | tr '\n' ' ')"; fi
+    echo "::warning::Could not fetch $repo for /play/$slug/ (token length ${#PLAY_TOKEN}): $why"
     cat > "$dest/index.html" <<HTML
 <!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Back soon · Chayananda Nagesh</title>
