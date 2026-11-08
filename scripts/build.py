@@ -48,7 +48,8 @@ FONTS = (
 )
 
 # --------------------------------------------------------------------------
-# Analytics — PostHog (product analytics + session replay) and Google Analytics 4.
+# Analytics — PostHog (product analytics + session replay), Microsoft Clarity
+# (heatmaps + recordings) and Google Analytics 4.
 # Both skip local previews and Vercel preview deployments so test visits don't
 # pollute the data. Set GA_ID to the "G-XXXXXXXXXX" measurement ID of the GA4
 # property "Portfolio"; leave it empty to omit the GA tag.
@@ -56,6 +57,7 @@ FONTS = (
 POSTHOG_KEY = "phc_vMw7PRFKuEwADZ8BrbNswgicTB8zASubZAddMJmjdPpJ"
 POSTHOG_HOST = "https://us.i.posthog.com"
 GA_ID = ""
+CLARITY_ID = "zadchz1it7"  # Microsoft Clarity project
 
 _LIVE_HOST = (
     "var h=location.hostname;"
@@ -70,6 +72,15 @@ def analytics() -> str:
         f"posthog.init('{POSTHOG_KEY}',{{api_host:'{POSTHOG_HOST}',person_profiles:'identified_only'}});}}"
         "</script>"
     )
+    if CLARITY_ID:
+        out += (
+            "<script>" + _LIVE_HOST +
+            "if(live){(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};"
+            "t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;"
+            "y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);"
+            f"}})(window,document,'clarity','script','{CLARITY_ID}');}}"
+            "</script>"
+        )
     if GA_ID:
         out += (
             f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
