@@ -3,6 +3,7 @@
 /about/
 /case-studies/
 /portfolio/
+/play/
 .DS_Store
 __pycache__/
 .vercel

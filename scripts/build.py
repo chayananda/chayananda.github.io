@@ -48,6 +48,50 @@ FONTS = (
 )
 
 # --------------------------------------------------------------------------
+# Analytics — PostHog (product analytics + session replay), Microsoft Clarity
+# (heatmaps + recordings) and Google Analytics 4.
+# All of them run only on chayananda.com, so visits to chayananda.vercel.app,
+# Vercel previews and local builds are never counted. Set GA_ID to the "G-XXXXXXXXXX" measurement ID of the GA4
+# property "Portfolio"; leave it empty to omit the GA tag.
+# --------------------------------------------------------------------------
+POSTHOG_KEY = "phc_vMw7PRFKuEwADZ8BrbNswgicTB8zASubZAddMJmjdPpJ"
+POSTHOG_HOST = "https://us.i.posthog.com"
+GA_ID = "G-HXCVCFE24S"
+CLARITY_ID = "zadchz1it7"  # Microsoft Clarity project
+
+_LIVE_HOST = (
+    "var h=location.hostname;"
+    "var live=(h==='www.chayananda.com'||h==='chayananda.com');"
+)
+
+
+def analytics() -> str:
+    out = (
+        "<script>" + _LIVE_HOST +
+        "if(live){!function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(\".\");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement(\"script\")).type=\"text/javascript\",p.crossOrigin=\"anonymous\",p.async=!0,p.src=s.api_host.replace(\".i.posthog.com\",\"-assets.i.posthog.com\")+\"/static/array.js\",(r=t.getElementsByTagName(\"script\")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a=\"posthog\",u.people=u.people||[],u.toString=function(t){var e=\"posthog\";return\"posthog\"!==a&&(e+=\".\"+a),t||(e+=\" (stub)\"),e},u.people.toString=function(){return u.toString(1)+\".people (stub)\"},o=\"init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug\".split(\" \"),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);"
+        f"posthog.init('{POSTHOG_KEY}',{{api_host:'{POSTHOG_HOST}',person_profiles:'identified_only'}});}}"
+        "</script>"
+    )
+    if CLARITY_ID:
+        out += (
+            "<script>" + _LIVE_HOST +
+            "if(live){(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};"
+            "t=l.createElement(r);t.async=1;t.src='https://www.clarity.ms/tag/'+i;"
+            "y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);"
+            f"}})(window,document,'clarity','script','{CLARITY_ID}');}}"
+            "</script>"
+        )
+    if GA_ID:
+        out += (
+            f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
+            "<script>" + _LIVE_HOST +
+            "window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}"
+            f"if(live){{gtag('js',new Date());gtag('config','{GA_ID}');}}"
+            "</script>"
+        )
+    return out
+
+# --------------------------------------------------------------------------
 # Icons
 # --------------------------------------------------------------------------
 I = {
@@ -549,6 +593,22 @@ EDUCATION = [
     ("2009 — 2013", "B.E, Computer Science & Engineering", "Visvesvaraya Technological University (VTU) · Bengaluru", "Engineering foundation that still shapes how I work with developers and scope what can ship."),
 ]
 
+# Play: vibe-coded side projects. Each one lives in its own GitHub repo and is
+# published at /play/<slug>/ by the deploy workflow, which copies the repo's
+# `dir` folder there (see scripts/fetch_play.sh). To add a project: add an entry
+# here and a 16:9 thumbnail in assets/img/play/.
+PLAY = [
+    {
+        "slug": "horoscene",
+        "title": "Horoscene",
+        "desc": "A Vedic birth chart in South and North Indian styles. Tap a graha to see its drishti, scored good, neutral or bad.",
+        "thumb": "play/horoscene.svg",
+        "tags": ["Jyotiṣa", "Carbon"],
+        "repo": "chayananda/horoscene",
+        "dir": "src",
+    },
+]
+
 PRINCIPLES = [
     ("eye", "Make it obvious", "Products that look good, read clearly and work without a manual."),
     ("cut", "Design by elimination", "I explore widely, then remove options until the strongest one is left."),
@@ -578,6 +638,7 @@ def head(title: str, desc: str, root: str) -> str:
     <link rel="icon" href="{root}assets/icons/favicon-32.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="{root}assets/icons/apple-touch-icon.png">
     {FONTS}
+    {analytics()}
     <link rel="stylesheet" href="{root}assets/css/site.css?v={CSS_V}">
     <script src="{root}assets/js/site.js?v={JS_V}" defer></script>
     </head>
@@ -600,6 +661,7 @@ def nav(root: str, current: str) -> str:
       {link("index.html#work", "Work", "work")}
       {link("about/index.html", "About", "about")}
       {link("index.html#education", "Education", "education")}
+      {link("play/index.html", "Play", "play")}
     </nav>
   </div>
 </header>"""
@@ -756,6 +818,21 @@ def work_card(c: dict, root: str, delay: int = 0) -> str:
     <div class="work-card__stats">{stats}</div>
   </div>
   <a class="work-card__link" href="{href}" aria-label="{cta}: {c['title']}"></a>
+</article>"""
+
+
+def play_card(p: dict, root: str, delay: int = 0) -> str:
+    href = f"{root}play/{p['slug']}/"
+    tags = "".join(f'<span class="tag">{t}</span>' for t in p.get("tags", []))
+    return f"""
+<article class="play-card reveal" data-delay="{delay}">
+  <div class="play-card__media"><img src="/assets/img/{p['thumb']}" alt="" loading="lazy" decoding="async"></div>
+  <div class="play-card__body">
+    <h3 class="play-card__title">{p['title']} {I['arrow']}</h3>
+    <p class="play-card__desc">{p['desc']}</p>
+    {f'<div class="play-card__tags">{tags}</div>' if tags else ''}
+  </div>
+  <a class="play-card__link" href="{href}" aria-label="Open {p['title']}"></a>
 </article>"""
 
 
@@ -936,6 +1013,35 @@ def page_about() -> str:
     <div class="wrap">
       <div class="sec-head reveal"><span class="eyebrow">Capabilities</span><h2 class="h-section grad">What I bring to a team.</h2></div>
       <div class="skills">{sk}</div>
+    </div>
+  </section>
+  {contact_panel()}
+</main>"""
+        + footer(root)
+    )
+
+
+def page_play() -> str:
+    root = "../"
+    cards = "".join(play_card(p, root, i % 3) for i, p in enumerate(PLAY))
+    return (
+        head(f"Play · {SITE['name']}", "Small things I vibe-coded for fun: experiments, tools and side projects.", root)
+        + nav(root, "play")
+        + f"""
+<main id="main">
+  <section class="hero hero--compact">
+    <div class="glow" aria-hidden="true"></div>
+    <div class="grid-bg" aria-hidden="true"></div>
+    <div class="wrap hero__inner">
+      <span class="eyebrow reveal">Play</span>
+      <h1 class="grad reveal" data-delay="1">Things I vibe&#8209;coded for fun.</h1>
+      <p class="lede reveal" data-delay="2">Side projects, experiments and small tools I build with AI outside client work. Each one is live, so open it and play.</p>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-label="Projects">
+    <div class="wrap">
+      <div class="play">{cards}</div>
     </div>
   </section>
   {contact_panel()}
@@ -1158,6 +1264,9 @@ def main() -> None:
     print("Building site...")
     write("index.html", page_home())
     write("about/index.html", page_about())
+    write("play/index.html", page_play())
+    # Repos the deploy workflow mounts at /play/<slug>/: "slug repo dir" per line
+    write("play/repos.txt", "".join(f"{p['slug']} {p['repo']} {p['dir']}\n" for p in PLAY))
     for i, c in enumerate(CASES):
         page = page_soon(c) if c.get("coming_soon") else page_case(c, i)
         write(f"case-studies/{c['slug']}/index.html", page)
