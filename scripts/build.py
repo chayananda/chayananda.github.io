@@ -174,6 +174,67 @@ def cover_uls() -> str:
 # Content
 # --------------------------------------------------------------------------
 CASES = [
+    # ---- Coming soon: card + placeholder page until the case study is written.
+    # Set "coming_soon": False and fill in the full fields (see the projects above) to publish.
+    {
+        "slug": "pmi-mcp",
+        "title": "PMI MCP Integration",
+        "headline": "PMI MCP Integration",
+        "card_desc": "The full case study is being written up. Check back soon.",
+        "company": "PMI",
+        "tags": ["MCP", "AI"],
+        "cover": cover_soon("pmi.svg", "PMI · MCP Integration"),
+        "coming_soon": True,
+    },
+    {
+        "slug": "hilton-design-system",
+        "title": "Hilton BOSS Design System",
+        "headline": "Hilton BOSS Design System",
+        "card_desc": "The full case study is being written up. Check back soon.",
+        "company": "Hilton",
+        "tags": ["BOSS", "Design system"],
+        "cover": cover_soon("hilton.svg", "Hilton · BOSS Design System"),
+        "coming_soon": True,
+    },
+    {
+        # Project Echo (previously "Hilton BOSS Quality Fee"). Lighter case study:
+        # no metrics, before/after, decisions or reflection yet, so those sections stay hidden.
+        "slug": "hilton-echo",
+        "title": "Hilton BOSS Echo",
+        "headline": "Making Hilton's Quality Fees and Incentives clear to the hotel owners they apply to",
+        "card_desc": "A web and mobile SaaS platform where BOSS users and hotel owners see the Quality Fees and Incentives on their properties, and drill into how each one was calculated.",
+        "company": "Hilton",
+        "platform": "Web + mobile · SaaS",
+        "role": "Senior Product Designer",
+        "tags": ["Project Echo", "Financial reporting", "Role-based"],
+        "cover": cover_image("hilton-echo-fees.jpg"),
+        "card_stats": [("2", "user groups: BOSS users and hotel owners"), ("Web + app", "one platform"), ("Fee-level", "drill-down")],
+        "problem": (
+            "Hilton applies Quality Fees to properties that fail to maintain its brand standards, and Incentives to those that "
+            "perform well. The structures behind both are complex. "
+            "BOSS users and hotel owners had little visibility into which fees applied, how they were calculated and why, "
+            "which led to manual reconciliation and support queries to corporate teams. Project Echo set out to make that "
+            "information transparent in one web and mobile platform, with drill-down from fee types to calculations and rationale."
+        ),
+        "roles": [
+            ("My role", "Senior Product Designer. Led discovery, user flows, wireframes and interactive prototypes through to cross-functional sign-off."),
+            ("Users", "BOSS users and Hilton hotel owners."),
+            ("Scope", "Quality Fee and Incentive reporting with drill-down into fee types, calculations and rationale, on web and mobile, with role-based access."),
+        ],
+        "process": [
+            ("Discovery with the people who pay the fees", "I led discovery workshops with BOSS users and hotel owners to understand where fee transparency broke down and which reports were missing."),
+            ("Turned fee structures into user flows", "I translated the Quality Fee and Incentive structures into user flows that people outside finance could follow."),
+            ("Wireframed the drill-down", "Low-fidelity wireframes simplified the path from fee types to calculations and the rationale behind each one."),
+            ("Prototyped to align the teams", "Through iterative feedback sessions with business and engineering stakeholders, I built interactive prototypes that clarified the data hierarchy, improved usability and secured cross-functional alignment."),
+        ],
+        "outcomes": [
+            "Clearer transparency around Quality Fees and Incentives",
+            "Less manual reconciliation and fewer support queries from hotel owners",
+            "Stronger trust between corporate teams and property stakeholders, through clearer drill-down reporting",
+            "A scalable, role-based architecture ready for advanced analytics, performance benchmarking and automated financial reporting",
+        ],
+        "shots": [],
+    },
     {
         "slug": "impaktiq",
         "title": "Impakt IQ",
@@ -228,176 +289,6 @@ CASES = [
         #   ("https://framerusercontent.com/images/C2InrC7rKSzqGdcv6en5Jnw8WyA.png?width=1200", "Brand-tuned Material system", False),
         "shots": [],
         "reflection": "The fastest way through a 0→1 project with a fixed deadline was to agree early on what the MVP would leave out. Reports stayed outside the product for v1, which kept the team focused on the part of the workflow that cost the client the most time.",
-    },
-    {
-        "slug": "timesheet",
-        "title": "TCS Timesheet",
-        "headline": "Taking timesheets for 600,000+ TCS employees from desktop-only to a one-minute mobile habit",
-        "card_desc": "A hybrid mobile timesheet for Tata Consultancy Services that lets employees in 46 countries log, copy and submit their day from a phone.",
-        "company": "Tata Consultancy Services",
-        "platform": "Mobile · iOS & Android (Ionic)",
-        "timeline": "6 months, 2 releases",
-        "role": "UX designer & researcher",
-        "tags": ["Enterprise mobile", "600K+ users", "Usability testing"],
-        "cover": cover_image("timesheet.jpg"),
-        "card_stats": [("600K+", "employees"), ("−76%", "time to log a day"), ("100%", "task success in testing")],
-        "problem": (
-            "Every TCS employee must log their hours before month-end to get paid. The timesheet lived in a dense web "
-            "app built for desktops, so people working on client sites or travelling batched entries at the last minute. "
-            "Late and corrected submissions created payroll rework. Overseas employees, who bill hourly and log breaks and "
-            "overtime, had a separate and even heavier flow."
-        ),
-        "roles": [
-            ("My role", "UX designer and researcher. Owned research, flows, prototyping, usability testing and the visual design for both releases."),
-            ("Team", "Product owner, Ultimatix platform team and an Ionic development squad of 5."),
-            ("Scope", "Release 1: regular timesheet for India. Release 2: overtime timesheet for overseas employees."),
-        ],
-        "impact": [
-            ("−76", "%", "Time to log a workday", "From 3 min 40 s on the web flow to 52 s on mobile in moderated tests.", 76),
-            ("41", "%", "Submissions made on mobile", "Share of monthly timesheets submitted from the app six months after launch.", 41),
-            ("−28", "%", "Late submissions", "Month-end late or corrected timesheets in the two quarters after rollout.", 28),
-            ("100", "%", "Task completion", "All 5 test tasks completed with no abandonment across test sessions.", 100),
-        ],
-        "before": [
-            "Web-only timesheet with a full-month grid",
-            "All 7 charge types shown on every task",
-            "Copying effort meant re-entering it day by day",
-            "Overtime users mixed breaks and billable time by hand",
-        ],
-        "after": [
-            "Week view by default, expanding to month on demand",
-            "The 1–2 charge types people actually use come first",
-            "Copy a day's effort to a day, week or month with a preview",
-            "Break logging with automatic billable vs working hours",
-        ],
-        "decisions": [
-            ("Defaulted to what 70% of people do", "Usage data showed about <b>70% of employees use one or two charge types</b> and most work on assigned tasks. Assigned tasks became the landing tab and rare charge types moved behind a single tap."),
-            ("Copy with a preview", "Recorded Webex sessions showed people filling identical days over and over. Copy-effort lets them repeat a day across a week or month, and a calendar preview shows exactly which days will change before they confirm."),
-            ("Week first, month on demand", "A full-month grid doesn't fit a 360 px screen. The week strip shows status at a glance and expands into a month view through a single handle."),
-            ("One framework, two audiences", "Release 2 reused release 1's components and added a hub-and-spoke model for overtime: billing type, breaks and on-call each open their own sub-page. Reuse cut release 2's design time by about <b>40%</b>."),
-        ],
-        # Screens section hidden until new images are ready. To bring it back, add
-        # entries here: (image URL, caption, crop?). Previous entries:
-        #   ("https://framerusercontent.com/images/9qXuNAxqO7ypx4u55fba0EFqHZM.png?width=1200", "Final screens: regular timesheet", True),
-        #   ("https://framerusercontent.com/images/8UvxL2jLQx8krAajyMWrIiD7YqU.png?width=1200", "Final screens: overtime timesheet", True),
-        #   ("https://framerusercontent.com/images/bikvkehBoSXSoA5d89BIPR3OvQE.png?width=1000", "Interactive concept exploration in Axure", False),
-        "shots": [],
-        "reflection": "At this scale the best features were the ones that removed decisions. Most of the time savings came from good defaults rather than new functionality.",
-    },
-    {
-        "slug": "ulstudio",
-        "title": "UL Studio",
-        "headline": "Giving Urban Ladder's art directors a virtual photo studio on iPad to launch products faster",
-        "card_desc": "An iPad app that lets art directors stage furniture in a 3D studio, compose shots and push renders to approval without a physical photoshoot.",
-        "company": "Urban Ladder",
-        "platform": "Tablet · iPadOS",
-        "timeline": "6 months",
-        "role": "UX designer (NID graduation project)",
-        "tags": ["0→1", "3D tooling", "Retail", "NID project"],
-        "cover": cover_image("ulstudio.jpg"),
-        "card_stats": [("20", "stakeholder interviews"), ("−64%", "image turnaround"), ("−55%", "cost per hero shot")],
-        "problem": (
-            "Product images drive furniture purchases online, and every new Urban Ladder product needed them before "
-            "launch. Physical shoots meant booking studios, moving furniture and coordinating photographers. 3D renders "
-            "depended on specialist artists and long feedback loops between eight teams. Image creation had become the "
-            "slowest step in a product launch."
-        ),
-        "roles": [
-            ("My role", "UX designer, researcher and visual designer. This was my M.Des graduation project at the National Institute of Design."),
-            ("Team", "Reviewed weekly with the VP Product, VP Engineering and the then-CEO. Worked with 3D artists and art directors."),
-            ("Scope", "MVP of Studio (scene setup and shot composition) and Assets (exports, approvals and comments)."),
-        ],
-        "impact": [
-            ("−64", "%", "Image turnaround per product", "From ~14 days to 5 in the pilot, by removing studio booking and file hand-offs.", 64),
-            ("−55", "%", "Cost per hero image", "Projected against the cost of a physical studio shoot, per category team's estimate.", 55),
-            ("3 → 1", "", "Hand-offs per shot", "Art directors compose and submit directly instead of briefing a 3D artist.", 66),
-            ("20", "", "Stakeholder interviews", "Across art direction, photography, 3D, product, category and marketing.", 100),
-        ],
-        "before": [
-            "Physical shoots with studio booking and logistics",
-            "Art directors briefed 3D artists through long email threads",
-            "Files traded between 8 departments with no single source",
-            "Feedback arrived after renders were done",
-        ],
-        "after": [
-            "Art directors place products and lights in a virtual studio",
-            "Scene setups saved, edited and exported for rendering",
-            "Searchable asset library tied to each launch",
-            "Comments and approvals on the image itself",
-        ],
-        "decisions": [
-            ("Designed for art directors, not 3D artists", "Pro tools like Maya and 3ds Max expose hundreds of controls. I limited the studio to camera, lights, material and placement, and used photography language instead of 3D terms, so art directors could work without training."),
-            ("Prototyped 3D interaction with real users", "Sketch couldn't prototype 3D, so I tested gestures in Set A Light Studio and recorded art directors moving cameras and lights. That fixed the orbit, pan and drop-in gestures before engineering started."),
-            ("Moved steps to the back end", "Leadership reviews pushed for automation. Rendering, file naming and versioning happen on the server, which cut the flow from <b>11 steps to 6</b>."),
-        ],
-        # Screens section hidden until new images are ready. To bring it back, add
-        # entries here: (image URL, caption, crop?). Previous entries:
-        #   ("https://framerusercontent.com/images/H9aqZ2Xuw9PYMoyH4F5eZRfBs.png?width=1200", "Proof of concept: scene setup and shot composition", True),
-        #   ("https://framerusercontent.com/images/ZHPw5qOET90XAVIBuYZxaqns.png?width=1200", "Tablet wireframes", True),
-        #   ("https://framerusercontent.com/images/dpv34NqCC5xItzXYYT3Z60yu0.png?width=1200", "Information architecture", False),
-        "shots": [],
-        "reflection": "Working with a CEO who reviewed every week taught me to bring decisions, not options. The project also set the approach I still use from NID: understand the whole system before designing any single screen.",
-    },
-    {
-        # Project Echo (previously "Hilton BOSS Quality Fee"). Lighter case study:
-        # no metrics, before/after, decisions or reflection yet, so those sections stay hidden.
-        "slug": "hilton-echo",
-        "title": "Hilton BOSS Echo",
-        "headline": "Making Hilton's Quality Fees and Incentives clear to the hotel owners they apply to",
-        "card_desc": "A web and mobile SaaS platform where BOSS users and hotel owners see the Quality Fees and Incentives on their properties, and drill into how each one was calculated.",
-        "company": "Hilton",
-        "platform": "Web + mobile · SaaS",
-        "role": "Senior Product Designer",
-        "tags": ["Project Echo", "Financial reporting", "Role-based"],
-        "cover": cover_image("hilton-echo-fees.jpg"),
-        "card_stats": [("2", "user groups: BOSS users and hotel owners"), ("Web + app", "one platform"), ("Fee-level", "drill-down")],
-        "problem": (
-            "Hilton applies Quality Fees to properties that fail to maintain its brand standards, and Incentives to those that "
-            "perform well. The structures behind both are complex. "
-            "BOSS users and hotel owners had little visibility into which fees applied, how they were calculated and why, "
-            "which led to manual reconciliation and support queries to corporate teams. Project Echo set out to make that "
-            "information transparent in one web and mobile platform, with drill-down from fee types to calculations and rationale."
-        ),
-        "roles": [
-            ("My role", "Senior Product Designer. Led discovery, user flows, wireframes and interactive prototypes through to cross-functional sign-off."),
-            ("Users", "BOSS users and Hilton hotel owners."),
-            ("Scope", "Quality Fee and Incentive reporting with drill-down into fee types, calculations and rationale, on web and mobile, with role-based access."),
-        ],
-        "process": [
-            ("Discovery with the people who pay the fees", "I led discovery workshops with BOSS users and hotel owners to understand where fee transparency broke down and which reports were missing."),
-            ("Turned fee structures into user flows", "I translated the Quality Fee and Incentive structures into user flows that people outside finance could follow."),
-            ("Wireframed the drill-down", "Low-fidelity wireframes simplified the path from fee types to calculations and the rationale behind each one."),
-            ("Prototyped to align the teams", "Through iterative feedback sessions with business and engineering stakeholders, I built interactive prototypes that clarified the data hierarchy, improved usability and secured cross-functional alignment."),
-        ],
-        "outcomes": [
-            "Clearer transparency around Quality Fees and Incentives",
-            "Less manual reconciliation and fewer support queries from hotel owners",
-            "Stronger trust between corporate teams and property stakeholders, through clearer drill-down reporting",
-            "A scalable, role-based architecture ready for advanced analytics, performance benchmarking and automated financial reporting",
-        ],
-        "shots": [],
-    },
-    # ---- Coming soon: card + placeholder page until the case study is written.
-    # Set "coming_soon": False and fill in the full fields (see the projects above) to publish.
-    {
-        "slug": "hilton-design-system",
-        "title": "Hilton BOSS Design System",
-        "headline": "Hilton BOSS Design System",
-        "card_desc": "The full case study is being written up. Check back soon.",
-        "company": "Hilton",
-        "tags": ["BOSS", "Design system"],
-        "cover": cover_soon("hilton.svg", "Hilton · BOSS Design System"),
-        "coming_soon": True,
-    },
-    {
-        "slug": "pmi-mcp",
-        "title": "PMI MCP Integration",
-        "headline": "PMI MCP Integration",
-        "card_desc": "The full case study is being written up. Check back soon.",
-        "company": "PMI",
-        "tags": ["MCP", "AI"],
-        "cover": cover_soon("pmi.svg", "PMI · MCP Integration"),
-        "coming_soon": True,
     },
     {
         # From the NokiaGPT Jira-integration requirements page. Internal details (accounts,
@@ -534,6 +425,115 @@ CASES = [
             "WCAG 2.1 AA built into tokens and component states",
         ],
         "shots": [],
+    },
+    {
+        "slug": "timesheet",
+        "title": "TCS Timesheet",
+        "headline": "Taking timesheets for 600,000+ TCS employees from desktop-only to a one-minute mobile habit",
+        "card_desc": "A hybrid mobile timesheet for Tata Consultancy Services that lets employees in 46 countries log, copy and submit their day from a phone.",
+        "company": "Tata Consultancy Services",
+        "platform": "Mobile · iOS & Android (Ionic)",
+        "timeline": "6 months, 2 releases",
+        "role": "UX designer & researcher",
+        "tags": ["Enterprise mobile", "600K+ users", "Usability testing"],
+        "cover": cover_image("timesheet.jpg"),
+        "card_stats": [("600K+", "employees"), ("−76%", "time to log a day"), ("100%", "task success in testing")],
+        "problem": (
+            "Every TCS employee must log their hours before month-end to get paid. The timesheet lived in a dense web "
+            "app built for desktops, so people working on client sites or travelling batched entries at the last minute. "
+            "Late and corrected submissions created payroll rework. Overseas employees, who bill hourly and log breaks and "
+            "overtime, had a separate and even heavier flow."
+        ),
+        "roles": [
+            ("My role", "UX designer and researcher. Owned research, flows, prototyping, usability testing and the visual design for both releases."),
+            ("Team", "Product owner, Ultimatix platform team and an Ionic development squad of 5."),
+            ("Scope", "Release 1: regular timesheet for India. Release 2: overtime timesheet for overseas employees."),
+        ],
+        "impact": [
+            ("−76", "%", "Time to log a workday", "From 3 min 40 s on the web flow to 52 s on mobile in moderated tests.", 76),
+            ("41", "%", "Submissions made on mobile", "Share of monthly timesheets submitted from the app six months after launch.", 41),
+            ("−28", "%", "Late submissions", "Month-end late or corrected timesheets in the two quarters after rollout.", 28),
+            ("100", "%", "Task completion", "All 5 test tasks completed with no abandonment across test sessions.", 100),
+        ],
+        "before": [
+            "Web-only timesheet with a full-month grid",
+            "All 7 charge types shown on every task",
+            "Copying effort meant re-entering it day by day",
+            "Overtime users mixed breaks and billable time by hand",
+        ],
+        "after": [
+            "Week view by default, expanding to month on demand",
+            "The 1–2 charge types people actually use come first",
+            "Copy a day's effort to a day, week or month with a preview",
+            "Break logging with automatic billable vs working hours",
+        ],
+        "decisions": [
+            ("Defaulted to what 70% of people do", "Usage data showed about <b>70% of employees use one or two charge types</b> and most work on assigned tasks. Assigned tasks became the landing tab and rare charge types moved behind a single tap."),
+            ("Copy with a preview", "Recorded Webex sessions showed people filling identical days over and over. Copy-effort lets them repeat a day across a week or month, and a calendar preview shows exactly which days will change before they confirm."),
+            ("Week first, month on demand", "A full-month grid doesn't fit a 360 px screen. The week strip shows status at a glance and expands into a month view through a single handle."),
+            ("One framework, two audiences", "Release 2 reused release 1's components and added a hub-and-spoke model for overtime: billing type, breaks and on-call each open their own sub-page. Reuse cut release 2's design time by about <b>40%</b>."),
+        ],
+        # Screens section hidden until new images are ready. To bring it back, add
+        # entries here: (image URL, caption, crop?). Previous entries:
+        #   ("https://framerusercontent.com/images/9qXuNAxqO7ypx4u55fba0EFqHZM.png?width=1200", "Final screens: regular timesheet", True),
+        #   ("https://framerusercontent.com/images/8UvxL2jLQx8krAajyMWrIiD7YqU.png?width=1200", "Final screens: overtime timesheet", True),
+        #   ("https://framerusercontent.com/images/bikvkehBoSXSoA5d89BIPR3OvQE.png?width=1000", "Interactive concept exploration in Axure", False),
+        "shots": [],
+        "reflection": "At this scale the best features were the ones that removed decisions. Most of the time savings came from good defaults rather than new functionality.",
+    },
+    {
+        "slug": "ulstudio",
+        "title": "UL Studio",
+        "headline": "Giving Urban Ladder's art directors a virtual photo studio on iPad to launch products faster",
+        "card_desc": "An iPad app that lets art directors stage furniture in a 3D studio, compose shots and push renders to approval without a physical photoshoot.",
+        "company": "Urban Ladder",
+        "platform": "Tablet · iPadOS",
+        "timeline": "6 months",
+        "role": "UX designer (NID graduation project)",
+        "tags": ["0→1", "3D tooling", "Retail", "NID project"],
+        "cover": cover_image("ulstudio.jpg"),
+        "card_stats": [("20", "stakeholder interviews"), ("−64%", "image turnaround"), ("−55%", "cost per hero shot")],
+        "problem": (
+            "Product images drive furniture purchases online, and every new Urban Ladder product needed them before "
+            "launch. Physical shoots meant booking studios, moving furniture and coordinating photographers. 3D renders "
+            "depended on specialist artists and long feedback loops between eight teams. Image creation had become the "
+            "slowest step in a product launch."
+        ),
+        "roles": [
+            ("My role", "UX designer, researcher and visual designer. This was my M.Des graduation project at the National Institute of Design."),
+            ("Team", "Reviewed weekly with the VP Product, VP Engineering and the then-CEO. Worked with 3D artists and art directors."),
+            ("Scope", "MVP of Studio (scene setup and shot composition) and Assets (exports, approvals and comments)."),
+        ],
+        "impact": [
+            ("−64", "%", "Image turnaround per product", "From ~14 days to 5 in the pilot, by removing studio booking and file hand-offs.", 64),
+            ("−55", "%", "Cost per hero image", "Projected against the cost of a physical studio shoot, per category team's estimate.", 55),
+            ("3 → 1", "", "Hand-offs per shot", "Art directors compose and submit directly instead of briefing a 3D artist.", 66),
+            ("20", "", "Stakeholder interviews", "Across art direction, photography, 3D, product, category and marketing.", 100),
+        ],
+        "before": [
+            "Physical shoots with studio booking and logistics",
+            "Art directors briefed 3D artists through long email threads",
+            "Files traded between 8 departments with no single source",
+            "Feedback arrived after renders were done",
+        ],
+        "after": [
+            "Art directors place products and lights in a virtual studio",
+            "Scene setups saved, edited and exported for rendering",
+            "Searchable asset library tied to each launch",
+            "Comments and approvals on the image itself",
+        ],
+        "decisions": [
+            ("Designed for art directors, not 3D artists", "Pro tools like Maya and 3ds Max expose hundreds of controls. I limited the studio to camera, lights, material and placement, and used photography language instead of 3D terms, so art directors could work without training."),
+            ("Prototyped 3D interaction with real users", "Sketch couldn't prototype 3D, so I tested gestures in Set A Light Studio and recorded art directors moving cameras and lights. That fixed the orbit, pan and drop-in gestures before engineering started."),
+            ("Moved steps to the back end", "Leadership reviews pushed for automation. Rendering, file naming and versioning happen on the server, which cut the flow from <b>11 steps to 6</b>."),
+        ],
+        # Screens section hidden until new images are ready. To bring it back, add
+        # entries here: (image URL, caption, crop?). Previous entries:
+        #   ("https://framerusercontent.com/images/H9aqZ2Xuw9PYMoyH4F5eZRfBs.png?width=1200", "Proof of concept: scene setup and shot composition", True),
+        #   ("https://framerusercontent.com/images/ZHPw5qOET90XAVIBuYZxaqns.png?width=1200", "Tablet wireframes", True),
+        #   ("https://framerusercontent.com/images/dpv34NqCC5xItzXYYT3Z60yu0.png?width=1200", "Information architecture", False),
+        "shots": [],
+        "reflection": "Working with a CEO who reviewed every week taught me to bring decisions, not options. The project also set the approach I still use from NID: understand the whole system before designing any single screen.",
     },
 ]
 
