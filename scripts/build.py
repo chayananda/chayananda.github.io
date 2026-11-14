@@ -616,6 +616,15 @@ PLAY = [
         "repo": "chayananda/rajkumar",
         "dir": "src",
     },
+    {
+        "slug": "kannada-cinema",
+        "title": "Kannada Cinema Infographic",
+        "desc": "An interactive archive of Kannada cinema, 1934 to 2026. Browse every year and decade, and see which films were hits, average or flops.",
+        "thumb": "play/kannada-cinema.svg",
+        "tags": ["Kannada cinema", "Data viz"],
+        "repo": "chayananda/kannada-cinema",
+        "dir": "src",
+    },
 ]
 
 PRINCIPLES = [
