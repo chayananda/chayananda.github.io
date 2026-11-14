@@ -607,6 +607,15 @@ PLAY = [
         "repo": "chayananda/horoscene",
         "dir": "src",
     },
+    {
+        "slug": "rajkumar",
+        "title": "Dr. Rajkumar Filmography",
+        "desc": "An interactive filmography of Dr. Rajkumar. All 209 films, 1954 to 2000, on one wheel you can turn.",
+        "thumb": "play/rajkumar.svg",
+        "tags": ["Kannada cinema", "Data viz"],
+        "repo": "chayananda/rajkumar",
+        "dir": "src",
+    },
 ]
 
 PRINCIPLES = [
